@@ -17,7 +17,7 @@ namespace IndexMobileEntity.Models
         {
             get
             {
-                return this.Name + " Всего: " + this.Telephones.Count.ToString() + " Свободно: " + this.TelephonesBySelectionIsNull.Count.ToString();
+                return this.Name  +" Всего: " + this.TelephonesCount.ToString() + " Свободно: " + this.TelephonesBySelectionIsNullCount.ToString();
             }
         }
 
@@ -59,6 +59,34 @@ namespace IndexMobileEntity.Models
                     criteria.Add(Restrictions.IsNull("Selection"));
                     criteria.AddOrder(Order.Asc("ID"));
                     return criteria.List<Telephone>().ToList<Telephone>();
+                }
+            }
+        }
+        public virtual long TelephonesBySelectionIsNullCount
+        {
+            get
+            {
+                using (ISession session = NHibernateHelper.OpenSession())
+                {
+                    ICriteria criteria = session.CreateCriteria(typeof(Telephone));
+                    criteria.Add(Restrictions.Eq("Access", this));
+                    criteria.Add(Restrictions.IsNull("Selection"));
+                    criteria.SetProjection(Projections.Count("Number"));
+                    return (int) criteria.UniqueResult();
+                }
+            }
+        }
+
+        public virtual long TelephonesCount
+        {
+            get
+            {
+                using (ISession session = NHibernateHelper.OpenSession())
+                {
+                    ICriteria criteria = session.CreateCriteria(typeof(Telephone));
+                    criteria.Add(Restrictions.Eq("Access", this));
+                    criteria.SetProjection(Projections.Count("Number"));
+                    return (int)criteria.UniqueResult();
                 }
             }
         }

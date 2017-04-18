@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SQLite;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -56,16 +57,54 @@ namespace IndexMobileGenerate
                 int i = 0;
                 var Telephones = theAccess.TelephonesBySelectionIsNull;
                 Telephones.Shuffle();
-                foreach (var item in Telephones.OrderBy(a => Guid.NewGuid()).ToList())
+
+
+                string sqlInsertUsers = @"UPDATE [Telephone] SET [Selection_ID] = @Selection_ID WHERE [ID] = @ID";
+                string _connectionString = "Data Source=IndexMobile.db";
+                using (var cn = new SQLiteConnection(_connectionString))
                 {
-                    i++;
-                    if (i > Count)
+                    cn.Open();
+                    using (var transaction = cn.BeginTransaction())
                     {
-                        break;
+                        using (var cmd = cn.CreateCommand())
+                        {
+                            cmd.CommandText = sqlInsertUsers;
+                            cmd.Parameters.AddWithValue("@ID", "");
+                            cmd.Parameters.AddWithValue("@Selection_ID", "");
+
+                            foreach (var item in Telephones.OrderBy(a => Guid.NewGuid()).ToList())
+                            {
+                                i++;
+                                if (i > Count)
+                                {
+                                    break;
+                                }
+                                 cmd.Parameters["@ID"].Value = item.ID;
+                                cmd.Parameters["@Selection_ID"].Value = theSelection.ID;
+                                cmd.ExecuteNonQuery();
+                            }
+                                //cmd.Parameters["@Number"].Value = i.ToString();
+                                //cmd.Parameters["@Diapason_ID"].Value = theDiapason.ID;
+                                //cmd.Parameters["@Access_ID"].Value = theAccess.ID;
+                                //results.Add(cmd.ExecuteNonQuery());
+
+                            //}
+
+                        }
+                        transaction.Commit();
                     }
-                    item.Selection = theSelection;
-                    item.Update();
                 }
+
+                //foreach (var item in Telephones.OrderBy(a => Guid.NewGuid()).ToList())
+                //{
+                //    i++;
+                //    if (i > Count)
+                //    {
+                //        break;
+                //    }
+                //    item.Selection = theSelection;
+                //    item.Update();
+                //}
                 LoadSelection();
                 Application.UseWaitCursor = false;
             }

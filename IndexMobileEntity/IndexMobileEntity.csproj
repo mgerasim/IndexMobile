@@ -73,6 +73,7 @@
     <Compile Include="Common\BaseClass.cs" />
     <Compile Include="Common\BaseRepository.cs" />
     <Compile Include="Common\NHibernateHelper.cs" />
+    <Compile Include="Helper\DataClass.cs" />
     <Compile Include="Models\Telephone.cs" />
     <Compile Include="Models\Selection.cs" />
     <Compile Include="Models\Diapason.cs" />

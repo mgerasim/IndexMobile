@@ -83,6 +83,7 @@
             this.Controls.Add(this.listBoxAccess);
             this.Name = "FormAccess";
             this.Text = "Мои выборки телефонных номеров";
+            this.Load += new System.EventHandler(this.FormAccess_Load);
             this.ResumeLayout(false);
 
         }

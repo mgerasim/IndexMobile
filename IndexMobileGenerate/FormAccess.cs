@@ -45,10 +45,6 @@ namespace IndexMobileGenerate
 
         private void buttonAccessAdd_Click(object sender, EventArgs e)
         {
-            if (DateTime.Now > new DateTime(2017, 05, 01))
-            {
-                return;
-            }
             try
             {
                 Access theAccess = new Access();
@@ -89,6 +85,11 @@ namespace IndexMobileGenerate
             FormSelection theFormSelection = new FormSelection(theAccess);
             theFormSelection.ShowDialog();
             this.LoadAccess();
+        }
+
+        private void FormAccess_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
