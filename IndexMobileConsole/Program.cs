@@ -1,4 +1,5 @@
-﻿using IndexMobileEntity.Models;
+﻿using IndexMobileCore.Bots;
+using IndexMobileEntity.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,8 +20,8 @@ namespace IndexMobileConsole
         }
         static void SupportOperatorTele2()
         {
-            string res = IndexMobileCore.Helper.Telephone.OperatorTele2(924, 1086744, null, null);
-            Console.WriteLine(res);
+            Tele2 theBot = new Tele2();
+            theBot.Start();
         }
         static void AccessList()
         {

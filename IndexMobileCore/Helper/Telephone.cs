@@ -4,16 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace IndexMobileCore.Helper
 {
     static public class Telephone
     {
-        static private WebBrowser theBrowser = new WebBrowser();
-        static private bool completed = false;
         public static string Reverse(string s)
         {
             char[] charArray = s.ToCharArray();
@@ -21,37 +16,35 @@ namespace IndexMobileCore.Helper
             return new string(charArray);
         }
 
-        static void browser_DocumentCompleted_Whois(object sender, WebBrowserDocumentCompletedEventArgs e)
-        {
 
-            completed = true;      
-        }
-
-        static public string OperatorTele2(long Code, long Number, string[] arrayProxies, string currentProxy)
+        static public string OperatorRequest()
         {
+            string HtmlResult;
             try
-            {                
-                theBrowser.ScriptErrorsSuppressed = true;
-                theBrowser.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(browser_DocumentCompleted_Whois);
+            {
+                string postUrlPrivate = "http://mnp.tele2.ru/gateway.php";
+                string URI = postUrlPrivate;
+                string myParameters = "private";
 
-
-                theBrowser.Navigate("http://mnp.tele2.ru/whois.html");
-                while (!completed)
+                using (WebClient wc = new WebClient())
                 {
-                    Application.DoEvents();
-                    Thread.Sleep(100);
+                    wc.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
+                    HtmlResult = wc.UploadString(URI, myParameters);
                 }
 
-                return "Не определен";
+                if (HtmlResult != "")
+                {
+                    return HtmlResult;
+                }
+                else
+                {
+                    return "Не определен";
+                }
             }
             catch (Exception ex)
             {
                 string err = ex.Message;
                 return err;
-            }
-            finally
-            {
-                completed = true;
             }
         }
 
