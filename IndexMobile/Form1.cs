@@ -188,7 +188,10 @@ namespace IndexMobile
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Clipboard.SetText(textBox1.Text);
+            if (textBox1.Text != "")
+            {
+                Clipboard.SetText(textBox1.Text);
+            }
         }
 
         private void button3_Click(object sender, EventArgs e)

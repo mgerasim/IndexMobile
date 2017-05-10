@@ -71,6 +71,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\IndexMobileCore\IndexMobileCore.csproj">
+      <Project>{79e9406d-8ae9-4b03-93e8-dd9a3fa9d8cc}</Project>
+      <Name>IndexMobileCore</Name>
+    </ProjectReference>
     <ProjectReference Include="..\IndexMobileEntity\IndexMobileEntity.csproj">
       <Project>{ba3f7f08-6e3d-4516-afef-59e86db75efb}</Project>
       <Name>IndexMobileEntity</Name>

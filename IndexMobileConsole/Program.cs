@@ -11,10 +11,16 @@ namespace IndexMobileConsole
     {
         static void Main(string[] args)
         {
-            UpdateSchema();
-            AccessSave();
-            AccessList();
+            //UpdateSchema();
+            //AccessSave();
+            //AccessList();
+            SupportOperatorTele2();
             Console.ReadKey();
+        }
+        static void SupportOperatorTele2()
+        {
+            string res = IndexMobileCore.Helper.Telephone.OperatorTele2(924, 1086744, null, null);
+            Console.WriteLine(res);
         }
         static void AccessList()
         {
