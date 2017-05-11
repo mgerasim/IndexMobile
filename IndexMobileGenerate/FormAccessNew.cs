@@ -131,5 +131,10 @@ namespace IndexMobileGenerate
             }
             this.Close();
         }
+
+        private void FormAccessNew_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -80,6 +80,7 @@
             this.Controls.Add(this.listBoxDiapason);
             this.Name = "FormAccessNew";
             this.Text = "Выборка телефонных номеров";
+            this.Load += new System.EventHandler(this.FormAccessNew_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

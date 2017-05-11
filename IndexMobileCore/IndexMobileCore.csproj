@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bots\Tele2.cs" />
+    <Compile Include="Helper\DEF.cs" />
     <Compile Include="Helper\Telephone.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
