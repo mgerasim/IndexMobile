@@ -142,6 +142,10 @@ namespace IndexMobile
                             string theName = "";
                             foreach (var item in NameInCell.Split(new char[] { ' ', '(' }, StringSplitOptions.RemoveEmptyEntries))
                             {
+                                if (item.Length == 1)
+                                {
+                                    continue;
+                                }
                                 var list = theListNameface.Where(x => x.NameOff.ToLower() == item.ToLower());
                                 if (list.Count() > 0)
                                 {
