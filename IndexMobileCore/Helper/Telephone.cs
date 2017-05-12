@@ -17,6 +17,7 @@ namespace IndexMobileCore.Helper
         }
 
 
+
         static public string OperatorRequest()
         {
             string HtmlResult;

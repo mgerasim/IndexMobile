@@ -27,26 +27,34 @@ namespace IndexMobile.Models
         }
 
         
-        public static string GetOperator(long DEF, long Number)
+        public static DEF GetOperator(long DEF, long Number)
         {
-            using (ISession session = NHibernateHelper.OpenSession())
+            try
             {
-                DEF theDEF = session.CreateCriteria(typeof(DEF))
-                    .Add(Restrictions.Eq("NumberDEF", DEF))
-                    .Add(Restrictions.Le("NumberBgn", Number))
-                    .Add(Restrictions.Ge("NumberEnd", Number))
-                    .UniqueResult<DEF>();
-
-                if (theDEF == null)
+                using (ISession session = NHibernateHelper.OpenSession())
                 {
-                    return "Не определен";
-                }
-                else
-                {
-                    return theDEF.Operator + "(" + theDEF.Region + ")";
-                }
+                    var result = session.CreateCriteria(typeof(DEF))
+                        .Add(Restrictions.Eq("NumberDEF", DEF))
+                        .Add(Restrictions.Le("NumberBgn", Number))
+                        .Add(Restrictions.Ge("NumberEnd", Number))
+                        .List<DEF>().ToList<DEF>();
 
+                    if (result == null)
+                    {
+                        return null;
+                    }
+
+                    DEF theDEF = result[0];
+
+                    return theDEF;
+
+                }
             }
+            catch
+            {
+                return null;
+            }
+            
         }
 
     }

@@ -57,6 +57,7 @@ namespace IndexMobile
             Form1 theForm = (Form1)obj;
             try
             {
+                List<Nameface> theListNameface = Nameface.GetAll();
                     foreach (var worksheet in theForm.pck.Workbook.Worksheets)
                     {
                         Log(theForm, "Обрабатываем страницу: " + worksheet.Name);
@@ -65,7 +66,8 @@ namespace IndexMobile
                             Log(theForm, "Страница пуста - пропускаем");
                             continue;
                         }
-                        worksheet.InsertColumn(2, 1);
+
+                        worksheet.InsertColumn(2, 3);
                         var rowCnt = worksheet.Dimension.End.Row;
                         Log(theForm, "Кол-во строк в странице: " + rowCnt.ToString());
                         for (int i = 2; i <= rowCnt; i++)
@@ -83,6 +85,15 @@ namespace IndexMobile
                                 Log(theForm, "Значение в " + i.ToString() + " строке - отсутствует - пропускаем ");
                                 continue;
                             }
+
+
+                            string NameInCell = "";
+                            if (worksheet.Cells[i, 5].Value != null)
+                            {
+                                NameInCell = worksheet.Cells[i, 5].Value.ToString();
+                            }
+
+
                             string tel = worksheet.Cells[i, 1].Value.ToString();
                             Log(theForm, "Значение в " + i.ToString() + " строке: " + tel);
                             tel = tel.Replace(" ", "");
@@ -116,9 +127,41 @@ namespace IndexMobile
                             }
                             Log(theForm, "Вызываем: IndexMobileCore.Helper.Telephone.Operator(" + Code.ToString() + ", " + Number.ToString() + ")");
                             //string tel_operator = IndexMobileCore.Helper.Telephone.Operator(Code, Number);
-                            string tel_operator = DEF.GetOperator(Code, Number);
-                            Log(theForm, "Получено значение: tel_operator =  " + tel_operator);
-                            worksheet.Cells[i, 2].Value = tel_operator;
+                            var theDEF = DEF.GetOperator(Code, Number);
+                            if (theDEF != null)
+                            {
+                                Log(theForm, "Получено значение: tel_operator =  " + theDEF.Operator + " - " + theDEF.Region);
+                                worksheet.Cells[i, 2].Value = theDEF.Operator;
+                                worksheet.Cells[i, 3].Value = theDEF.Region;
+                            }
+                            else
+                            {
+                                Log(theForm, "Значение отсутствует");
+                            }
+
+                            string theName = "";
+                            foreach (var item in NameInCell.Split(new char[] { ' ', '(' }, StringSplitOptions.RemoveEmptyEntries))
+                            {
+                                var list = theListNameface.Where(x => x.NameOff.ToLower() == item.ToLower());
+                                if (list.Count() > 0)
+                                {
+                                    theName = list.ToList<Nameface>()[0].NameOn ;
+                                    break;
+                                }
+                                else
+                                {
+                                    var check = theListNameface.Where(x => x.NameOn.ToLower() == item.ToLower());
+                                    if (check.Count() > 0)
+                                    {
+                                        theName = check.ToList<Nameface>()[0].NameOn; 
+                                        break;
+                                    }
+                                }
+                                
+                            }
+                            worksheet.Cells[i, 4].Value = theName;
+
+
                             Log(theForm, "Завершено!");
                         }
                     }
