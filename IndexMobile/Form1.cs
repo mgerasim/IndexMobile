@@ -469,5 +469,11 @@ namespace IndexMobile
             }
             
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            FormEmail theForm = new FormEmail();
+            theForm.ShowDialog();
+        }
     }
 }
