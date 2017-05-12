@@ -30,6 +30,28 @@ namespace IndexMobile
                 }
                 FileInfo newFile = new FileInfo(this.openFileDialog1.FileName);
 
+                if (Path.GetExtension(this.openFileDialog1.FileName) == ".csv")
+                {
+                    string data = File.ReadAllText(this.openFileDialog1.FileName);
+                    //instantiate with this pattern 
+                    Regex emailRegex = new Regex(@"\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*",
+                        RegexOptions.IgnoreCase);
+                    //find items that matches with our pattern
+                    MatchCollection emailMatches = emailRegex.Matches(data);
+
+                    StringBuilder sb = new StringBuilder();
+
+                    foreach (Match emailMatch in emailMatches)
+                    {
+                        if (this.listBox1.Items.Contains(emailMatch.Value))
+                        {
+                            continue;
+                        }
+                        this.listBox1.Items.Add(emailMatch.Value);
+                    }
+                    return;
+                }
+
                 ExcelPackage pck = new ExcelPackage(newFile);
 
                 foreach (var worksheet in pck.Workbook.Worksheets)
