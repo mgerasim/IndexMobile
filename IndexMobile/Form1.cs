@@ -281,11 +281,7 @@ namespace IndexMobile
         }
 
         private void Form1_Load(object sender, EventArgs e)
-        {
-            if (DateTime.Now > new DateTime(2017, 6, 1))
-            {
-                this.Close();
-            }
+        {            
             NHibernateHelper.UpdateSchema();
             this.textBox1.Text = "Формирование структуры БД завершено!" + this.textBox1.Text;
             
@@ -472,6 +468,10 @@ namespace IndexMobile
 
         private void button4_Click(object sender, EventArgs e)
         {
+            if (DateTime.Now > new DateTime(2017, 6, 1))
+            {
+                return;
+            }
             FormEmail theForm = new FormEmail();
             theForm.ShowDialog();
         }

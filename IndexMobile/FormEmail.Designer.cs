@@ -32,6 +32,7 @@
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.buttonSave = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.labelCount = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // buttonAdd
@@ -62,17 +63,27 @@
             this.buttonSave.UseVisualStyleBackColor = true;
             this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
+            // labelCount
+            // 
+            this.labelCount.AutoSize = true;
+            this.labelCount.Location = new System.Drawing.Point(143, 31);
+            this.labelCount.Name = "labelCount";
+            this.labelCount.Size = new System.Drawing.Size(0, 13);
+            this.labelCount.TabIndex = 3;
+            // 
             // FormEmail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(415, 319);
+            this.Controls.Add(this.labelCount);
             this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.buttonAdd);
             this.Name = "FormEmail";
             this.Text = "Электронные адреса";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -82,5 +93,6 @@
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Label labelCount;
     }
 }

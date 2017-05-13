@@ -100,6 +100,7 @@ namespace IndexMobile
                         }
 
                 }
+
             
 
             }
@@ -107,7 +108,11 @@ namespace IndexMobile
             {
                 listBox1.Items.Add(ex.Message);
             }
+            finally
+            {
 
+                labelCount.Text = this.listBox1.Items.Count.ToString();
+            }
 
         }
         bool IsValidEmail(string email)
@@ -127,12 +132,19 @@ namespace IndexMobile
         {
             try
             {
-                if (File.Exists("email.csv"))
+                string DirName = "emails";
+                if (!Directory.Exists(DirName))
                 {
-                    File.Delete("email.csv");
+                    Directory.CreateDirectory(DirName);
                 }
 
-                using (StreamWriter myOutputStream = new StreamWriter("email.csv"))
+                //string FileName = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
+                string FileName = DateTime.Now.ToString("yyyy-MM-dd-HH-mm");
+                FileName = Directory.GetCurrentDirectory() + @"\" + DirName + @"\" + FileName + ".csv";
+
+                //File.Create(FileName);
+
+                using (StreamWriter myOutputStream = new StreamWriter(FileName))
                 {
                     foreach (var item in listBox1.Items)
                     {
@@ -143,8 +155,7 @@ namespace IndexMobile
                         
                     }
                 }
-
-                MessageBox.Show("Сохранено в email.csv");
+                MessageBox.Show("Сохранено в " + FileName);
             }
             catch (Exception ex)
             {
