@@ -39,6 +39,8 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.обновитьСхемуToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.button4 = new System.Windows.Forms.Button();
+            this.buttonParserCompany = new System.Windows.Forms.Button();
+            this.buttonParserPerson = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -115,7 +117,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(344, 50);
+            this.button4.Location = new System.Drawing.Point(250, 50);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(168, 23);
             this.button4.TabIndex = 6;
@@ -123,11 +125,33 @@
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
+            // buttonParserCompany
+            // 
+            this.buttonParserCompany.Location = new System.Drawing.Point(488, 50);
+            this.buttonParserCompany.Name = "buttonParserCompany";
+            this.buttonParserCompany.Size = new System.Drawing.Size(75, 23);
+            this.buttonParserCompany.TabIndex = 7;
+            this.buttonParserCompany.Text = "Парсер Орг";
+            this.buttonParserCompany.UseVisualStyleBackColor = true;
+            this.buttonParserCompany.Click += new System.EventHandler(this.buttonParserCompany_Click);
+            // 
+            // buttonParserPerson
+            // 
+            this.buttonParserPerson.Location = new System.Drawing.Point(585, 50);
+            this.buttonParserPerson.Name = "buttonParserPerson";
+            this.buttonParserPerson.Size = new System.Drawing.Size(81, 23);
+            this.buttonParserPerson.TabIndex = 8;
+            this.buttonParserPerson.Text = "Парсер Чел";
+            this.buttonParserPerson.UseVisualStyleBackColor = true;
+            this.buttonParserPerson.Click += new System.EventHandler(this.buttonParserPerson_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(996, 552);
+            this.Controls.Add(this.buttonParserPerson);
+            this.Controls.Add(this.buttonParserCompany);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.textBox1);
@@ -158,6 +182,8 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem обновитьСхемуToolStripMenuItem;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button buttonParserCompany;
+        private System.Windows.Forms.Button buttonParserPerson;
     }
 }
 

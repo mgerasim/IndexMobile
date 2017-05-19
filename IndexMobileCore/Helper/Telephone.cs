@@ -9,6 +9,21 @@ namespace IndexMobileCore.Helper
 {
     static public class Telephone
     {
+        public static string Normalize(string tel)
+        {
+            tel = tel.Replace(" ", "");
+            tel = tel.Replace("+", "");
+            tel = tel.Replace("-", "");
+         
+            if (tel.Length < 10)
+            {
+                return tel;
+            }
+            tel = IndexMobileCore.Helper.Telephone.Reverse(tel);
+            tel = tel.Substring(0, 10);
+            tel = IndexMobileCore.Helper.Telephone.Reverse(tel);
+            return tel;
+        }
         public static string Reverse(string s)
         {
             char[] charArray = s.ToCharArray();
