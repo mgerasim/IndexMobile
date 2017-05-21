@@ -41,6 +41,10 @@
             this.button4 = new System.Windows.Forms.Button();
             this.buttonParserCompany = new System.Windows.Forms.Button();
             this.buttonParserPerson = new System.Windows.Forms.Button();
+            this.helpProvider1 = new System.Windows.Forms.HelpProvider();
+            this.buttonHelpCompany = new System.Windows.Forms.Button();
+            this.buttonHelpPerson = new System.Windows.Forms.Button();
+            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -137,7 +141,7 @@
             // 
             // buttonParserPerson
             // 
-            this.buttonParserPerson.Location = new System.Drawing.Point(585, 50);
+            this.buttonParserPerson.Location = new System.Drawing.Point(675, 50);
             this.buttonParserPerson.Name = "buttonParserPerson";
             this.buttonParserPerson.Size = new System.Drawing.Size(81, 23);
             this.buttonParserPerson.TabIndex = 8;
@@ -145,11 +149,33 @@
             this.buttonParserPerson.UseVisualStyleBackColor = true;
             this.buttonParserPerson.Click += new System.EventHandler(this.buttonParserPerson_Click);
             // 
+            // buttonHelpCompany
+            // 
+            this.buttonHelpCompany.Location = new System.Drawing.Point(569, 50);
+            this.buttonHelpCompany.Name = "buttonHelpCompany";
+            this.buttonHelpCompany.Size = new System.Drawing.Size(30, 23);
+            this.buttonHelpCompany.TabIndex = 9;
+            this.buttonHelpCompany.Text = "?";
+            this.buttonHelpCompany.UseVisualStyleBackColor = true;
+            this.buttonHelpCompany.Click += new System.EventHandler(this.buttonHelpCompany_Click);
+            // 
+            // buttonHelpPerson
+            // 
+            this.buttonHelpPerson.Location = new System.Drawing.Point(762, 50);
+            this.buttonHelpPerson.Name = "buttonHelpPerson";
+            this.buttonHelpPerson.Size = new System.Drawing.Size(30, 23);
+            this.buttonHelpPerson.TabIndex = 9;
+            this.buttonHelpPerson.Text = "?";
+            this.buttonHelpPerson.UseVisualStyleBackColor = true;
+            this.buttonHelpPerson.Click += new System.EventHandler(this.buttonHelpPerson_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(996, 552);
+            this.Controls.Add(this.buttonHelpPerson);
+            this.Controls.Add(this.buttonHelpCompany);
             this.Controls.Add(this.buttonParserPerson);
             this.Controls.Add(this.buttonParserCompany);
             this.Controls.Add(this.button4);
@@ -184,6 +210,10 @@
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button buttonParserCompany;
         private System.Windows.Forms.Button buttonParserPerson;
+        private System.Windows.Forms.HelpProvider helpProvider1;
+        private System.Windows.Forms.Button buttonHelpCompany;
+        private System.Windows.Forms.Button buttonHelpPerson;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
     }
 }
 

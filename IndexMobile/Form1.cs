@@ -471,153 +471,165 @@ namespace IndexMobile
             }
             try 
             {
-                if (this.openFileDialog1.ShowDialog() != DialogResult.OK)
+                if (this.folderBrowserDialog1.ShowDialog() != DialogResult.OK)
                 {
                     return;
                 }
-                
+
+                string[] files = Directory.GetFiles(this.folderBrowserDialog1.SelectedPath);
+                                                
                 this.button1.Enabled = false;
                 this.button3.Enabled = true;
                 this.isStop = false;
                 Log(this, "Начало обработки");
                 this.UseWaitCursor = true;
 
-                Log(this, "Выбран файл: " + Path.GetFileName(this.openFileDialog1.FileName));
-
-                FileInfo newFile = new FileInfo(this.openFileDialog1.FileName);
-
-                ExcelPackage _pck = new ExcelPackage(newFile);
-
-
-                foreach (var worksheet in _pck.Workbook.Worksheets)
+                foreach(var file in files) 
                 {
-                    int ColumnName = -1;
-                    int ColumnSaite = -1;
-                    int ColumnEmail = -1;
-                    int ColumnTelephone = -1;
-                    int ColumnRubrika = -1;
+                    try
+                    {
+                        Log(this, "Выбран файл: " + Path.GetFileName(file));
 
-                    Log(this, "Обрабатываем страницу: " + worksheet.Name);
-                    if (worksheet.Dimension == null)
-                    {
-                        Log(this, "Страница пуста - пропускаем");
-                        continue;
-                    }
-                    var rowCnt = worksheet.Dimension.End.Row;
-                    for (int i = 1; i <= rowCnt; i++)
-                    {
-                        if (worksheet.Cells[1, i] == null)
+                        FileInfo newFile = new FileInfo(file);
+
+                        ExcelPackage _pck = new ExcelPackage(newFile);
+
+                        foreach (var worksheet in _pck.Workbook.Worksheets)
                         {
-                            continue;
-                        }
-                        if (worksheet.Cells[1, i].Value == null)
-                        {
-                            continue;
-                        }
-                        switch (worksheet.Cells[1, i].Value.ToString().Trim())
-                        {
-                            case "Название":
-                                ColumnName = i;
-                                break;
-                            case "Сайт":
-                                ColumnSaite = i;
-                                break;
-                            case "Email":
-                                ColumnEmail = i;
-                                break;
-                            case "Телефоны":
-                                ColumnTelephone = i;
-                                break;
-                            case "Рубрика":
-                                ColumnRubrika = i;                                
-                                break;
-                        }
-                    }
+                            int ColumnName = -1;
+                            int ColumnSaite = -1;
+                            int ColumnEmail = -1;
+                            int ColumnTelephone = -1;
+                            int ColumnRubrika = -1;
 
-                    string Notify = "";
-                    if (ColumnName < 0)
-                    {
-                        Notify += "\nНазвание";
-                    }
-                    if (ColumnSaite < 0)
-                    {
-                        Notify += "\nСайт";
-                    }
-                    if (ColumnEmail < 0)
-                    {
-                        Notify += "\nEmail";
-                    }
-                    if (ColumnTelephone < 0)
-                    {
-                        Notify += "\nТелефоны";
-                    }
-                    if (ColumnRubrika < 0)
-                    {
-                        Notify += "\nРубрика";
-                    }
-
-                    if (Notify.Length > 0)
-                    {
-                        Notify = "Отсутствуют поля: " + Notify;
-                        MessageBox.Show(Notify);
-                        break;
-                    }
-
-                    string DirName = "ParserCompany";
-                    if (!Directory.Exists(DirName))
-                    {
-                        Directory.CreateDirectory(DirName);
-                    }
-
-                    var colCnt = worksheet.Dimension.End.Column;
-
-                    string FileName = DateTime.Now.ToString("yyyy-MM-dd-HH-mm");
-                    FileName = Directory.GetCurrentDirectory() + @"\" + DirName + @"\" + FileName + ".xlsx";
-                    var existingFile = new FileInfo(FileName);
-
-
-                    using (var package = new ExcelPackage(existingFile))
-                    {
-                        var workbook = package.Workbook;
-                        
-                        var worksheet1 = workbook.Worksheets.Add(worksheet.Name);
-
-                        List<ParserCompany> theList = new List<ParserCompany>();
-
-                        for (int i = 1; i <= colCnt; i++)
-                        {
-                            ParserCompany data = new ParserCompany();
-                            data.Telephone = GetValueFromCell(worksheet.Cells[i, ColumnTelephone]);
-                            data.Name = GetValueFromCell(worksheet.Cells[i, ColumnName]);
-                            data.Email = GetValueFromCell(worksheet.Cells[i, ColumnEmail]);
-                            data.Saite = GetValueFromCell(worksheet.Cells[i, ColumnSaite]);
-                            data.Rubrika = GetValueFromCell(worksheet.Cells[i, ColumnRubrika]);
-                                                        
-                            if (theList.Count(x => x.Telephone == data.Telephone) > 0)
+                            Log(this, "Обрабатываем страницу: " + worksheet.Name);
+                            if (worksheet.Dimension == null)
                             {
+                                Log(this, "Страница пуста - пропускаем");
                                 continue;
                             }
+                            var rowCnt = worksheet.Dimension.End.Row;
+                            for (int i = 1; i <= rowCnt; i++)
+                            {
+                                if (worksheet.Cells[1, i] == null)
+                                {
+                                    continue;
+                                }
+                                if (worksheet.Cells[1, i].Value == null)
+                                {
+                                    continue;
+                                }
+                                switch (worksheet.Cells[1, i].Value.ToString().Trim())
+                                {
+                                    case "Название":
+                                        ColumnName = i;
+                                        break;
+                                    case "Сайт":
+                                        ColumnSaite = i;
+                                        break;
+                                    case "Email":
+                                        ColumnEmail = i;
+                                        break;
+                                    case "Телефоны":
+                                        ColumnTelephone = i;
+                                        break;
+                                    case "Рубрика":
+                                        ColumnRubrika = i;
+                                        break;
+                                }
+                            }
 
-                            theList.Add(data);
+                            string Notify = "";
+                            if (ColumnName < 0)
+                            {
+                                Notify += "\nНазвание";
+                            }
+                            if (ColumnSaite < 0)
+                            {
+                                Notify += "\nСайт";
+                            }
+                            if (ColumnEmail < 0)
+                            {
+                                Notify += "\nEmail";
+                            }
+                            if (ColumnTelephone < 0)
+                            {
+                                Notify += "\nТелефоны";
+                            }
+                            if (ColumnRubrika < 0)
+                            {
+                                Notify += "\nРубрика";
+                            }
+
+                            if (Notify.Length > 0)
+                            {
+                                Notify = "Отсутствуют поля: " + Notify;
+                                MessageBox.Show(Notify);
+                                break;
+                            }
+
+                            string DirName = "ParserCompany";
+                            if (!Directory.Exists(DirName))
+                            {
+                                Directory.CreateDirectory(DirName);
+                            }
+
+                            var colCnt = worksheet.Dimension.End.Column;
+
+                            string FileName = DateTime.Now.ToString("yyyy-MM-dd-HH-mm");
+                            FileName = Directory.GetCurrentDirectory() + @"\" + DirName + @"\" + FileName + ".xlsx";
+                            var existingFile = new FileInfo(FileName);
+
+                            using (var package = new ExcelPackage(existingFile))
+                            {
+                                var workbook = package.Workbook;
+
+                                var worksheet1 = workbook.Worksheets.Add(worksheet.Name);
+
+                                List<ParserCompany> theList = new List<ParserCompany>();
+
+                                for (int i = 1; i <= colCnt; i++)
+                                {
+                                    ParserCompany data = new ParserCompany();
+                                    data.Telephone = GetValueFromCell(worksheet.Cells[i, ColumnTelephone]);
+                                    data.Name = GetValueFromCell(worksheet.Cells[i, ColumnName]);
+                                    data.Email = GetValueFromCell(worksheet.Cells[i, ColumnEmail]);
+                                    data.Saite = GetValueFromCell(worksheet.Cells[i, ColumnSaite]);
+                                    data.Rubrika = GetValueFromCell(worksheet.Cells[i, ColumnRubrika]);
+
+                                    if (theList.Count(x => x.Telephone == data.Telephone) > 0)
+                                    {
+                                        continue;
+                                    }
+
+                                    theList.Add(data);
+                                }
+
+                                for (int i = 1; i <= theList.Count; i++)
+                                {
+                                    var data = theList[i - 1];
+                                    worksheet1.Cells[i, 1].Value = data.Telephone;
+                                    worksheet1.Cells[i, 2].Value = data.Name;
+                                    worksheet1.Cells[i, 3].Value = data.Email;
+                                    worksheet1.Cells[i, 4].Value = data.Saite;
+                                    worksheet1.Cells[i, 5].Value = data.Rubrika;
+                                }
+                                package.Save();
+                                Log(this, "Сохранено: " + FileName);
+                            }
+
+                            break;
                         }
 
-                        for (int i = 1; i <= theList.Count; i++)
-                        {
-                            var data = theList[i - 1];
-                            worksheet1.Cells[i, 1].Value = data.Telephone;
-                            worksheet1.Cells[i, 2].Value = data.Name;
-                            worksheet1.Cells[i, 3].Value = data.Email;
-                            worksheet1.Cells[i, 4].Value = data.Saite;
-                            worksheet1.Cells[i, 5].Value = data.Rubrika;
-                        }
-                        package.Save();
-                        Log(this, "Сохранено: " + FileName);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log(this, "Ошибка при обработке файла: " + file + " " + ex.Message);                       
                     }
 
-                    break;
                 }
-
-
+                
+                
 
                 Log(this, "Завершено!");
             }
@@ -861,6 +873,18 @@ namespace IndexMobile
             {
                 this.UseWaitCursor = false;
             }
+        }
+
+        private void buttonHelpCompany_Click(object sender, EventArgs e)
+        {
+            FormHelpCompany theHelp = new FormHelpCompany();
+            theHelp.ShowDialog();
+        }
+
+        private void buttonHelpPerson_Click(object sender, EventArgs e)
+        {
+            FormHelpPerson theHelp = new FormHelpPerson();
+            theHelp.ShowDialog();
         }
     }
 }

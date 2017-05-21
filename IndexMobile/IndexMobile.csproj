@@ -100,6 +100,18 @@
     <Compile Include="FormEmail.Designer.cs">
       <DependentUpon>FormEmail.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormHelpCompany.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormHelpCompany.Designer.cs">
+      <DependentUpon>FormHelpCompany.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormHelpPerson.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormHelpPerson.Designer.cs">
+      <DependentUpon>FormHelpPerson.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Nameface.cs" />
     <Compile Include="Models\DEF.cs" />
     <Compile Include="Models\ParserCompany.cs" />
@@ -111,6 +123,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormEmail.resx">
       <DependentUpon>FormEmail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormHelpCompany.resx">
+      <DependentUpon>FormHelpCompany.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormHelpPerson.resx">
+      <DependentUpon>FormHelpPerson.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
