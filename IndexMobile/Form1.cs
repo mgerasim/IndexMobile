@@ -477,10 +477,7 @@ namespace IndexMobile
                 }
 
                 string[] files = Directory.GetFiles(this.folderBrowserDialog1.SelectedPath);
-                                                
-                this.button1.Enabled = false;
-                this.button3.Enabled = true;
-                this.isStop = false;
+                                      
                 Log(this, "Начало обработки");
                 this.UseWaitCursor = true;
 
@@ -489,6 +486,12 @@ namespace IndexMobile
                     try
                     {
                         Log(this, "Выбран файл: " + Path.GetFileName(file));
+
+                        if (Path.GetExtension(file) != ".xlsx")
+                        {
+                            Log("Формат файла не поддерживается: " + Path.GetExtension(file));
+                            continue;
+                        }
 
                         FileInfo newFile = new FileInfo(file);
 
@@ -509,7 +512,8 @@ namespace IndexMobile
                                 continue;
                             }
                             var rowCnt = worksheet.Dimension.End.Row;
-                            for (int i = 1; i <= rowCnt; i++)
+                            var colCnt = worksheet.Dimension.End.Column;
+                            for (int i = 1; i <= colCnt; i++)
                             {
                                 if (worksheet.Cells[1, i] == null)
                                 {
@@ -564,8 +568,8 @@ namespace IndexMobile
                             if (Notify.Length > 0)
                             {
                                 Notify = "Отсутствуют поля: " + Notify;
-                                MessageBox.Show(Notify);
-                                break;
+                                Log(this, Notify);
+                                break ;
                             }
 
                             string DirName = "ParserCompany";
@@ -574,7 +578,7 @@ namespace IndexMobile
                                 Directory.CreateDirectory(DirName);
                             }
 
-                            var colCnt = worksheet.Dimension.End.Column;
+                           // var colCnt = worksheet.Dimension.End.Column;
 
                             string FileName = DateTime.Now.ToString("yyyy-MM-dd-HH-mm");
                             FileName = Directory.GetCurrentDirectory() + @"\" + DirName + @"\" + FileName + ".xlsx";
@@ -588,7 +592,7 @@ namespace IndexMobile
 
                                 List<ParserCompany> theList = new List<ParserCompany>();
 
-                                for (int i = 1; i <= colCnt; i++)
+                                for (int i = 1; i <= rowCnt; i++)
                                 {
                                     ParserCompany data = new ParserCompany();
                                     data.Telephone = GetValueFromCell(worksheet.Cells[i, ColumnTelephone]);
