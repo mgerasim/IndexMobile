@@ -1,4 +1,4 @@
-﻿using IndexMobileEntity.Models;
+﻿using IndexMobile.Models;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using IndexMobile;
 
 namespace IndexMobileGenerate
 {
@@ -60,7 +61,7 @@ namespace IndexMobileGenerate
 
 
                 string sqlInsertUsers = @"UPDATE [Telephone] SET [Selection_ID] = @Selection_ID WHERE [ID] = @ID";
-                string _connectionString = "Data Source=IndexMobile.db";
+                string _connectionString = "Data Source=DEF.db";
                 using (var cn = new SQLiteConnection(_connectionString))
                 {
                     cn.Open();

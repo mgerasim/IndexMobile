@@ -45,6 +45,8 @@
             this.buttonHelpCompany = new System.Windows.Forms.Button();
             this.buttonHelpPerson = new System.Windows.Forms.Button();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.buttonHelpEmail = new System.Windows.Forms.Button();
+            this.buttonDiaposonGenerate = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,10 +55,14 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(12, 34);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(147, 13);
+            this.label1.Size = new System.Drawing.Size(122, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Выберите файл (*.xlsx, *.xls):";
+            this.label1.Text = "Выберите файл (*.xlsx):";
             this.label1.Click += new System.EventHandler(this.label1_Click);
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog1_FileOk);
             // 
             // button1
             // 
@@ -169,11 +175,33 @@
             this.buttonHelpPerson.UseVisualStyleBackColor = true;
             this.buttonHelpPerson.Click += new System.EventHandler(this.buttonHelpPerson_Click);
             // 
+            // buttonHelpEmail
+            // 
+            this.buttonHelpEmail.Location = new System.Drawing.Point(424, 50);
+            this.buttonHelpEmail.Name = "buttonHelpEmail";
+            this.buttonHelpEmail.Size = new System.Drawing.Size(30, 23);
+            this.buttonHelpEmail.TabIndex = 10;
+            this.buttonHelpEmail.Text = "?";
+            this.buttonHelpEmail.UseVisualStyleBackColor = true;
+            this.buttonHelpEmail.Click += new System.EventHandler(this.buttonHelpEmail_Click);
+            // 
+            // buttonDiaposonGenerate
+            // 
+            this.buttonDiaposonGenerate.Location = new System.Drawing.Point(818, 50);
+            this.buttonDiaposonGenerate.Name = "buttonDiaposonGenerate";
+            this.buttonDiaposonGenerate.Size = new System.Drawing.Size(166, 23);
+            this.buttonDiaposonGenerate.TabIndex = 11;
+            this.buttonDiaposonGenerate.Text = "Генерировать диапозон";
+            this.buttonDiaposonGenerate.UseVisualStyleBackColor = true;
+            this.buttonDiaposonGenerate.Click += new System.EventHandler(this.buttonDiaposonGenerate_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(996, 552);
+            this.Controls.Add(this.buttonDiaposonGenerate);
+            this.Controls.Add(this.buttonHelpEmail);
             this.Controls.Add(this.buttonHelpPerson);
             this.Controls.Add(this.buttonHelpCompany);
             this.Controls.Add(this.buttonParserPerson);
@@ -214,6 +242,8 @@
         private System.Windows.Forms.Button buttonHelpCompany;
         private System.Windows.Forms.Button buttonHelpPerson;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
+        private System.Windows.Forms.Button buttonHelpEmail;
+        private System.Windows.Forms.Button buttonDiaposonGenerate;
     }
 }
 

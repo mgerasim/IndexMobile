@@ -94,6 +94,24 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormAccess.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAccess.Designer.cs">
+      <DependentUpon>FormAccess.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormAccessNew.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAccessNew.Designer.cs">
+      <DependentUpon>FormAccessNew.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormDiapasonNew.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDiapasonNew.Designer.cs">
+      <DependentUpon>FormDiapasonNew.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormEmail.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -106,20 +124,45 @@
     <Compile Include="FormHelpCompany.Designer.cs">
       <DependentUpon>FormHelpCompany.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormHelpEmail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormHelpEmail.Designer.cs">
+      <DependentUpon>FormHelpEmail.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormHelpPerson.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormHelpPerson.Designer.cs">
       <DependentUpon>FormHelpPerson.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormSelection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSelection.Designer.cs">
+      <DependentUpon>FormSelection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Access.cs" />
+    <Compile Include="Models\Diapason.cs" />
     <Compile Include="Models\Nameface.cs" />
     <Compile Include="Models\DEF.cs" />
     <Compile Include="Models\ParserCompany.cs" />
     <Compile Include="Models\ParserPerson.cs" />
+    <Compile Include="Models\Selection.cs" />
+    <Compile Include="Models\Telephone.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormAccess.resx">
+      <DependentUpon>FormAccess.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormAccessNew.resx">
+      <DependentUpon>FormAccessNew.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDiapasonNew.resx">
+      <DependentUpon>FormDiapasonNew.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormEmail.resx">
       <DependentUpon>FormEmail.cs</DependentUpon>
@@ -127,8 +170,14 @@
     <EmbeddedResource Include="FormHelpCompany.resx">
       <DependentUpon>FormHelpCompany.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormHelpEmail.resx">
+      <DependentUpon>FormHelpEmail.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormHelpPerson.resx">
       <DependentUpon>FormHelpPerson.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSelection.resx">
+      <DependentUpon>FormSelection.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -171,6 +220,26 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Mapping\Nameface.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Mapping\Access.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Mapping\Diapason.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Mapping\Selection.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Mapping\Telephone.hbm.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>

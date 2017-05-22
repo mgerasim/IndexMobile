@@ -10,16 +10,11 @@ using System.Windows.Forms;
 
 namespace IndexMobile
 {
-    public partial class FormHelpCompany : Form
+    public partial class FormHelpEmail : Form
     {
-        public FormHelpCompany()
+        public FormHelpEmail()
         {
             InitializeComponent();
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }

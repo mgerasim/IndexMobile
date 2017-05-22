@@ -28,7 +28,7 @@ namespace IndexMobile
             this.button3.Enabled = false;
             timer1.Start();
 
-            openFileDialog1.Filter = "Excel файлы (.xlsx, .xls)|*.xlsx;*.xls|Все файлы (*.*)|*.*";
+            openFileDialog1.Filter = "Excel файлы (.xlsx)|*.xlsx|Все файлы (*.*)|*.*";
             openFileDialog1.FilterIndex = 1;
         }
 
@@ -201,10 +201,10 @@ namespace IndexMobile
                 this.button1.Enabled = false;
                 this.button3.Enabled = true;
                 this.isStop = false;
-                Log(this, "Начало обработки");
+                Log( "Начало обработки");
                 this.UseWaitCursor = true;
 
-                Log(this, "Выбран файл: " + Path.GetFileName(this.openFileDialog1.FileName));
+                Log( "Выбран файл: " + Path.GetFileName(this.openFileDialog1.FileName));
 
                 FileInfo newFile = new FileInfo(this.openFileDialog1.FileName);
 
@@ -214,13 +214,13 @@ namespace IndexMobile
                 th.Start(this);
 
                 
-                Log(this, "Завершено!");
+                Log( "Завершено!");
             }
             catch (Exception ex)
             {
                 string err = ex.Message;
                 err += ex.StackTrace;
-                Log(this, err);
+                Log( err);
             }
             finally
             {
@@ -478,14 +478,14 @@ namespace IndexMobile
 
                 string[] files = Directory.GetFiles(this.folderBrowserDialog1.SelectedPath);
                                       
-                Log(this, "Начало обработки");
+                Log( "Начало обработки");
                 this.UseWaitCursor = true;
 
                 foreach(var file in files) 
                 {
                     try
                     {
-                        Log(this, "Выбран файл: " + Path.GetFileName(file));
+                        Log( "Выбран файл: " + Path.GetFileName(file));
 
                         if (Path.GetExtension(file) != ".xlsx")
                         {
@@ -505,10 +505,10 @@ namespace IndexMobile
                             int ColumnTelephone = -1;
                             int ColumnRubrika = -1;
 
-                            Log(this, "Обрабатываем страницу: " + worksheet.Name);
+                            Log( "Обрабатываем страницу: " + worksheet.Name);
                             if (worksheet.Dimension == null)
                             {
-                                Log(this, "Страница пуста - пропускаем");
+                                Log( "Страница пуста - пропускаем");
                                 continue;
                             }
                             var rowCnt = worksheet.Dimension.End.Row;
@@ -568,7 +568,7 @@ namespace IndexMobile
                             if (Notify.Length > 0)
                             {
                                 Notify = "Отсутствуют поля: " + Notify;
-                                Log(this, Notify);
+                                Log( Notify);
                                 break ;
                             }
 
@@ -619,7 +619,7 @@ namespace IndexMobile
                                     worksheet1.Cells[i, 5].Value = data.Rubrika;
                                 }
                                 package.Save();
-                                Log(this, "Сохранено: " + FileName);
+                                Log( "Сохранено: " + FileName);
                             }
 
                             break;
@@ -628,20 +628,20 @@ namespace IndexMobile
                     }
                     catch (Exception ex)
                     {
-                        Log(this, "Ошибка при обработке файла: " + file + " " + ex.Message);                       
+                        Log( "Ошибка при обработке файла: " + file + " " + ex.Message);                       
                     }
 
                 }
                 
                 
 
-                Log(this, "Завершено!");
+                Log( "Завершено!");
             }
             catch (Exception ex)
             {
                 string err = ex.Message;
                 err += ex.StackTrace;
-                Log(this, err);
+                Log( err);
             }
             finally
             {
@@ -674,204 +674,222 @@ namespace IndexMobile
 
             try
             {
-                if (this.openFileDialog1.ShowDialog() != DialogResult.OK)
+                if (this.folderBrowserDialog1.ShowDialog() != DialogResult.OK)
                 {
                     return;
                 }
 
-                this.button1.Enabled = false;
-                this.button3.Enabled = true;
-                this.isStop = false;
-                Log(this, "Начало обработки");
+                string[] files = Directory.GetFiles(this.folderBrowserDialog1.SelectedPath);
+                                      
+                Log( "Начало обработки");
                 this.UseWaitCursor = true;
 
-                Log(this, "Выбран файл: " + Path.GetFileName(this.openFileDialog1.FileName));
-
-                FileInfo newFile = new FileInfo(this.openFileDialog1.FileName);
-
-                ExcelPackage _pck = new ExcelPackage(newFile);
-
-
-                foreach (var worksheet in _pck.Workbook.Worksheets)
+                foreach (var file in files)
                 {
-                    int ColumnName = -1;
-                    int ColumnSex = -1;
-                    int ColumnEmail = -1;
-                    int ColumnTelephone = -1;
-                    int ColumnBrithday = -1;
+                    try
+                    {
+                        Log( "Выбран файл: " + Path.GetFileName(file));
 
-                    Log(this, "Обрабатываем страницу: " + worksheet.Name);
-                    if (worksheet.Dimension == null)
-                    {
-                        Log(this, "Страница пуста - пропускаем");
-                        continue;
-                    }
-                    var rowCnt = worksheet.Dimension.End.Row;
-                    for (int i = 1; i <= rowCnt; i++)
-                    {
-                        if (worksheet.Cells[1, i] == null)
+                        if (Path.GetExtension(file) != ".xlsx")
                         {
+                            Log("Формат файла не поддерживается: " + Path.GetExtension(file));
                             continue;
                         }
-                        if (worksheet.Cells[1, i].Value == null)
+
+
+                        Log( "Начало обработки");
+                        this.UseWaitCursor = true;
+
+                        Log( "Выбран файл: " + Path.GetFileName(file));
+
+                        FileInfo newFile = new FileInfo(file);
+
+                        ExcelPackage _pck = new ExcelPackage(newFile);
+                        #region foreach
+                        foreach (var worksheet in _pck.Workbook.Worksheets)
                         {
-                            continue;
-                        }
-                        switch (worksheet.Cells[1, i].Value.ToString().Trim())
-                        {
-                            case "Название":
-                                ColumnName = i;
-                                break;
-                            case "Пол":
-                                ColumnSex = i;
-                                break;
-                            case "Email":
-                                ColumnEmail = i;
-                                break;
-                            case "Телефон":
-                                ColumnTelephone = i;
-                                break;
-                            case "Дата рождения":
-                                ColumnBrithday = i;
-                                break;
-                        }
-                    }
+                            int ColumnName = -1;
+                            int ColumnSex = -1;
+                            int ColumnEmail = -1;
+                            int ColumnTelephone = -1;
+                            int ColumnBrithday = -1;
 
-                    string Notify = "";
-                    if (ColumnName < 0)
-                    {
-                        Notify += "\nНазвание";
-                    }
-                    if (ColumnSex < 0)
-                    {
-                        Notify += "\nПол";
-                    }
-                    if (ColumnEmail < 0)
-                    {
-                        Notify += "\nEmail";
-                    }
-                    if (ColumnTelephone < 0)
-                    {
-                        Notify += "\nТелефон";
-                    }
-                    if (ColumnBrithday < 0)
-                    {
-                        Notify += "\nДата рождения";
-                    }
-
-                    if (Notify.Length > 0)
-                    {
-                        Notify = "Отсутствуют поля: " + Notify;
-                        MessageBox.Show(Notify);
-                        break;
-                    }
-
-                    string DirName = "ParserPerson";
-                    if (!Directory.Exists(DirName))
-                    {
-                        Directory.CreateDirectory(DirName);
-                    }
-
-                    var colCnt = worksheet.Dimension.End.Column;
-
-                    string FileName = DateTime.Now.ToString("yyyy-MM-dd-HH-mm");
-                    FileName = Directory.GetCurrentDirectory() + @"\" + DirName + @"\" + FileName + ".xlsx";
-                    var existingFile = new FileInfo(FileName);
-
-                    using (var package = new ExcelPackage(existingFile))
-                    {
-                        var workbook = package.Workbook;
-
-                        var worksheet1 = workbook.Worksheets.Add(worksheet.Name);
-
-                        List<ParserPerson> theList = new List<ParserPerson>();
-
-                        for (int i = 1; i <= colCnt; i++)
-                        {
-                            ParserPerson data = new ParserPerson();
-                            data.Telephone = GetValueFromCell(worksheet.Cells[i, ColumnTelephone]);
-                            data.Name = GetValueFromCell(worksheet.Cells[i, ColumnName]);
-                            data.Email = GetValueFromCell(worksheet.Cells[i, ColumnEmail]);
-                            data.Sex = GetValueFromCell(worksheet.Cells[i, ColumnSex]);
-                            data.Brithday = GetValueFromCell(worksheet.Cells[i, ColumnBrithday]);
-
-                            data.Telephone = IndexMobileCore.Helper.Telephone.Normalize(data.Telephone);
-
-                            if (data.Telephone.Length < 10)
+                            Log( "Обрабатываем страницу: " + worksheet.Name);
+                            if (worksheet.Dimension == null)
                             {
+                                Log( "Страница пуста - пропускаем");
                                 continue;
                             }
-
+                            #region for_rowCnt
+                            var rowCnt = worksheet.Dimension.End.Row;
+                            var colCnt = worksheet.Dimension.End.Column;
+                            for (int i = 1; i <= colCnt; i++)
+                            {
+                                if (worksheet.Cells[1, i] == null)
+                                {
+                                    continue;
+                                }
+                                if (worksheet.Cells[1, i].Value == null)
+                                {
+                                    continue;
+                                }
+                                switch (worksheet.Cells[1, i].Value.ToString().Trim())
+                                {
+                                    case "Имя":
+                                        ColumnName = i;
+                                        break;
+                                    case "Пол":
+                                        ColumnSex = i;
+                                        break;
+                                    case "Email":
+                                        ColumnEmail = i;
+                                        break;
+                                    case "Телефон":
+                                        ColumnTelephone = i;
+                                        break;
+                                    case "Дата рождения":
+                                        ColumnBrithday = i;
+                                        break;
+                                }
+                            }
+                            #endregion
+                            string Notify = "";
+                            if (ColumnName < 0)
+                            {
+                                Notify += "\nИмя";
+                            }
+                            if (ColumnSex < 0)
+                            {
+                                Notify += "\nПол";
+                            }
+                            if (ColumnEmail < 0)
+                            {
+                                Notify += "\nEmail";
+                            }
+                            if (ColumnTelephone < 0)
+                            {
+                                Notify += "\nТелефон";
+                            }
+                            if (ColumnBrithday < 0)
+                            {
+                                Notify += "\nДата рождения";
+                            }
                             
-                            string _Code = data.Telephone.Substring(0, 3);
-                            string _Number = data.Telephone.Substring(3, 7);
-                            Log(this, "_Code - " + _Code);
-                            Log(this, "_Number - " + _Number);
-
-                            int Code = 0; Convert.ToInt32(_Code);
-                            int Number = 0; Convert.ToInt32(_Number);
-
-                            try
+                            if (Notify.Length > 0)
                             {
-                                Code = Convert.ToInt32(_Code);
-                                Number = Convert.ToInt32(_Number);
-                            }
-                            catch
-                            {
-                                Log(this, "Ошибка при определении Code и Number");
-                                continue;
-                            }
-                            Log(this, "Вызываем: IndexMobileCore.Helper.Telephone.Operator(" + Code.ToString() + ", " + Number.ToString() + ")");
-                            
-                            var theDEF = DEF.GetOperator(Code, Number);
-                            if (theDEF != null)
-                            {
-                                Log(this, "Получено значение: tel_operator =  " + theDEF.Operator + " - " + theDEF.Region);
-                                data.Operator = theDEF.Operator;
-                                data.Region = theDEF.Region;
-                            }
-                            else
-                            {
-                                Log(this, "Значение отсутствует");
-                            }
-                             
-
-                            if (theList.Count(x => x.Email == data.Email) > 0)
-                            {
-                                continue;
+                                Notify = "Отсутствуют поля: " + Notify;
+                                Log( Notify);
+                                break;
                             }
 
-                            theList.Add(data);
+                            string DirName = "ParserPerson";
+                            if (!Directory.Exists(DirName))
+                            {
+                                Directory.CreateDirectory(DirName);
+                            }
+                                                        
+                            string FileName = DateTime.Now.ToString("yyyy-MM-dd-HH-mm");
+                            FileName = Directory.GetCurrentDirectory() + @"\" + DirName + @"\" + FileName + ".xlsx";
+                            var existingFile = new FileInfo(FileName);
+                            #region using
+                            using (var package = new ExcelPackage(existingFile))
+                            {
+                                var workbook = package.Workbook;
+
+                                var worksheet1 = workbook.Worksheets.Add(worksheet.Name);
+
+                                List<ParserPerson> theList = new List<ParserPerson>();
+                                #region for
+                                for (int i = 1; i <= rowCnt; i++)
+                                {
+                                    ParserPerson data = new ParserPerson();
+                                    data.Telephone = GetValueFromCell(worksheet.Cells[i, ColumnTelephone]);
+                                    data.Name = GetValueFromCell(worksheet.Cells[i, ColumnName]);
+                                    data.Email = GetValueFromCell(worksheet.Cells[i, ColumnEmail]);
+                                    data.Sex = GetValueFromCell(worksheet.Cells[i, ColumnSex]);
+                                    data.Brithday = GetValueFromCell(worksheet.Cells[i, ColumnBrithday]);
+
+                                    data.Telephone = IndexMobileCore.Helper.Telephone.Normalize(data.Telephone);
+
+                                    if (data.Telephone.Length < 10)
+                                    {
+                                        continue;
+                                    }
+
+
+                                    string _Code = data.Telephone.Substring(0, 3);
+                                    string _Number = data.Telephone.Substring(3, 7);
+                                    Log( "_Code - " + _Code);
+                                    Log( "_Number - " + _Number);
+
+                                    int Code = 0; 
+                                    int Number = 0;
+
+                                    try
+                                    {
+                                        Code = Convert.ToInt32(_Code);
+                                        Number = Convert.ToInt32(_Number);
+                                    }
+                                    catch
+                                    {
+                                        Log( "Ошибка при определении Code и Number");
+                                        continue;
+                                    }
+                                    Log( "Вызываем: IndexMobileCore.Helper.Telephone.Operator(" + Code.ToString() + ", " + Number.ToString() + ")");
+
+                                    var theDEF = DEF.GetOperator(Code, Number);
+                                    if (theDEF != null)
+                                    {
+                                        Log( "Получено значение: tel_operator =  " + theDEF.Operator + " - " + theDEF.Region);
+                                        data.Operator = theDEF.Operator;
+                                        data.Region = theDEF.Region;
+                                    }
+                                    else
+                                    {
+                                        Log( "Значение отсутствует");
+                                    }
+
+
+                                    if (theList.Count(x => x.Email == data.Email) > 0)
+                                    {
+                                        continue;
+                                    }
+
+                                    theList.Add(data);
+                                }
+                                #endregion
+                                for (int i = 1; i <= theList.Count; i++)
+                                {
+                                    var data = theList[i - 1];
+                                    worksheet1.Cells[i, 1].Value = data.Telephone;
+                                    worksheet1.Cells[i, 2].Value = data.Operator;
+                                    worksheet1.Cells[i, 3].Value = data.Region;
+                                    worksheet1.Cells[i, 4].Value = data.Name;
+                                    worksheet1.Cells[i, 5].Value = data.Email;
+                                    worksheet1.Cells[i, 6].Value = data.Sex;
+                                    worksheet1.Cells[i, 7].Value = data.Brithday;
+                                }
+                                package.Save();
+                                Log( "Сохранено: " + FileName);
+                            }
+                            #endregion
+                            break;
                         }
+                        #endregion
 
-                        for (int i = 1; i <= theList.Count; i++)
-                        {
-                            var data = theList[i - 1];
-                            worksheet1.Cells[i, 1].Value = data.Telephone;
-                            worksheet1.Cells[i, 2].Value = data.Operator;
-                            worksheet1.Cells[i, 3].Value = data.Region;
-                            worksheet1.Cells[i, 4].Value = data.Name;
-                            worksheet1.Cells[i, 5].Value = data.Email;
-                            worksheet1.Cells[i, 6].Value = data.Sex;
-                            worksheet1.Cells[i, 7].Value = data.Brithday;
-                        }
-                        package.Save();
-                        Log(this, "Сохранено: " + FileName);
                     }
-
-                    break;
+                    catch (Exception ex)
+                    {
+                        Log( "Ошибка при обработке файла: " + file + " " + ex.Message);                       
+                    }
                 }
-
-
-
-                Log(this, "Завершено!");
-
+                Log( "Завершено!");
             }
             catch (Exception ex)
             {
                 string err = ex.Message;
                 err += ex.StackTrace;
-                Log(this, err);
+                Log( err);
             }
             finally
             {
@@ -889,6 +907,23 @@ namespace IndexMobile
         {
             FormHelpPerson theHelp = new FormHelpPerson();
             theHelp.ShowDialog();
+        }
+
+        private void buttonHelpEmail_Click(object sender, EventArgs e)
+        {
+            FormHelpEmail theHelp = new FormHelpEmail();
+            theHelp.ShowDialog();
+        }
+
+        private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        private void buttonDiaposonGenerate_Click(object sender, EventArgs e)
+        {
+            IndexMobileGenerate.FormAccess theForm = new IndexMobileGenerate.FormAccess();
+            theForm.ShowDialog();
         }
     }
 }

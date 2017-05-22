@@ -117,24 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="textBox1.Text" xml:space="preserve">
-    <value>Поддерживает формат:
-*.xlsx
-
-Файлы должны содержать колонки:
-Телефон
-Email
-Дата рождения
-Имя
-Пол
-
-На выходе создаётся файл (*.xlsx) в подкаталоге ParserPerson со значениями, указанных выше колонок, со следующей последовательностью:
-Телефон
-Оператор
-Регион
-Имя
-Email
-Дата рождения
-Пол</value>
-  </data>
 </root>
