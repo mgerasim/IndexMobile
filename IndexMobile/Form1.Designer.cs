@@ -28,25 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.button1 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.обновитьСхемуToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.button4 = new System.Windows.Forms.Button();
             this.buttonParserCompany = new System.Windows.Forms.Button();
             this.buttonParserPerson = new System.Windows.Forms.Button();
-            this.helpProvider1 = new System.Windows.Forms.HelpProvider();
             this.buttonHelpCompany = new System.Windows.Forms.Button();
             this.buttonHelpPerson = new System.Windows.Forms.Button();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.buttonHelpEmail = new System.Windows.Forms.Button();
             this.buttonDiaposonGenerate = new System.Windows.Forms.Button();
+            this.labelProcent = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -62,6 +60,7 @@
             // 
             // openFileDialog1
             // 
+            this.openFileDialog1.Multiselect = true;
             this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog1_FileOk);
             // 
             // button1
@@ -70,7 +69,7 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 1;
-            this.button1.Text = "Выбрать";
+            this.button1.Text = "Т|И|П|О|Р";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -86,17 +85,13 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(108, 50);
+            this.button3.Location = new System.Drawing.Point(96, 50);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 4;
             this.button3.Text = "Завершить";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // timer1
-            // 
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // menuStrip1
             // 
@@ -195,11 +190,20 @@
             this.buttonDiaposonGenerate.UseVisualStyleBackColor = true;
             this.buttonDiaposonGenerate.Click += new System.EventHandler(this.buttonDiaposonGenerate_Click);
             // 
+            // labelProcent
+            // 
+            this.labelProcent.AutoSize = true;
+            this.labelProcent.Location = new System.Drawing.Point(189, 55);
+            this.labelProcent.Name = "labelProcent";
+            this.labelProcent.Size = new System.Drawing.Size(0, 13);
+            this.labelProcent.TabIndex = 12;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(996, 552);
+            this.Controls.Add(this.labelProcent);
             this.Controls.Add(this.buttonDiaposonGenerate);
             this.Controls.Add(this.buttonHelpEmail);
             this.Controls.Add(this.buttonHelpPerson);
@@ -231,19 +235,18 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem обновитьСхемуToolStripMenuItem;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button buttonParserCompany;
         private System.Windows.Forms.Button buttonParserPerson;
-        private System.Windows.Forms.HelpProvider helpProvider1;
         private System.Windows.Forms.Button buttonHelpCompany;
         private System.Windows.Forms.Button buttonHelpPerson;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.Button buttonHelpEmail;
         private System.Windows.Forms.Button buttonDiaposonGenerate;
+        private System.Windows.Forms.Label labelProcent;
     }
 }
 

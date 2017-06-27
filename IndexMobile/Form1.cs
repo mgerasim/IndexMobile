@@ -26,7 +26,6 @@ namespace IndexMobile
         {
             InitializeComponent();
             this.button3.Enabled = false;
-            timer1.Start();
 
             openFileDialog1.Filter = "Excel файлы (.xlsx)|*.xlsx|Все файлы (*.*)|*.*";
             openFileDialog1.FilterIndex = 1;
@@ -195,24 +194,173 @@ namespace IndexMobile
                 {
                     return;
                 }
-
-                th = new Thread(ExecuteInForeground);
-
+                
                 this.button1.Enabled = false;
                 this.button3.Enabled = true;
                 this.isStop = false;
                 Log( "Начало обработки");
-                this.UseWaitCursor = true;
 
-                Log( "Выбран файл: " + Path.GetFileName(this.openFileDialog1.FileName));
 
-                FileInfo newFile = new FileInfo(this.openFileDialog1.FileName);
+                ulong ProcentTotal = 0;
+                ulong ProcentCurr = 0;
+                foreach (var pathSelect in this.openFileDialog1.FileNames)
+                {
+                    FileInfo newFile = new FileInfo(pathSelect);
 
-                pck = new ExcelPackage(newFile);
+                    pck = new ExcelPackage(newFile);
 
+                    try
+                    {
+                        foreach (var worksheet in this.pck.Workbook.Worksheets)
+                        {
+                            if (worksheet.Dimension == null)
+                            {
+                                continue;
+                            }
+
+                            var rowCnt = (ulong) worksheet.Dimension.End.Row;
+                            ProcentTotal += rowCnt;
+                        }
+                    }
+                    catch
+                    {
+
+                    }
+                }
+
+
+
+                foreach(var pathSelect in this.openFileDialog1.FileNames)
+                {
+                    Log("Выбран файл: " + Path.GetFileName(this.openFileDialog1.FileName));
+
+                    FileInfo newFile = new FileInfo(pathSelect);
+
+                    pck = new ExcelPackage(newFile);
+
+                    try
+                    {
+                        List<Nameface> theListNameface = Nameface.GetAll();
+                        foreach (var worksheet in this.pck.Workbook.Worksheets)
+                        {
+                            Log("Обрабатываем страницу: " + worksheet.Name);
+                            if (worksheet.Dimension == null)
+                            {
+                                Log("Страница пуста - пропускаем");
+                                continue;
+                            }
+
+                            worksheet.InsertColumn(2, 3);
+                            var rowCnt = worksheet.Dimension.End.Row;
+                            Log("Кол-во строк в странице: " + rowCnt.ToString());
+                            for (int i = 2; i <= rowCnt; i++)
+                            {
+                                ProcentCurr++;
+
+                                this.labelProcent.Text = ((decimal)ProcentCurr / (decimal)ProcentTotal * 100).ToString("0");
+
+                                Application.DoEvents();
+
+                                if (this.isStop == true)
+                                {
+                                    Log("Принудительное завершение");
+                                    this.pck.Save();
+                                    return;
+                                }
+                                if (worksheet.Cells[i, 1].Value == null)
+                                {
+                                    Log("Значение в " + i.ToString() + " строке - отсутствует - пропускаем ");
+                                    continue;
+                                }
+
+                                string NameInCell = "";
+                                if (worksheet.Cells[i, 5].Value != null)
+                                {
+                                    NameInCell = worksheet.Cells[i, 5].Value.ToString();
+                                }
+
+                                string tel = IndexMobileCore.Helper.Telephone.Normalize(worksheet.Cells[i, 1].Value.ToString());
+                                if (tel.Length < 10)
+                                {
+                                    Log("Значение в " + i.ToString() + " строке - меньше 10 по длине - пропускаем ");
+                                    continue;
+                                }
+
+                                if (tel[0] != '9')
+                                {
+                                    Log("Не пройдена проверка: не имеют сотового номера (89..,+79..,79) ");
+                                    continue;
+                                }
+
+                                string _Code = tel.Substring(0, 3);
+                                string _Number = tel.Substring(3, 7);
+                                Log("_Code - " + _Code);
+                                Log("_Number - " + _Number);
+
+                                int Code = 0; Convert.ToInt32(_Code);
+                                int Number = 0; Convert.ToInt32(_Number);
+
+                                try
+                                {
+                                    Code = Convert.ToInt32(_Code);
+                                    Number = Convert.ToInt32(_Number);
+                                }
+                                catch
+                                {
+                                    Log("Ошибка при определении Code и Number");
+                                }
+                                Log("Вызываем: IndexMobileCore.Helper.Telephone.Operator(" + Code.ToString() + ", " + Number.ToString() + ")");
+                                
+                                var theDEF = DEF.GetOperator(Code, Number);
+                                if (theDEF != null)
+                                {
+                                    Log("Получено значение: tel_operator =  " + theDEF.Operator + " - " + theDEF.Region);
+                                    worksheet.Cells[i, 2].Value = theDEF.Operator;
+                                    worksheet.Cells[i, 3].Value = theDEF.Region;
+                                }
+                                else
+                                {
+                                    Log("Значение отсутствует");
+                                }
+
+                                string theName = "";
+                                foreach (var item in NameInCell.Split(new char[] { ' ', '(' }, StringSplitOptions.RemoveEmptyEntries))
+                                {
+                                    if (item.Length == 1)
+                                    {
+                                        continue;
+                                    }
+                                    var list = theListNameface.Where(x => x.NameOff.ToLower() == item.ToLower());
+                                    if (list.Count() > 0)
+                                    {
+                                        theName = list.ToList<Nameface>()[0].NameOn;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        var check = theListNameface.Where(x => x.NameOn.ToLower() == item.ToLower());
+                                        if (check.Count() > 0)
+                                        {
+                                            theName = check.ToList<Nameface>()[0].NameOn;
+                                            break;
+                                        }
+                                    }
+
+                                }
+                                worksheet.Cells[i, 4].Value = theName;
+
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        string err = ex.Message;
+                        err += ex.StackTrace;
+                        Log(err);
+                    }
+
+                }
                 
-                th.Start(this);
-
                 
                 Log( "Завершено!");
             }
@@ -224,7 +372,7 @@ namespace IndexMobile
             }
             finally
             {
-                this.UseWaitCursor = false;
+
             }
 
         }
@@ -245,21 +393,9 @@ namespace IndexMobile
             this.button3.Enabled = false;
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            if (th != null) {
-                if (th.IsAlive == false)
-                {
-                    this.button1.Enabled = true;
-                    this.button3.Enabled = false;
-                }
-            }
-            
-        }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            timer1.Stop();
             
                 
             if (this.th != null)
