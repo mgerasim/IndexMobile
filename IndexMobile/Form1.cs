@@ -349,8 +349,21 @@ namespace IndexMobile
                                 }
                                 worksheet.Cells[i, 4].Value = theName;
 
+                                if (theName.Length > 0)
+                                {
+                                    if ((IndexMobileCore.Helper.Telephone.Reverse(theName)[0] == 'а' || IndexMobileCore.Helper.Telephone.Reverse(theName)[0] == 'А' || IndexMobileCore.Helper.Telephone.Reverse(theName)[0] == 'я' || IndexMobileCore.Helper.Telephone.Reverse(theName)[0] == 'Я') && theName.ToUpper() != "ИЛЬЯ")
+                                    {
+                                        worksheet.Cells[i, 6].Value = "Ж";
+                                    }
+                                    else
+                                    {
+                                        worksheet.Cells[i, 6].Value = "M";
+                                    }
+                                }                                
                             }
+                            
                         }
+                        pck.Save();
                     }
                     catch (Exception ex)
                     {
@@ -360,8 +373,8 @@ namespace IndexMobile
                     }
 
                 }
-                
-                
+
+                this.labelProcent.Text = "100%";
                 Log( "Завершено!");
             }
             catch (Exception ex)
