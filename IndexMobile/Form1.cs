@@ -200,9 +200,11 @@ namespace IndexMobile
                 this.isStop = false;
                 Log( "Начало обработки");
 
-
                 ulong ProcentTotal = 0;
                 ulong ProcentCurr = 0;
+
+                Dictionary<string, string> theTipor = new Dictionary<string, string>();
+
                 foreach (var pathSelect in this.openFileDialog1.FileNames)
                 {
                     FileInfo newFile = new FileInfo(pathSelect);
@@ -250,7 +252,7 @@ namespace IndexMobile
                                 continue;
                             }
 
-                            worksheet.InsertColumn(2, 3);
+                            worksheet.InsertColumn(2, 4);
                             var rowCnt = worksheet.Dimension.End.Row;
                             Log("Кол-во строк в странице: " + rowCnt.ToString());
                             for (int i = 2; i <= rowCnt; i++)
@@ -274,9 +276,9 @@ namespace IndexMobile
                                 }
 
                                 string NameInCell = "";
-                                if (worksheet.Cells[i, 5].Value != null)
+                                if (worksheet.Cells[i, 6].Value != null)
                                 {
-                                    NameInCell = worksheet.Cells[i, 5].Value.ToString();
+                                    NameInCell = worksheet.Cells[i, 6].Value.ToString();
                                 }
 
                                 string tel = IndexMobileCore.Helper.Telephone.Normalize(worksheet.Cells[i, 1].Value.ToString());
@@ -313,13 +315,26 @@ namespace IndexMobile
                                     Log("Ошибка при определении Code и Number");
                                 }
                                 Log("Вызываем: IndexMobileCore.Helper.Telephone.Operator(" + Code.ToString() + ", " + Number.ToString() + ")");
-                                
+
+                                string NumberTel = String.Format("8{0}{1}", _Code, _Number);
+                                if (theTipor.ContainsKey(NumberTel))
+                                {
+                                    worksheet.DeleteRow(i); i--; rowCnt--;
+                                    continue;
+                                }
+                                else
+                                {
+                                    theTipor.Add(NumberTel, worksheet.Cells[i, 6].Value.ToString());
+                                }
+
+                                worksheet.Cells[i, 1].Value = NumberTel;
+
                                 var theDEF = DEF.GetOperator(Code, Number);
                                 if (theDEF != null)
                                 {
                                     Log("Получено значение: tel_operator =  " + theDEF.Operator + " - " + theDEF.Region);
-                                    worksheet.Cells[i, 2].Value = theDEF.Operator;
-                                    worksheet.Cells[i, 3].Value = theDEF.Region;
+                                    worksheet.Cells[i, 4].Value = theDEF.Operator;
+                                    worksheet.Cells[i, 5].Value = theDEF.Region;
                                 }
                                 else
                                 {
@@ -350,26 +365,31 @@ namespace IndexMobile
                                     }
 
                                 }
-                                worksheet.Cells[i, 4].Value = theName;
+                                worksheet.Cells[i, 2].Value = theName;
 
                                 if (theName.Length > 0)
                                 {
                                     if ((IndexMobileCore.Helper.Telephone.Reverse(theName)[0] == 'а' || IndexMobileCore.Helper.Telephone.Reverse(theName)[0] == 'А' || IndexMobileCore.Helper.Telephone.Reverse(theName)[0] == 'я' || IndexMobileCore.Helper.Telephone.Reverse(theName)[0] == 'Я') && theName.ToUpper() != "ИЛЬЯ")
                                     {
-                                        worksheet.Cells[i, 6].Value = "Ж";
+                                        worksheet.Cells[i, 3].Value = "Ж";
                                     }
                                     else
                                     {
-                                        worksheet.Cells[i, 6].Value = "M";
+                                        worksheet.Cells[i, 3].Value = "M";
                                     }
                                 }
                                 else
                                 {
-                                    worksheet.DeleteRow(i); i--; rowCnt--;
+                                    worksheet.Cells[i, 3].Value = "M";
                                 }
                             }
-                            
+                            worksheet.Cells[1, 1].Value = "Телефон";
+                            worksheet.Cells[1, 2].Value = "Имя";
+                            worksheet.Cells[1, 3].Value = "Пол";
+                            worksheet.Cells[1, 4].Value = "Оператор";
+                            worksheet.Cells[1, 5].Value = "Регион";
                         }
+
                         pck.Save();
                     }
                     catch (Exception ex)
