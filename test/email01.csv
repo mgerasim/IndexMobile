@@ -1,0 +1,3 @@
+eg my email address is mrrame@gmail.com and his email is mrgar01@yahoo.com should return mrrame01@gmail.com,mrgar02@yahoo.com;;eg my email address is mrram2e@gmail.com and his email is mrga2r@yahoo.com should return mrrame@gmail.com,mrgar@yahoo.com
+;;
+eg my email address is mrrame@gmail.com and his email is mrgar23@yahoo.com should return mrrame23@gmail.com,mrgar2333@yahoo.com;;eg my email address is mrrame@gmail.com and his email is mrgar@yahoo.com should return mrrame@gmail.com,mrgar@yahoo.com

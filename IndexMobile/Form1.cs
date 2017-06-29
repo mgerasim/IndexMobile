@@ -283,12 +283,15 @@ namespace IndexMobile
                                 if (tel.Length < 10)
                                 {
                                     Log("Значение в " + i.ToString() + " строке - меньше 10 по длине - пропускаем ");
+
+                                    worksheet.DeleteRow(i); i--; rowCnt--;
                                     continue;
                                 }
 
                                 if (tel[0] != '9')
                                 {
                                     Log("Не пройдена проверка: не имеют сотового номера (89..,+79..,79) ");
+                                    worksheet.DeleteRow(i); i--; rowCnt--;
                                     continue;
                                 }
 
@@ -359,7 +362,11 @@ namespace IndexMobile
                                     {
                                         worksheet.Cells[i, 6].Value = "M";
                                     }
-                                }                                
+                                }
+                                else
+                                {
+                                    worksheet.DeleteRow(i); i--; rowCnt--;
+                                }
                             }
                             
                         }

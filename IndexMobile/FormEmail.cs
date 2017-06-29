@@ -28,78 +28,88 @@ namespace IndexMobile
                 {
                     return;
                 }
-                FileInfo newFile = new FileInfo(this.openFileDialog1.FileName);
 
-                if (Path.GetExtension(this.openFileDialog1.FileName) == ".csv")
+                int currPathIndex = 0;
+                foreach(var path in this.openFileDialog1.FileNames)
                 {
-                    string data = File.ReadAllText(this.openFileDialog1.FileName);
-                    //instantiate with this pattern 
-                    Regex emailRegex = new Regex(@"\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*",
-                        RegexOptions.IgnoreCase);
-                    //find items that matches with our pattern
-                    MatchCollection emailMatches = emailRegex.Matches(data);
+                    currPathIndex++;
+                    this.label1.Text = String.Format("Загружено: {0} из {1}", currPathIndex, openFileDialog1.FileNames.Count());
+                    Application.DoEvents();
 
-                    StringBuilder sb = new StringBuilder();
+                    FileInfo newFile = new FileInfo(path);
 
-                    foreach (Match emailMatch in emailMatches)
+                    if (Path.GetExtension(path) == ".csv")
                     {
-                        if (this.listBox1.Items.Contains(emailMatch.Value))
+                        string data = File.ReadAllText(path);
+                        //instantiate with this pattern 
+                        Regex emailRegex = new Regex(@"\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*",
+                            RegexOptions.IgnoreCase);
+                        //find items that matches with our pattern
+                        MatchCollection emailMatches = emailRegex.Matches(data);
+
+                        StringBuilder sb = new StringBuilder();
+
+                        foreach (Match emailMatch in emailMatches)
                         {
-                            continue;
+                            if (this.listBox1.Items.Contains(emailMatch.Value))
+                            {
+                                continue;
+                            }
+                            this.listBox1.Items.Add(emailMatch.Value);
                         }
-                        this.listBox1.Items.Add(emailMatch.Value);
-                    }
-                    return;
-                }
-
-                ExcelPackage pck = new ExcelPackage(newFile);
-
-                foreach (var worksheet in pck.Workbook.Worksheets)
-                {
-                    if (worksheet.Dimension == null)
-                    {
                         continue;
                     }
 
-                    var rowCnt = worksheet.Dimension.End.Row;
-                    var colCnt = worksheet.Dimension.End.Column;
+                    ExcelPackage pck = new ExcelPackage(newFile);
 
-                    for(int i=1; i<=rowCnt; i++)
-                        for (int j = 1; j <= colCnt; j++)
+                    foreach (var worksheet in pck.Workbook.Worksheets)
+                    {
+                        if (worksheet.Dimension == null)
                         {
-                            if (worksheet.Cells[i, j].Value == null)
+                            continue;
+                        }
+
+                        var rowCnt = worksheet.Dimension.End.Row;
+                        var colCnt = worksheet.Dimension.End.Column;
+
+                        for (int i = 1; i <= rowCnt; i++)
+                            for (int j = 1; j <= colCnt; j++)
                             {
-                                continue;
-                            }
-
-                            string CellValue = worksheet.Cells[i, j].Value.ToString();
-                            if (CellValue.Length == 0)
-                            {
-                                continue;
-                            }
-
-                            string data = CellValue;
-                            //instantiate with this pattern 
-                            Regex emailRegex = new Regex(@"\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*",
-                                RegexOptions.IgnoreCase);
-                            //find items that matches with our pattern
-                            MatchCollection emailMatches = emailRegex.Matches(data);
-
-                            StringBuilder sb = new StringBuilder();
-
-                            foreach (Match emailMatch in emailMatches)
-                            {
-                                if (this.listBox1.Items.Contains(emailMatch.Value))
+                                if (worksheet.Cells[i, j].Value == null)
                                 {
                                     continue;
                                 }
-                                this.listBox1.Items.Add(emailMatch.Value);
+
+                                string CellValue = worksheet.Cells[i, j].Value.ToString();
+                                if (CellValue.Length == 0)
+                                {
+                                    continue;
+                                }
+
+                                string data = CellValue;
+                                //instantiate with this pattern 
+                                Regex emailRegex = new Regex(@"\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*",
+                                    RegexOptions.IgnoreCase);
+                                //find items that matches with our pattern
+                                MatchCollection emailMatches = emailRegex.Matches(data);
+
+                                StringBuilder sb = new StringBuilder();
+
+                                foreach (Match emailMatch in emailMatches)
+                                {
+                                    if (this.listBox1.Items.Contains(emailMatch.Value))
+                                    {
+                                        continue;
+                                    }
+                                    this.listBox1.Items.Add(emailMatch.Value);
+                                }
+
+
                             }
 
-                        
-                        }
-
+                    }
                 }
+                
 
             
 
