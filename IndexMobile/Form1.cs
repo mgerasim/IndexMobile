@@ -203,7 +203,7 @@ namespace IndexMobile
                 ulong ProcentTotal = 0;
                 ulong ProcentCurr = 0;
 
-                Dictionary<string, string> theTipor = new Dictionary<string, string>();
+                Dictionary<string, int> theTipor = new Dictionary<string, int>();
 
                 foreach (var pathSelect in this.openFileDialog1.FileNames)
                 {
@@ -324,7 +324,7 @@ namespace IndexMobile
                                 }
                                 else
                                 {
-                                    theTipor.Add(NumberTel, worksheet.Cells[i, 6].Value.ToString());
+                                    theTipor.Add(NumberTel, i);
                                 }
 
                                 worksheet.Cells[i, 1].Value = NumberTel;
@@ -348,7 +348,7 @@ namespace IndexMobile
                                     {
                                         continue;
                                     }
-                                    var list = theListNameface.Where(x => x.NameOff.ToLower() == item.ToLower());
+                                    var list = theListNameface.Where(x => x.NameOff.ToLower() == item.ToLower() || Nameface.NameOffTranslate(item).ToLower() == x.NameOff.ToLower());
                                     if (list.Count() > 0)
                                     {
                                         theName = list.ToList<Nameface>()[0].NameOn;
