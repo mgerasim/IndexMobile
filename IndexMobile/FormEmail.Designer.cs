@@ -97,6 +97,7 @@
             this.Controls.Add(this.buttonAdd);
             this.Name = "FormEmail";
             this.Text = "Электронные адреса";
+            this.Load += new System.EventHandler(this.FormEmail_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

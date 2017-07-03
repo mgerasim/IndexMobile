@@ -172,5 +172,10 @@ namespace IndexMobile
                 this.listBox1.Items.Add(ex.Message);
             }
         }
+
+        private void FormEmail_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

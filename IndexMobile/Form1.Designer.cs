@@ -186,7 +186,7 @@
             this.buttonDiaposonGenerate.Name = "buttonDiaposonGenerate";
             this.buttonDiaposonGenerate.Size = new System.Drawing.Size(166, 23);
             this.buttonDiaposonGenerate.TabIndex = 11;
-            this.buttonDiaposonGenerate.Text = "Генерировать диапозон";
+            this.buttonDiaposonGenerate.Text = "Генерировать диапазон";
             this.buttonDiaposonGenerate.UseVisualStyleBackColor = true;
             this.buttonDiaposonGenerate.Click += new System.EventHandler(this.buttonDiaposonGenerate_Click);
             // 

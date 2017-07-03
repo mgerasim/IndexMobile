@@ -14,6 +14,7 @@ namespace IndexMobile.Models
         public virtual long ValueMax { get; set; }
 
         public virtual long ValueMin { get; set; }
+        public virtual string Name { get; set; }
 
 
         public Diapason()

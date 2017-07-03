@@ -12,6 +12,7 @@
     <property name="ValueMin"/>
 
     <property name="ValueMax"/>
+    <property name="Name" />
 
     <many-to-one name="Access" not-null="true" column="Access_ID" />
 
