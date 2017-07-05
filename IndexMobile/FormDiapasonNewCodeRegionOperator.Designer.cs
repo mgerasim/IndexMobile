@@ -39,6 +39,9 @@
             this.textBoxOperator = new System.Windows.Forms.TextBox();
             this.buttonSave = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
+            this.checkBoxCodeAll = new System.Windows.Forms.CheckBox();
+            this.checkBoxRegionAll = new System.Windows.Forms.CheckBox();
+            this.checkBoxOperatorAll = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // checkedListBoxCode
@@ -49,6 +52,7 @@
             this.checkedListBoxCode.Name = "checkedListBoxCode";
             this.checkedListBoxCode.Size = new System.Drawing.Size(281, 304);
             this.checkedListBoxCode.TabIndex = 0;
+            this.checkedListBoxCode.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.checkedListBoxCode_ItemCheck);
             this.checkedListBoxCode.SelectedIndexChanged += new System.EventHandler(this.checkedListBoxCode_SelectedIndexChanged);
             // 
             // checkedListBoxRegion
@@ -59,6 +63,7 @@
             this.checkedListBoxRegion.Name = "checkedListBoxRegion";
             this.checkedListBoxRegion.Size = new System.Drawing.Size(281, 304);
             this.checkedListBoxRegion.TabIndex = 0;
+            this.checkedListBoxRegion.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.checkedListBoxRegion_ItemCheck);
             this.checkedListBoxRegion.SelectedIndexChanged += new System.EventHandler(this.checkedListBoxRegion_SelectedIndexChanged);
             // 
             // checkedListBoxOperator
@@ -74,7 +79,7 @@
             // labelOperator
             // 
             this.labelOperator.AutoSize = true;
-            this.labelOperator.Location = new System.Drawing.Point(607, 27);
+            this.labelOperator.Location = new System.Drawing.Point(607, 9);
             this.labelOperator.Name = "labelOperator";
             this.labelOperator.Size = new System.Drawing.Size(64, 13);
             this.labelOperator.TabIndex = 1;
@@ -83,7 +88,7 @@
             // labelRegion
             // 
             this.labelRegion.AutoSize = true;
-            this.labelRegion.Location = new System.Drawing.Point(308, 27);
+            this.labelRegion.Location = new System.Drawing.Point(308, 9);
             this.labelRegion.Name = "labelRegion";
             this.labelRegion.Size = new System.Drawing.Size(54, 13);
             this.labelRegion.TabIndex = 1;
@@ -92,7 +97,7 @@
             // labelCode
             // 
             this.labelCode.AutoSize = true;
-            this.labelCode.Location = new System.Drawing.Point(12, 27);
+            this.labelCode.Location = new System.Drawing.Point(12, 9);
             this.labelCode.Name = "labelCode";
             this.labelCode.Size = new System.Drawing.Size(37, 13);
             this.labelCode.TabIndex = 1;
@@ -145,11 +150,47 @@
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
+            // checkBoxCodeAll
+            // 
+            this.checkBoxCodeAll.AutoSize = true;
+            this.checkBoxCodeAll.Location = new System.Drawing.Point(15, 34);
+            this.checkBoxCodeAll.Name = "checkBoxCodeAll";
+            this.checkBoxCodeAll.Size = new System.Drawing.Size(45, 17);
+            this.checkBoxCodeAll.TabIndex = 5;
+            this.checkBoxCodeAll.Text = "Все";
+            this.checkBoxCodeAll.UseVisualStyleBackColor = true;
+            this.checkBoxCodeAll.CheckedChanged += new System.EventHandler(this.checkBoxCodeAll_CheckedChanged);
+            // 
+            // checkBoxRegionAll
+            // 
+            this.checkBoxRegionAll.AutoSize = true;
+            this.checkBoxRegionAll.Location = new System.Drawing.Point(311, 34);
+            this.checkBoxRegionAll.Name = "checkBoxRegionAll";
+            this.checkBoxRegionAll.Size = new System.Drawing.Size(45, 17);
+            this.checkBoxRegionAll.TabIndex = 5;
+            this.checkBoxRegionAll.Text = "Все";
+            this.checkBoxRegionAll.UseVisualStyleBackColor = true;
+            this.checkBoxRegionAll.CheckedChanged += new System.EventHandler(this.checkBoxRegionAll_CheckedChanged);
+            // 
+            // checkBoxOperatorAll
+            // 
+            this.checkBoxOperatorAll.AutoSize = true;
+            this.checkBoxOperatorAll.Location = new System.Drawing.Point(610, 34);
+            this.checkBoxOperatorAll.Name = "checkBoxOperatorAll";
+            this.checkBoxOperatorAll.Size = new System.Drawing.Size(45, 17);
+            this.checkBoxOperatorAll.TabIndex = 5;
+            this.checkBoxOperatorAll.Text = "Все";
+            this.checkBoxOperatorAll.UseVisualStyleBackColor = true;
+            this.checkBoxOperatorAll.CheckedChanged += new System.EventHandler(this.checkBoxOperatorAll_CheckedChanged);
+            // 
             // FromDiapasonNewCodeRegionOperator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(957, 633);
+            this.Controls.Add(this.checkBoxOperatorAll);
+            this.Controls.Add(this.checkBoxRegionAll);
+            this.Controls.Add(this.checkBoxCodeAll);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.textBoxOperator);
@@ -182,5 +223,8 @@
         public System.Windows.Forms.TextBox textBoxCode;
         public System.Windows.Forms.TextBox textBoxRegion;
         public System.Windows.Forms.TextBox textBoxOperator;
+        private System.Windows.Forms.CheckBox checkBoxCodeAll;
+        private System.Windows.Forms.CheckBox checkBoxRegionAll;
+        private System.Windows.Forms.CheckBox checkBoxOperatorAll;
     }
 }

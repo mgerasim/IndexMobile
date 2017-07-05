@@ -58,6 +58,7 @@ namespace IndexMobile.Models
                     criteria.Add(Restrictions.Eq("Access", this));
                     criteria.Add(Restrictions.IsNull("Selection"));
                     criteria.AddOrder(Order.Asc("ID"));
+                    criteria.SetMaxResults(100000);
                     return criteria.List<Telephone>().ToList<Telephone>();
                 }
             }

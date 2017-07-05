@@ -84,28 +84,12 @@ namespace IndexMobileGenerate
                                 cmd.Parameters["@Selection_ID"].Value = theSelection.ID;
                                 cmd.ExecuteNonQuery();
                             }
-                                //cmd.Parameters["@Number"].Value = i.ToString();
-                                //cmd.Parameters["@Diapason_ID"].Value = theDiapason.ID;
-                                //cmd.Parameters["@Access_ID"].Value = theAccess.ID;
-                                //results.Add(cmd.ExecuteNonQuery());
-
-                            //}
 
                         }
                         transaction.Commit();
                     }
                 }
 
-                //foreach (var item in Telephones.OrderBy(a => Guid.NewGuid()).ToList())
-                //{
-                //    i++;
-                //    if (i > Count)
-                //    {
-                //        break;
-                //    }
-                //    item.Selection = theSelection;
-                //    item.Update();
-                //}
                 LoadSelection();
                 Application.UseWaitCursor = false;
             }
