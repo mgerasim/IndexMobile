@@ -640,11 +640,7 @@ namespace IndexMobile
         }
 
         private void buttonParserCompany_Click(object sender, EventArgs e)
-        {
-            if (DateTime.Now > new DateTime(2017, 06, 01))
-            {
-                return;
-            }
+        {            
             try 
             {
                 if (this.folderBrowserDialog1.ShowDialog() != DialogResult.OK)
@@ -656,6 +652,40 @@ namespace IndexMobile
                                       
                 Log( "Начало обработки");
                 this.UseWaitCursor = true;
+
+                ulong ProcentTotal = 0;
+                ulong ProcentCurr = 0;
+                
+                foreach (var pathSelect in files)
+                {
+                    if (Path.GetExtension(pathSelect) != ".xlsx")
+                    {
+                        Log("Формат файла не поддерживается: " + Path.GetExtension(pathSelect));
+                        continue;
+                    }
+
+                    FileInfo newFile = new FileInfo(pathSelect);
+
+                    pck = new ExcelPackage(newFile);
+
+                    try
+                    {
+                        foreach (var worksheet in this.pck.Workbook.Worksheets)
+                        {
+                            if (worksheet.Dimension == null)
+                            {
+                                continue;
+                            }
+
+                            var rowCnt = (ulong)worksheet.Dimension.End.Row;
+                            ProcentTotal += rowCnt;
+                        }
+                    }
+                    catch
+                    {
+
+                    }
+                }
 
                 foreach(var file in files) 
                 {
@@ -770,14 +800,76 @@ namespace IndexMobile
 
                                 for (int i = 1; i <= rowCnt; i++)
                                 {
+                                    ProcentCurr++;
+                                    this.labelProcent.Text = ((decimal)ProcentCurr / (decimal)ProcentTotal * 100).ToString("0");
+                                    Application.DoEvents();
+
                                     ParserCompany data = new ParserCompany();
                                     data.Telephone = GetValueFromCell(worksheet.Cells[i, ColumnTelephone]);
                                     data.Name = GetValueFromCell(worksheet.Cells[i, ColumnName]);
                                     data.Email = GetValueFromCell(worksheet.Cells[i, ColumnEmail]);
                                     data.Saite = GetValueFromCell(worksheet.Cells[i, ColumnSaite]);
                                     data.Rubrika = GetValueFromCell(worksheet.Cells[i, ColumnRubrika]);
+                                    /**/
+                                    string tel = IndexMobileCore.Helper.Telephone.Normalize(data.Telephone);
+                                    if (tel.Length < 10)
+                                    {
+                                        Log("Значение в " + i.ToString() + " строке - меньше 10 по длине - пропускаем ");
+                                        continue;
+                                    }
+
+                                    if (tel[0] != '9')
+                                    {
+                                        Log("Не пройдена проверка: не имеют сотового номера (89..,+79..,79) ");                                        
+                                        continue;
+                                    }
+
+                                    string _Code = tel.Substring(0, 3);
+                                    string _Number = tel.Substring(3, 7);
+                                    Log("_Code - " + _Code);
+                                    Log("_Number - " + _Number);
+
+                                    int Code = 0;
+                                    int Number = 0; 
+
+                                    try
+                                    {
+                                        Convert.ToInt32(_Code);
+                                        Convert.ToInt32(_Number);
+                                        Code = Convert.ToInt32(_Code);
+                                        Number = Convert.ToInt32(_Number);
+                                    }
+                                    catch
+                                    {
+                                        Log("Ошибка при определении Code и Number");
+                                        continue;
+                                    }
+                                    Log("Вызываем: IndexMobileCore.Helper.Telephone.Operator(" + Code.ToString() + ", " + Number.ToString() + ")");
+
+                                    string NumberTel = String.Format("8{0}{1}", _Code, _Number);
+
+                                    data.Telephone = NumberTel;
+
+                                    var theDEF = DEF.GetOperator(Code, Number);
+                                    if (theDEF != null)
+                                    {
+                                        Log("Получено значение: tel_operator =  " + theDEF.Operator + " - " + theDEF.Region);
+                                        data.Operator = theDEF.Operator;
+                                        data.Region = theDEF.Region;
+                                    }
+                                    else
+                                    {
+                                        Log("Значение отсутствует");
+                                    }
+
+                                    /**/
 
                                     if (theList.Count(x => x.Telephone == data.Telephone) > 0)
+                                    {
+                                        continue;
+                                    }
+
+                                    if (theList.Count(x => x.Email == data.Email) > 0)
                                     {
                                         continue;
                                     }
@@ -785,14 +877,18 @@ namespace IndexMobile
                                     theList.Add(data);
                                 }
 
+                                theList = (List<ParserCompany>)theList.OrderBy(x => x.Telephone);
+
                                 for (int i = 1; i <= theList.Count; i++)
                                 {
                                     var data = theList[i - 1];
                                     worksheet1.Cells[i, 1].Value = data.Telephone;
-                                    worksheet1.Cells[i, 2].Value = data.Name;
-                                    worksheet1.Cells[i, 3].Value = data.Email;
-                                    worksheet1.Cells[i, 4].Value = data.Saite;
-                                    worksheet1.Cells[i, 5].Value = data.Rubrika;
+                                    worksheet1.Cells[i, 2].Value = data.Email;
+                                    worksheet1.Cells[i, 3].Value = data.Saite;
+                                    worksheet1.Cells[i, 4].Value = data.Name;
+                                    worksheet1.Cells[i, 5].Value = data.Operator;
+                                    worksheet1.Cells[i, 6].Value = data.Region;
+                                    worksheet1.Cells[i, 7].Value = data.Rubrika;
                                 }
                                 package.Save();
                                 Log( "Сохранено: " + FileName);
@@ -808,8 +904,9 @@ namespace IndexMobile
                     }
 
                 }
-                
-                
+
+
+                this.labelProcent.Text = "100%";
 
                 Log( "Завершено!");
             }

@@ -13,5 +13,7 @@ namespace IndexMobile.Models
         public string Email = "";
         public string Telephone = "";
         public string Rubrika = "";
+        public string Region = "";
+        public string Operator = "";
     }
 }
