@@ -71,7 +71,7 @@ namespace IndexMobileGenerate
                     int Total = 0;
 
                     var results = new List<int>();
-                    string sqlInsertUsers = @"INSERT INTO [Telephone] ([Number], [Diapason_ID], [Access_ID]) VALUES (@Number, @Diapason_ID, @Access_ID);";
+                    string sqlInsertUsers = @"INSERT INTO [Telephone] ([Number], [NumberOrder], [Diapason_ID], [Access_ID]) VALUES (@Number, @NumberOrder, @Diapason_ID, @Access_ID);";
                     
                     string _connectionString = "Data Source=DEF.db";
                                        
@@ -86,12 +86,15 @@ namespace IndexMobileGenerate
                             {
                                 cmd.CommandText = sqlInsertUsers;
                                 cmd.Parameters.AddWithValue("@Number", "");
+                                cmd.Parameters.AddWithValue("@NumberOrder", "");
                                 cmd.Parameters.AddWithValue("@Diapason_ID", "");
                                 cmd.Parameters.AddWithValue("@Access_ID", "");
 
                                 for (long i = theDiapason.ValueMin; i <= theDiapason.ValueMax; i++)
                                 {   
+                                        Random rnd = new Random();
                                         cmd.Parameters["@Number"].Value = i.ToString();
+                                        cmd.Parameters["@NumberOrder"].Value = rnd.Next(0, Int32.MaxValue);
                                         cmd.Parameters["@Diapason_ID"].Value = theDiapason.ID;
                                         cmd.Parameters["@Access_ID"].Value = theAccess.ID;
                                         try
@@ -195,7 +198,7 @@ namespace IndexMobileGenerate
                             selectedOperator.Contains(x.Operator));
                     
                     var results = new List<int>();
-                    string sqlInsertUsers = @"INSERT INTO [Telephone] ([Number], [Diapason_ID], [Access_ID]) VALUES (@Number, @Diapason_ID, @Access_ID);";
+                    string sqlInsertUsers = @"INSERT INTO [Telephone] ([Number], [NumberOrder], [Diapason_ID], [Access_ID]) VALUES (@Number, @NumberOrder, @Diapason_ID, @Access_ID);";
                     string _connectionString = "Data Source=DEF.db";
                     using (var cn = new SQLiteConnection(_connectionString))
                     {
@@ -206,6 +209,7 @@ namespace IndexMobileGenerate
                             {
                                 cmd.CommandText = sqlInsertUsers;
                                 cmd.Parameters.AddWithValue("@Number", "");
+                                cmd.Parameters.AddWithValue("@NumberOrder", "");
                                 cmd.Parameters.AddWithValue("@Diapason_ID", "");
                                 cmd.Parameters.AddWithValue("@Access_ID", "");
                                                                 
@@ -213,7 +217,9 @@ namespace IndexMobileGenerate
                                 {
                                     for(long i = item.NumberBgn; i<=item.NumberEnd; i++)
                                     {
+                                        Random rnd = new Random();
                                         cmd.Parameters["@Number"].Value = ((item.NumberDEF * 10000000) + i).ToString();
+                                        cmd.Parameters["@NumberOrder"].Value = rnd.Next(0, Int32.MaxValue);
                                         cmd.Parameters["@Diapason_ID"].Value = theDiapason.ID;
                                         cmd.Parameters["@Access_ID"].Value = theAccess.ID;
                                         try

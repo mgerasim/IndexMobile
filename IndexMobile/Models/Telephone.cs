@@ -17,6 +17,8 @@ namespace IndexMobile.Models
         public virtual Diapason Diapason { get; set; }
         public virtual Access Access { get; set; }
 
+        public virtual int NumberOrder { get; set; }
+
         public Telephone()
         {
             Number = 0;

@@ -17,6 +17,8 @@
 
 
     <many-to-one name="Access" not-null="true" unique-key="access" column="Access_ID" />
-    
+  
+    <property name="NumberOrder" />
+  
   </class>
 </hibernate-mapping>

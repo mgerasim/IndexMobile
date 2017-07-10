@@ -57,7 +57,7 @@ namespace IndexMobile.Models
                     ICriteria criteria = session.CreateCriteria(typeof(Telephone));
                     criteria.Add(Restrictions.Eq("Access", this));
                     criteria.Add(Restrictions.IsNull("Selection"));
-                    criteria.AddOrder(Order.Asc("ID"));
+                    criteria.AddOrder(Order.Asc("NumberOrder"));
                     criteria.SetMaxResults(100000);
                     return criteria.List<Telephone>().ToList<Telephone>();
                 }
