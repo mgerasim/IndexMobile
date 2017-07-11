@@ -126,7 +126,7 @@ namespace IndexMobileGenerate
                     foreach (var item in Telephones.OrderBy(a => Guid.NewGuid()).ToList())
                     {
                         i++;
-                        ws.Cells[i, 1].Value = item.Number.ToString("0000000000");
+                        ws.Cells[i, 1].Value = "8" + item.Number.ToString("0000000000");
                     }
                     pck.Save();
                     System.Diagnostics.Process.Start(path);
