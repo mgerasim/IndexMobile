@@ -14,6 +14,8 @@ namespace IndexMobileCore.Helper
             tel = tel.Replace(" ", "");
             tel = tel.Replace("+", "");
             tel = tel.Replace("-", "");
+            tel = tel.Replace("(", "");
+            tel = tel.Replace(")", "");
          
             if (tel.Length < 10)
             {
