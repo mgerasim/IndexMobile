@@ -1,19 +1,15 @@
 ﻿using IndexMobile;
-using IndexMobile.Models;
+using IndexMobileEntity.Models;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Data.SQLite;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace IndexMobileGenerate
 {
-    public partial class FormAccessNew : Form
+	public partial class FormAccessNew : Form
     {
         Access theAccess;
         public FormAccessNew(Access theAccess)
@@ -61,12 +57,14 @@ namespace IndexMobileGenerate
                     this.listBoxDiapason.Items.Clear();
                     this.listBoxDiapason.Items.Add("Обновление ...");
                     this.listBoxDiapason.Refresh();
-                    Diapason theDiapason = new Diapason();
-                    theDiapason.Access = this.theAccess;
-                    theDiapason.ValueMin = Convert.ToInt64(theFormDiapasonNew.textBoxValueMin.Text);
-                    theDiapason.ValueMax = Convert.ToInt64(theFormDiapasonNew.textBoxValueMax.Text);
-                    theDiapason.Name = theDiapason.ValueMin.ToString("0000000000") + " ... " + theDiapason.ValueMax.ToString("0000000000");
-                    theDiapason.Save();
+					var diapason = new Diapason
+					{
+						Access = this.theAccess,
+						ValueMin = Convert.ToInt64(theFormDiapasonNew.textBoxValueMin.Text),
+						ValueMax = Convert.ToInt64(theFormDiapasonNew.textBoxValueMax.Text)
+					};
+					diapason.Name = diapason.ValueMin.ToString("0000000000") + " ... " + diapason.ValueMax.ToString("0000000000");
+                    diapason.Save();
 
                     int Total = 0;
 
@@ -79,9 +77,9 @@ namespace IndexMobileGenerate
                     using (var cn = new SQLiteConnection(_connectionString))
                     {
                         cn.Open();
+
                         using (var transaction = cn.BeginTransaction())
                         {
-                            
                             using (var cmd = cn.CreateCommand())
                             {
                                 cmd.CommandText = sqlInsertUsers;
@@ -90,19 +88,19 @@ namespace IndexMobileGenerate
                                 cmd.Parameters.AddWithValue("@Diapason_ID", "");
                                 cmd.Parameters.AddWithValue("@Access_ID", "");
 
-                                for (long i = theDiapason.ValueMin; i <= theDiapason.ValueMax; i++)
+                                for (long i = diapason.ValueMin; i <= diapason.ValueMax; i++)
                                 {   
-                                        Random rnd = new Random();
+                                        var rnd = new Random();
                                         cmd.Parameters["@Number"].Value = i.ToString();
                                         cmd.Parameters["@NumberOrder"].Value = rnd.Next(0, Int32.MaxValue);
-                                        cmd.Parameters["@Diapason_ID"].Value = theDiapason.ID;
+                                        cmd.Parameters["@Diapason_ID"].Value = diapason.ID;
                                         cmd.Parameters["@Access_ID"].Value = theAccess.ID;
                                         try
                                         {
                                             results.Add(cmd.ExecuteNonQuery());
                                             Total++;                                    
                                         }
-                                        catch
+                                        catch(Exception exc)
                                         {
 
                                         }
@@ -114,8 +112,8 @@ namespace IndexMobileGenerate
                     }
                     int Sum = results.Sum();
 
-                    theDiapason.Name += " = " + Total.ToString();
-                    theDiapason.Update();
+                    diapason.Name += " = " + Total.ToString();
+                    diapason.Update();
 
                     this.LoadDiapason();
                     Application.UseWaitCursor = false;

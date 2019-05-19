@@ -7,14 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IndexMobile.Models
+namespace IndexMobileEntity.Models
 {
     public class Diapason : Entity.Common.BaseClass<Diapason>
     {
         public virtual long ValueMax { get; set; }
 
         public virtual long ValueMin { get; set; }
-        public virtual string Name { get; set; }
 
 
         public Diapason()

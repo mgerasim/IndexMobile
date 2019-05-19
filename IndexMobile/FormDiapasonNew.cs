@@ -1,23 +1,18 @@
-﻿using IndexMobile.Models;
+﻿using IndexMobileEntity.Models;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace IndexMobileGenerate
 {
-    public partial class FormDiapasonNew : Form
+	public partial class FormDiapasonNew : Form
     {
-        Access theAccess;
-        public FormDiapasonNew(Access theAccess)
+        private Access _access;
+
+        public FormDiapasonNew(Access access)
         {
             InitializeComponent();
-            this.theAccess = theAccess;
+
+            this._access = access ?? throw new ArgumentNullException(nameof(access));
         }
 
         private void buttonSave_Click(object sender, EventArgs e)

@@ -1,22 +1,24 @@
 ﻿using Entity.Common;
 using NHibernate;
 using NHibernate.Criterion;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IndexMobileEntity.Models
 {
-    public class Selection : Entity.Common.BaseClass<Selection>
+	public class Selection : BaseClass<Selection>
     {
         public virtual int Count { get; set; }
         public virtual string Name { get; set; }
         public virtual Access Access { get; set; }
+
+		/// <summary>
+		///  Конструктор
+		/// </summary>
         public Selection()
         {
-            Name = "";
+            Name = string.Empty;
+
             Count = 0;
         }
 

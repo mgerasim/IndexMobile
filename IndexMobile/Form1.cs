@@ -1,23 +1,21 @@
 ﻿using Entity.Common;
-using IndexMobile.Models;
+using IndexMobileEntity.Models;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SQLite;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace IndexMobile
 {
-    public partial class Form1 : Form
+	public partial class Form1 : Form
     {
         bool isStop = false;
         ExcelPackage pck = null;

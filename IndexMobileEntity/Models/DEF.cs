@@ -1,15 +1,11 @@
 ﻿using Entity.Common;
 using NHibernate;
 using NHibernate.Criterion;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace IndexMobile.Models
+namespace IndexMobileEntity.Models
 {
-    public class DEF : Entity.Common.BaseClass<DEF>
+	public class DEF : BaseClass<DEF>
     {
         public virtual long   NumberDEF  { get; set; }
         public virtual long   NumberBgn  { get; set; }

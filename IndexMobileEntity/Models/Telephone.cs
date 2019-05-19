@@ -1,15 +1,12 @@
 ﻿using Entity.Common;
 using NHibernate;
 using NHibernate.Criterion;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IndexMobileEntity.Models
 {
-    public class Telephone : Entity.Common.BaseClass<Telephone>
+	public class Telephone : Entity.Common.BaseClass<Telephone>
     {
         public virtual long Number { get; set; }
 
@@ -17,6 +14,11 @@ namespace IndexMobileEntity.Models
         public virtual Diapason Diapason { get; set; }
         public virtual Access Access { get; set; }
 
+        public virtual int NumberOrder { get; set; }
+
+		/// <summary>
+		/// Конструктор
+		/// </summary>
         public Telephone()
         {
             Number = 0;
@@ -39,7 +41,6 @@ namespace IndexMobileEntity.Models
                     return false;
                 }
             }
-
         }
 
         static public List<Telephone> GetAllByDiapason(Diapason theDiapason)

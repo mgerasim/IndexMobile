@@ -231,3 +231,4 @@ documents/
 *REMOTE*
 *.orig
 GeoSpaceTrack/Sources/temp/
+*.vs/

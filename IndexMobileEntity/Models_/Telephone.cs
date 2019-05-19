@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IndexMobile.Models
+namespace IndexMobileEntity.Models
 {
     public class Telephone : Entity.Common.BaseClass<Telephone>
     {
@@ -16,8 +16,6 @@ namespace IndexMobile.Models
         public virtual Selection Selection { get; set; }
         public virtual Diapason Diapason { get; set; }
         public virtual Access Access { get; set; }
-
-        public virtual int NumberOrder { get; set; }
 
         public Telephone()
         {

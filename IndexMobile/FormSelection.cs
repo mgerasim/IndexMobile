@@ -1,27 +1,23 @@
-﻿using IndexMobile.Models;
+﻿using IndexMobile;
+using IndexMobileEntity.Models;
 using OfficeOpenXml;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Data.SQLite;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using IndexMobile;
 
 namespace IndexMobileGenerate
 {
-    public partial class FormSelection : Form
+	public partial class FormSelection : Form
     {
-        Access theAccess;
-        public FormSelection(Access theAccess)
+        private Access _access;
+
+        public FormSelection(Access access)
         {
             InitializeComponent();
-            this.theAccess = theAccess;
+            this._access = access;
             LoadSelection();
         }
 
@@ -42,7 +38,7 @@ namespace IndexMobileGenerate
             //}
             listBoxSelection.DisplayMember = "DisplayName";
             listBoxSelection.ValueMember = "DisplayName";
-            listBoxSelection.DataSource = theAccess.Selections.OrderByDescending(x => x.ID).ToList();
+            listBoxSelection.DataSource = _access.Selections.OrderByDescending(x => x.ID).ToList();
         }
 
         private void buttonSelectionNew_Click(object sender, EventArgs e)
@@ -53,10 +49,10 @@ namespace IndexMobileGenerate
                 int Count = Convert.ToInt32(this.textBoxCount.Text);
                 Selection theSelection = new Selection();
                 theSelection.Count = Count;
-                theSelection.Access = theAccess;
+                theSelection.Access = _access;
                 theSelection.Save();
                 int i = 0;
-                var Telephones = theAccess.TelephonesBySelectionIsNull;
+                var Telephones = _access.TelephonesBySelectionIsNull;
                 Telephones.Shuffle();
 
 

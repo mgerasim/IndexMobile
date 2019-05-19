@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="IndexMobileEntity.Models" assembly="IndexMobileEntity">
-  <class name="Diapason"  >
+  <class name="DEF"  >
     <id name="ID" unsaved-value="0">
       <column name="ID" not-null="true" />
       <generator class="identity" />
@@ -9,17 +9,11 @@
     <property name="created_at" update="false"/>
     <property name="updated_at" />
 
-    <property name="ValueMin"/>
-
-    <property name="ValueMax"/>
-    <property name="Name" />
-
-    <many-to-one name="Access" not-null="true" column="Access_ID" />
-
-    <!--<set name="Telephones" cascade="all" >
-      <key column="Diapason_ID"/>
-      <one-to-many class="IndexMobileEntity.Models.Telephone"/>
-    </set>-->
+    <property name="NumberDEF"/>
+    <property name="NumberBgn"/>
+    <property name="NumberEnd"/>
+    <property name="Operator"/>
+    <property name="Region"/>
     
   </class>
 </hibernate-mapping>

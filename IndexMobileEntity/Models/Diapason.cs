@@ -1,19 +1,19 @@
 ﻿using Entity.Common;
+using IndexMobileEntity.Models;
 using NHibernate;
 using NHibernate.Criterion;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IndexMobileEntity.Models
 {
-    public class Diapason : Entity.Common.BaseClass<Diapason>
+	public class Diapason : BaseClass<Diapason>
     {
         public virtual long ValueMax { get; set; }
 
         public virtual long ValueMin { get; set; }
+
+        public virtual string Name { get; set; }
 
 
         public Diapason()

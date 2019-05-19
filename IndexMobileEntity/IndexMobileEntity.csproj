@@ -74,10 +74,14 @@
     <Compile Include="Common\BaseRepository.cs" />
     <Compile Include="Common\NHibernateHelper.cs" />
     <Compile Include="Helper\DataClass.cs" />
+    <Compile Include="Models\Access.cs" />
+    <Compile Include="Models\DEF.cs" />
+    <Compile Include="Models\Nameface.cs" />
+    <Compile Include="Models\ParserCompany.cs" />
+    <Compile Include="Models\ParserPerson.cs" />
     <Compile Include="Models\Telephone.cs" />
     <Compile Include="Models\Selection.cs" />
     <Compile Include="Models\Diapason.cs" />
-    <Compile Include="Models\Access.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -108,6 +112,10 @@
     <EmbeddedResource Include="Mapping\Telephone.hbm.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Mapping\DEF.hbm.xml" />
+    <Content Include="Mapping\Nameface.hbm.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

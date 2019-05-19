@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IndexMobile.Models
+namespace IndexMobileEntity.Models
 {
     public class Access : Entity.Common.BaseClass<Access>
     {
@@ -57,8 +57,7 @@ namespace IndexMobile.Models
                     ICriteria criteria = session.CreateCriteria(typeof(Telephone));
                     criteria.Add(Restrictions.Eq("Access", this));
                     criteria.Add(Restrictions.IsNull("Selection"));
-                    criteria.AddOrder(Order.Asc("NumberOrder"));
-                    criteria.SetMaxResults(100000);
+                    criteria.AddOrder(Order.Asc("ID"));
                     return criteria.List<Telephone>().ToList<Telephone>();
                 }
             }

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace IndexMobile.Models
+﻿namespace IndexMobileEntity.Models
 {
-    public class ParserCompany
+	public class ParserCompany
     {
         public string Name = "";
         public string Saite = "";

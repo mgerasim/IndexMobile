@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace IndexMobile.Models
+﻿namespace IndexMobileEntity.Models
 {
-    public class ParserPerson
+	public class ParserPerson
     {
         public string Name = "";
         public string Email = "";

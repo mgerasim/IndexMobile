@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IndexMobile.Models
+namespace IndexMobileEntity.Models
 {
     public class Selection : Entity.Common.BaseClass<Selection>
     {

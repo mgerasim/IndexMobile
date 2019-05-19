@@ -1,15 +1,12 @@
 ﻿using Entity.Common;
 using NHibernate;
 using NHibernate.Criterion;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace IndexMobile.Models
+namespace IndexMobileEntity.Models
 {
-    public class Nameface : Entity.Common.BaseClass<Nameface>
+	public class Nameface : BaseClass<Nameface>
     {
         public virtual string   NameOn  { get; set; }
         public virtual string   NameOff  { get; set; }

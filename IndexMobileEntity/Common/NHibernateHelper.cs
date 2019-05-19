@@ -1,18 +1,11 @@
 ﻿using NHibernate;
 using NHibernate.Cfg;
-using NHibernate.Context;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using IndexMobileEntity.Models;
-using NHibernate.Tool.hbm2ddl;
-using System.IO;
 
 
 namespace Entity.Common
 {
-    public class NHibernateHelper
+	public class NHibernateHelper
     {
         private static ISessionFactory _sessionFactory;
 

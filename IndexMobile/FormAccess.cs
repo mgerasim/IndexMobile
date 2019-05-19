@@ -1,19 +1,16 @@
-﻿using IndexMobile.Models;
+﻿using IndexMobileEntity.Models;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace IndexMobileGenerate
 {
-    public partial class FormAccess : Form
+	public partial class FormAccess : Form
     {
+		/// <summary>
+		/// Конструктор
+		/// </summary>
         public FormAccess()
         {
             InitializeComponent();
@@ -45,12 +42,13 @@ namespace IndexMobileGenerate
         {
             try
             {
-                Access theAccess = new Access();
-                theAccess.Save();
-                theAccess.Name = "Выборка № " + theAccess.ID.ToString("000000");
-                theAccess.Update();
-                FormAccessNew theFormAccessNew = new FormAccessNew(theAccess);
-                theFormAccessNew.ShowDialog();
+                var access = new Access();
+                access.Save();
+                access.Name = "Выборка № " + access.ID.ToString("000000");
+                access.Update();
+
+                var accessNewForm = new FormAccessNew(access);
+                accessNewForm.ShowDialog();
                 this.LoadAccess();
 
             }
