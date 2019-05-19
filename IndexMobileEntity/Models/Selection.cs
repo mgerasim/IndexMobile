@@ -6,10 +6,24 @@ using System.Linq;
 
 namespace IndexMobileEntity.Models
 {
+	/// <summary>
+	/// Выборка номеров в отборе
+	/// </summary>
 	public class Selection : BaseClass<Selection>
     {
+		/// <summary>
+		/// Количество
+		/// </summary>
         public virtual int Count { get; set; }
+
+		/// <summary>
+		/// Наименование
+		/// </summary>
         public virtual string Name { get; set; }
+
+		/// <summary>
+		/// Отбор
+		/// </summary>
         public virtual Access Access { get; set; }
 
 		/// <summary>
@@ -22,31 +36,30 @@ namespace IndexMobileEntity.Models
             Count = 0;
         }
 
-        public virtual List<Telephone> Telephones
-        {
-            get
-            {
-                return Telephone.GetAllBySelection(this);
-            }
-        }
-        public virtual string DisplayName
-        {
-            get
-            {
-                return "Отбор " + Count.ToString() + " шт. от " + this.created_at.ToString() ;
-            }
-        }
-        static public List<Selection> GetAllByAccess(Access theAccess)
+		/// <summary>
+		/// Список номеров
+		/// </summary>
+        public virtual List<Telephone> Telephones => Telephone.GetAllBySelection(this);
+
+		/// <summary>
+		/// Пользовательское наименование 
+		/// </summary>
+		public virtual string DisplayName => "Отбор " + Count.ToString() + " шт. от " + this.created_at.ToString();
+
+		/// <summary>
+		/// Получает список выборок по отбору
+		/// </summary>
+		/// <param name="access">Отбор</param>
+		/// <returns></returns>
+        static public List<Selection> GetAllByAccess(Access access)
         {
             using (ISession session = NHibernateHelper.OpenSession())
             {
                 ICriteria criteria = session.CreateCriteria(typeof(Selection));
-                criteria.Add(Restrictions.Eq("Access", theAccess));
+                criteria.Add(Restrictions.Eq("Access", access));
                 criteria.AddOrder(Order.Asc("ID"));
                 return criteria.List<Selection>().ToList<Selection>();
             }
         }
-       
-
     }
 }

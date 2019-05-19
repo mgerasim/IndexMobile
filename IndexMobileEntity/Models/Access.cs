@@ -6,46 +6,48 @@ using System.Linq;
 
 namespace IndexMobileEntity.Models
 {
+	/// <summary>
+	/// Отбор по генерации номеров
+	/// </summary>
 	public class Access : BaseClass<Access>
     {
+		/// <summary>
+		/// Наименование
+		/// </summary>
         public virtual string Name { get; set; }
 
-        public virtual string DisplayName
+		/// <summary>
+		/// Пользовательское наименование
+		/// </summary>
+        public virtual string DisplayName => this.Name + " Всего: " + this.TelephonesCount.ToString() + " Свободно: " + this.TelephonesBySelectionIsNullCount.ToString();
+
+		/// <summary>
+		///  Конструктор
+		/// </summary>
+		public Access()
         {
-            get
-            {
-                return this.Name  +" Всего: " + this.TelephonesCount.ToString() + " Свободно: " + this.TelephonesBySelectionIsNullCount.ToString();
-            }
+            Name = string.Empty;
         }
 
-        public Access()
-        {
-            Name = "";
-        }
+		/// <summary>
+		/// Диапозоны
+		/// </summary>
+        public virtual List<Diapason> Diapasons => Diapason.GetAllByAccess(this);
 
-        public virtual List<Diapason> Diapasons
-        {
-            get
-            {
-                return Diapason.GetAllByAccess(this);
-            }
-        }
-        public virtual List<Selection> Selections
-        {
-            get
-            {
-                return Selection.GetAllByAccess(this);
-            }
-        }
-        public virtual List<Telephone> Telephones
-        {
-            get
-            {
-                return Telephone.GetAllByAccess(this);
-            }
-        }
+		/// <summary>
+		/// Выборки
+		/// </summary>
+		public virtual List<Selection> Selections => Selection.GetAllByAccess(this);
 
-        public virtual List<Telephone> TelephonesBySelectionIsNull
+		/// <summary>
+		/// Номера
+		/// </summary>
+		public virtual List<Telephone> Telephones => Telephone.GetAllByAccess(this);
+
+		/// <summary>
+		/// Номера не попавшие в выборку
+		/// </summary>
+		public virtual List<Telephone> TelephonesBySelectionIsNull
         {
             get
             {
@@ -60,6 +62,10 @@ namespace IndexMobileEntity.Models
                 }
             }
         }
+
+		/// <summary>
+		/// Количество номеров не попавшие в выборку из отбора
+		/// </summary>
         public virtual long TelephonesBySelectionIsNullCount
         {
             get
@@ -75,6 +81,9 @@ namespace IndexMobileEntity.Models
             }
         }
 
+		/// <summary>
+		/// Количество номеров в отборе (объем отбора)
+		/// </summary>
         public virtual long TelephonesCount
         {
             get

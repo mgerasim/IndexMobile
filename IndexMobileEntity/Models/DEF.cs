@@ -5,6 +5,9 @@ using System.Linq;
 
 namespace IndexMobileEntity.Models
 {
+	/// <summary>
+	/// Распределение сотовых номеров по операторам и регионам
+	/// </summary>
 	public class DEF : BaseClass<DEF>
     {
         public virtual long   NumberDEF  { get; set; }
@@ -13,6 +16,9 @@ namespace IndexMobileEntity.Models
         public virtual string Operator { get; set; }
         public virtual string Region   { get; set; }
 
+		/// <summary>
+		/// Конструктор
+		/// </summary>
         public DEF()
         {
             NumberDEF = 0;
@@ -22,7 +28,12 @@ namespace IndexMobileEntity.Models
             Region  =  "";
         }
 
-        
+        /// <summary>
+		/// Получает сотового оператора
+		/// </summary>
+		/// <param name="DEF"></param>
+		/// <param name="Number"></param>
+		/// <returns></returns>
         public static DEF GetOperator(long DEF, long Number)
         {
             try
@@ -40,9 +51,9 @@ namespace IndexMobileEntity.Models
                         return null;
                     }
 
-                    DEF theDEF = result[0];
+                    DEF def = result[0];
 
-                    return theDEF;
+                    return def;
 
                 }
             }
