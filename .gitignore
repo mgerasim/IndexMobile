@@ -226,7 +226,6 @@ UpgradeLog*.XML
 documents/
 
 *BACKUP*
-*BASE*
 *LOCAL*
 *REMOTE*
 *.orig
