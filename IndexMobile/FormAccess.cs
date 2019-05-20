@@ -61,26 +61,33 @@ namespace IndexMobileGenerate
 
         private void buttonAccessShow_Click(object sender, EventArgs e)
         {
-            Access theAccess = listBoxAccess.SelectedItem as Access;
-            if (theAccess == null)
-            {
-                return;
-            }
-            FormAccessNew theFormAccessNew = new FormAccessNew(theAccess);
-            theFormAccessNew.ShowDialog();
-            this.LoadAccess();
+			if (!(listBoxAccess.SelectedItem is Access access))
+			{
+				return;
+			}
+
+			var accessNewForm = new FormAccessNew(access);
+
+            if (accessNewForm.ShowDialog() == DialogResult.OK)
+			{
+				this.LoadAccess();
+			}
+
+
         }
 
         private void buttonSelection_Click(object sender, EventArgs e)
         {
-            Access theAccess = listBoxAccess.SelectedItem as Access;
-            if (theAccess == null)
-            {
-                return;
-            }
-            FormSelection theFormSelection = new FormSelection(theAccess);
-            theFormSelection.ShowDialog();
-            this.LoadAccess();
+			if (!(listBoxAccess.SelectedItem is Access access))
+			{
+				return;
+			}
+
+			var selectionForm = new FormSelection(access);
+
+            selectionForm.ShowDialog();
+
+            //this.LoadAccess();
         }
 
         private void FormAccess_Load(object sender, EventArgs e)

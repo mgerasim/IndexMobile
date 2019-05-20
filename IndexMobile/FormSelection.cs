@@ -46,13 +46,20 @@ namespace IndexMobileGenerate
             try
             {
                 Cursor.Current = Cursors.WaitCursor;
+
                 int Count = Convert.ToInt32(this.textBoxCount.Text);
-                Selection theSelection = new Selection();
-                theSelection.Count = Count;
-                theSelection.Access = _access;
-                theSelection.Save();
+
+				var selection = new Selection
+				{
+					Count = Count,
+					Access = _access
+				};
+				selection.Save();
+
                 int i = 0;
+
                 var Telephones = _access.TelephonesBySelectionIsNull;
+
                 Telephones.Shuffle();
 
 
@@ -77,7 +84,7 @@ namespace IndexMobileGenerate
                                     break;
                                 }
                                  cmd.Parameters["@ID"].Value = item.ID;
-                                cmd.Parameters["@Selection_ID"].Value = theSelection.ID;
+                                cmd.Parameters["@Selection_ID"].Value = selection.ID;
                                 cmd.ExecuteNonQuery();
                             }
 
@@ -105,19 +112,20 @@ namespace IndexMobileGenerate
         {
             try
             {
-                Selection theSelection = listBoxSelection.SelectedItem as Selection;
-                if (theSelection == null)
+                var selection = listBoxSelection.SelectedItem as Selection;
+
+                if (selection == null)
                 {
                     return;
                 }
-                string path = theSelection.ID.ToString("000000") + "-" + Guid.NewGuid() + ".xlsx";
+                string path = selection.ID.ToString("000000") + "-" + Guid.NewGuid() + ".xlsx";
                 
                 FileInfo newFile = new FileInfo(path);
                 using (ExcelPackage pck = new ExcelPackage(newFile))
                 {
                     ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Telephone");
                     int i = 0;
-                    var Telephones = theSelection.Telephones;
+                    var Telephones = selection.Telephones;
                     Telephones.Shuffle();
                     foreach (var item in Telephones.OrderBy(a => Guid.NewGuid()).ToList())
                     {

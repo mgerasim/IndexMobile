@@ -1,18 +1,13 @@
 ﻿using IndexMobileEntity.Models;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace IndexMobileGenerate
 {
-    public partial class FormAccess : Form
+	public partial class FormAccess : Form
     {
         public FormAccess()
         {
@@ -65,26 +60,31 @@ namespace IndexMobileGenerate
 
         private void buttonAccessShow_Click(object sender, EventArgs e)
         {
-            Access theAccess = listBoxAccess.SelectedItem as Access;
-            if (theAccess == null)
-            {
-                return;
-            }
-            FormAccessNew theFormAccessNew = new FormAccessNew(theAccess);
-            theFormAccessNew.ShowDialog();
-            this.LoadAccess();
+			if (!(listBoxAccess.SelectedItem is Access access))
+			{
+				return;
+			}
+
+			var accessNewForm = new FormAccessNew(access);
+
+            accessNewForm.ShowDialog();
+
+			//this.LoadAccess();
         }
 
         private void buttonSelection_Click(object sender, EventArgs e)
         {
-            Access theAccess = listBoxAccess.SelectedItem as Access;
-            if (theAccess == null)
-            {
-                return;
-            }
-            FormSelection theFormSelection = new FormSelection(theAccess);
-            theFormSelection.ShowDialog();
-            this.LoadAccess();
+			if (!(listBoxAccess.SelectedItem is Access access))
+			{
+				return;
+			}
+
+			var selectionForm = new FormSelection(access);
+
+			if (selectionForm.ShowDialog() == DialogResult.OK)
+			{
+				this.LoadAccess();
+			}
         }
 
         private void FormAccess_Load(object sender, EventArgs e)

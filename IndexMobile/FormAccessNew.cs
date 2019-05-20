@@ -11,11 +11,11 @@ namespace IndexMobileGenerate
 {
 	public partial class FormAccessNew : Form
     {
-        Access theAccess;
+        Access _access;
         public FormAccessNew(Access theAccess)
         {
             InitializeComponent();
-            this.theAccess = theAccess;
+            this._access = theAccess;
             this.textBoxAccessName.Text = theAccess.Name;
             this.LoadDiapason();
         }
@@ -25,19 +25,12 @@ namespace IndexMobileGenerate
             this.listBoxDiapason.Items.Clear();
             try
             {
-                foreach (var item in theAccess.Diapasons)
+                foreach (var item in _access.Diapasons)
                 {
-                    if (item.Name.Length == 0)
-                    {
-                        this.listBoxDiapason.Items.Add(item.DisplayName);
-                    }
-                    else
-                    {
-                        this.listBoxDiapason.Items.Add(item.Name);
-                    }
-                    
-                }
+					var itemValue = item.Name.Length == 0 ? item.DisplayName : item.Name;
 
+					this.listBoxDiapason.Items.Add(item.DisplayName);
+                }
             }
             catch (Exception ex)
             {
@@ -49,7 +42,7 @@ namespace IndexMobileGenerate
         {
             try
             {
-                FormDiapasonNew theFormDiapasonNew = new FormDiapasonNew(this.theAccess);
+                FormDiapasonNew theFormDiapasonNew = new FormDiapasonNew(this._access);
                 var result = theFormDiapasonNew.ShowDialog();
                 if (result == DialogResult.OK)
                 {
@@ -59,7 +52,7 @@ namespace IndexMobileGenerate
                     this.listBoxDiapason.Refresh();
 					var diapason = new Diapason
 					{
-						Access = this.theAccess,
+						Access = this._access,
 						ValueMin = Convert.ToInt64(theFormDiapasonNew.textBoxValueMin.Text),
 						ValueMax = Convert.ToInt64(theFormDiapasonNew.textBoxValueMax.Text)
 					};
@@ -94,7 +87,7 @@ namespace IndexMobileGenerate
                                         cmd.Parameters["@Number"].Value = i.ToString();
                                         cmd.Parameters["@NumberOrder"].Value = rnd.Next(0, Int32.MaxValue);
                                         cmd.Parameters["@Diapason_ID"].Value = diapason.ID;
-                                        cmd.Parameters["@Access_ID"].Value = theAccess.ID;
+                                        cmd.Parameters["@Access_ID"].Value = _access.ID;
                                         try
                                         {
                                             results.Add(cmd.ExecuteNonQuery());
@@ -128,10 +121,10 @@ namespace IndexMobileGenerate
 
         private void buttonAccessOk_Click(object sender, EventArgs e)
         {
-            theAccess.Name = this.textBoxAccessName.Text;
+            _access.Name = this.textBoxAccessName.Text;
             try
             {
-                theAccess.Update();
+                _access.Update();
             }
             catch (Exception ex)
             {
@@ -164,29 +157,33 @@ namespace IndexMobileGenerate
         }
         private void buttonAccessNewCodeRegionOperator_Click(object sender, EventArgs e)
         {
-            FromDiapasonNewCodeRegionOperator theForm = new FromDiapasonNewCodeRegionOperator();
+            var formDiapasonNewCodeRegionOperator = new FromDiapasonNewCodeRegionOperator();
+
             try {
-                var result = theForm.ShowDialog();
+                var result = formDiapasonNewCodeRegionOperator.ShowDialog();
+
                 if (result == DialogResult.OK)
                 {
                     Cursor.Current = Cursors.WaitCursor;
                     this.listBoxDiapason.Items.Clear();
                     this.listBoxDiapason.Items.Add("Обновление ...");
                     this.listBoxDiapason.Refresh();
-                    Diapason theDiapason = new Diapason();
-                    theDiapason.Access = this.theAccess;
-                    theDiapason.ValueMin = 0;
-                    theDiapason.ValueMax = 0;
-                    theDiapason.Name = theForm.textBoxCode.Text + " " + theForm.textBoxRegion.Text + " " + theForm.textBoxOperator.Text;
-                    theDiapason.Save();
+					var diapason = new Diapason
+					{
+						Access = _access,
+						ValueMin = 0,
+						ValueMax = 0,
+						Name = formDiapasonNewCodeRegionOperator.textBoxCode.Text + " " + formDiapasonNewCodeRegionOperator.textBoxRegion.Text + " " + formDiapasonNewCodeRegionOperator.textBoxOperator.Text
+					};
+					diapason.Save();
                     
-                    List<string > selectedCode = new List<string>();
-                    List<string > selectedRegion = new List<string>();
-                    List<string > selectedOperator = new List<string>();
+                    var selectedCode = new List<string>();
+                    var selectedRegion = new List<string>();
+                    var selectedOperator = new List<string>();
 
-                    LoadListOfString(theForm.checkedListBoxCode, ref selectedCode);
-                    LoadListOfString(theForm.checkedListBoxRegion, ref selectedRegion);
-                    LoadListOfString(theForm.checkedListBoxOperator, ref selectedOperator);
+                    LoadListOfString(formDiapasonNewCodeRegionOperator.checkedListBoxCode, ref selectedCode);
+                    LoadListOfString(formDiapasonNewCodeRegionOperator.checkedListBoxRegion, ref selectedRegion);
+                    LoadListOfString(formDiapasonNewCodeRegionOperator.checkedListBoxOperator, ref selectedOperator);
 
                     int Total = 0;
         
@@ -218,8 +215,8 @@ namespace IndexMobileGenerate
                                         Random rnd = new Random();
                                         cmd.Parameters["@Number"].Value = ((item.NumberDEF * 10000000) + i).ToString();
                                         cmd.Parameters["@NumberOrder"].Value = rnd.Next(0, Int32.MaxValue);
-                                        cmd.Parameters["@Diapason_ID"].Value = theDiapason.ID;
-                                        cmd.Parameters["@Access_ID"].Value = theAccess.ID;
+                                        cmd.Parameters["@Diapason_ID"].Value = diapason.ID;
+                                        cmd.Parameters["@Access_ID"].Value = _access.ID;
                                         try
                                         {
                                             results.Add(cmd.ExecuteNonQuery());
@@ -235,8 +232,8 @@ namespace IndexMobileGenerate
                     }
                     int Sum = results.Sum();
 
-                    theDiapason.Name += " = " + Total;
-                    theDiapason.Update();
+                    diapason.Name += " = " + Total;
+                    diapason.Update();
 
                     this.LoadDiapason();
                     Application.UseWaitCursor = false;

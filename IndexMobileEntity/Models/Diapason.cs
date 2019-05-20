@@ -48,7 +48,7 @@ namespace IndexMobileEntity.Models
 		/// <summary>
 		/// Пользовательское наименование
 		/// </summary>
-		public virtual string DisplayName => this.ValueMin.ToString("0000000000") + " ... " + this.ValueMax.ToString("0000000000") + " =" + this.Telephones.Count;
+		public virtual string DisplayName => this.ValueMin.ToString("0000000000") + " ... " + this.ValueMax.ToString("0000000000") + " =" + this.Telephones.Count + " - " + Telephone.GetCountFreeByDiapason(this).ToString();
 
 		/// <summary>
 		/// Получает диапозоны в рамках отбора
