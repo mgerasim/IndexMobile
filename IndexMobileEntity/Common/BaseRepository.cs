@@ -1,15 +1,15 @@
-﻿using System;
+﻿using NHibernate;
+using NHibernate.Criterion;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Entity.Common;
-using NHibernate;
-using NHibernate.Criterion;
 
 namespace Entity.Common
 {
-    public class BaseRepository<T>
+	/// <summary>
+	/// Базовый класс для репозиториев
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	public class BaseRepository<T>
     {
         #region IRepository<T> Members
 
@@ -53,8 +53,7 @@ namespace Entity.Common
         {
             using (ISession session = NHibernateHelper.OpenSession())
             {
-                return session.CreateCriteria(typeof(T)).Add(Restrictions.Eq("ID", ID)).UniqueResult<T>();
-
+                return session.CreateCriteria(typeof(T)).Add(Restrictions.Eq(nameof(ID), ID)).UniqueResult<T>();
             }
         }
 

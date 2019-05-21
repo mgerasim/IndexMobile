@@ -78,13 +78,13 @@ namespace IndexMobile
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.OK;
+            DialogResult = DialogResult.OK;
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.Cancel;
-            this.Close();
+            DialogResult = DialogResult.Cancel;
+            Close();
         }
 
         private void checkedListBoxCode_ItemCheck(object sender, ItemCheckEventArgs e)
