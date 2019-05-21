@@ -9,8 +9,10 @@
     <property name="created_at" update="false"/>
     <property name="updated_at" />
 
-    <property name="Number" unique-key="access" />
-
+    <property name="Number" unique-key="access">
+      <column name="Number" index="IDX_TELEPHONE_NUMBER" />
+    </property>
+  
     <many-to-one name="Selection" column="Selection_ID" />
 
     <many-to-one name="Diapason" not-null="true" column="Diapason_ID" />
@@ -18,7 +20,9 @@
 
     <many-to-one name="Access" not-null="true" unique-key="access" column="Access_ID" />
   
-    <property name="NumberOrder" />
+    <property name="NumberOrder">
+      <column name="NumberOrder" index="IDX_TELEPHONE_NUMBERORDER" />
+    </property>
   
   </class>
 </hibernate-mapping>

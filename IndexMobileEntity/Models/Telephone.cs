@@ -14,7 +14,7 @@ namespace IndexMobileEntity.Models
 		/// <summary>
 		/// Телефонный номер
 		/// </summary>
-        public virtual long Number { get; set; }
+		public virtual long Number { get; set; } = 0;
 
 		/// <summary>
 		/// Принадлежность в выборке
@@ -40,9 +40,9 @@ namespace IndexMobileEntity.Models
 		/// Конструктор
 		/// </summary>
         public Telephone()
-        {
-            Number = 0;
-        }
+		{ 
+
+		}
 
 		/// <summary>
 		/// Проверка принадлежности в отборе
@@ -54,28 +54,35 @@ namespace IndexMobileEntity.Models
         {
             using (ISession session = NHibernateHelper.OpenSession())
             {
-                ICriteria criteria = session.CreateCriteria(typeof(Telephone))
-                .Add(Restrictions.Eq("Access", access))
-                .Add(Restrictions.Eq("Number", number));
-                criteria.AddOrder(Order.Asc("ID"));
+                var criteria = session.CreateCriteria(typeof(Telephone))
+                .Add(Restrictions.Eq(nameof(Access), access))
+                .Add(Restrictions.Eq(nameof(number), number));
 
-				return (criteria.List<Telephone>().ToList<Telephone>().Count > 0);
+                criteria.AddOrder(Order.Asc(nameof(access.ID)));
+
+				criteria.SetProjection(Projections.Count(nameof(access.ID)));
+
+				var count = (int)criteria.UniqueResult();
+
+				return count > 0;
             }
         }
 
 		/// <summary>
 		/// Список телефонных номеров в диапазоне
 		/// </summary>
-		/// <param name="diapason"></param>
+		/// <param name="diapason">Диапазон</param>
 		/// <returns></returns>
         static public List<Telephone> GetAllByDiapason(Diapason diapason)
         {
             using (ISession session = NHibernateHelper.OpenSession())
             {
                 ICriteria criteria = session.CreateCriteria(typeof(Telephone));
-                criteria.Add(Restrictions.Eq("Diapason", diapason));
-                criteria.AddOrder(Order.Asc("ID"));
-                return criteria.List<Telephone>().ToList<Telephone>();
+				criteria.Add(Restrictions.Eq(nameof(Access), diapason.Access));
+                criteria.Add(Restrictions.Eq(nameof(Diapason), diapason));
+                criteria.AddOrder(Order.Asc(nameof(diapason.ID)));
+
+                return criteria.List<Telephone>().ToList();
             }
         }
 
@@ -89,38 +96,65 @@ namespace IndexMobileEntity.Models
 			using (var session = NHibernateHelper.OpenSession())
 			{
 				var count = session.CreateCriteria(typeof(Telephone))
-					.Add(Restrictions.Eq("Diapason", diapason))
-					.Add(Restrictions.IsNull("Selection"))
-					.SetProjection(Projections.Count("Number"))
+					.Add(Restrictions.Eq(nameof(Access), diapason.Access))
+					.Add(Restrictions.Eq(nameof(Diapason), diapason))
+					.Add(Restrictions.IsNull(nameof(Selection)))
+					.SetProjection(Projections.Count(nameof(diapason.ID)))
 					.UniqueResult();
 
 				return (int)count;
 			}
 		}
 
-        static public List<Telephone> GetAllBySelection(Selection theSelection)
+		/// <summary>
+		/// Получаем количество номеров в диапазоне
+		/// </summary>
+		/// <param name="diapason"></param>
+		/// <returns></returns>
+		static public int GetCountAllByDiapason(Diapason diapason)
+		{
+			using (var session = NHibernateHelper.OpenSession())
+			{
+				var count = session.CreateCriteria(typeof(Telephone))
+					.Add(Restrictions.Eq(nameof(Access), diapason.Access))
+					.Add(Restrictions.Eq(nameof(Diapason), diapason))
+					.SetProjection(Projections.Count(nameof(diapason.ID)))
+					.UniqueResult();
+
+				return (int)count;
+			}
+		}
+
+		/// <summary>
+		/// Получает список телефонов в выборке
+		/// </summary>
+		/// <param name="selection">Выборка</param>
+		/// <returns></returns>
+        static public List<Telephone> GetAllBySelection(Selection selection)
         {
             using (ISession session = NHibernateHelper.OpenSession())
             {
                 ICriteria criteria = session.CreateCriteria(typeof(Telephone));
-                criteria.Add(Restrictions.Eq("Selection", theSelection));
-                criteria.AddOrder(Order.Asc("ID"));
-                return criteria.List<Telephone>().ToList<Telephone>();
+                criteria.Add(Restrictions.Eq(nameof(Selection), selection));
+                criteria.AddOrder(Order.Asc(nameof(selection.ID)));
+                return criteria.List<Telephone>().ToList();
             }
         }
 
-        static public List<Telephone> GetAllByAccess(Access theAccess)
+		/// <summary>
+		///  Получает список телефонов по отбору
+		/// </summary>
+		/// <param name="access">Отбор</param>
+		/// <returns></returns>
+        static public List<Telephone> GetAllByAccess(Access access)
         {
             using (ISession session = NHibernateHelper.OpenSession())
             {
                 ICriteria criteria = session.CreateCriteria(typeof(Telephone));
-                criteria.Add(Restrictions.Eq("Access", theAccess));
-                criteria.AddOrder(Order.Asc("ID"));
-                return criteria.List<Telephone>().ToList<Telephone>();
+                criteria.Add(Restrictions.Eq(nameof(Access), access));
+                criteria.AddOrder(Order.Asc(nameof(access.ID)));
+                return criteria.List<Telephone>().ToList();
             }
         }
-
-       
-
     }
 }

@@ -53,12 +53,13 @@ namespace IndexMobileEntity.Models
             {
                 using (ISession session = NHibernateHelper.OpenSession())
                 {
-                    ICriteria criteria = session.CreateCriteria(typeof(Telephone));
-                    criteria.Add(Restrictions.Eq("Access", this));
-                    criteria.Add(Restrictions.IsNull("Selection"));
-                    criteria.AddOrder(Order.Asc("NumberOrder"));
-                    criteria.SetMaxResults(100000);
-                    return criteria.List<Telephone>().ToList<Telephone>();
+                    var criteria = session.CreateCriteria(typeof(Telephone))
+						.Add(Restrictions.Eq(nameof(Access), this))
+						.Add(Restrictions.IsNull(nameof(Selection)))
+						.AddOrder(Order.Asc("NumberOrder"))
+						.SetMaxResults(100000);
+
+                    return criteria.List<Telephone>().ToList();
                 }
             }
         }
@@ -70,12 +71,12 @@ namespace IndexMobileEntity.Models
         {
             get
             {
-                using (ISession session = NHibernateHelper.OpenSession())
+                using (var session = NHibernateHelper.OpenSession())
                 {
-                    ICriteria criteria = session.CreateCriteria(typeof(Telephone));
-                    criteria.Add(Restrictions.Eq("Access", this));
-                    criteria.Add(Restrictions.IsNull("Selection"));
-                    criteria.SetProjection(Projections.Count("Number"));
+                    var criteria = session.CreateCriteria(typeof(Telephone))
+						.Add(Restrictions.Eq(nameof(Access), this))
+						.Add(Restrictions.IsNull(nameof(Selection)))
+						.SetProjection(Projections.Count(nameof(ID)));
                     return (int) criteria.UniqueResult();
                 }
             }
@@ -88,11 +89,12 @@ namespace IndexMobileEntity.Models
         {
             get
             {
-                using (ISession session = NHibernateHelper.OpenSession())
+                using (var session = NHibernateHelper.OpenSession())
                 {
-                    ICriteria criteria = session.CreateCriteria(typeof(Telephone));
-                    criteria.Add(Restrictions.Eq("Access", this));
-                    criteria.SetProjection(Projections.Count("Number"));
+                    var criteria = session.CreateCriteria(typeof(Telephone))
+						.Add(Restrictions.Eq(nameof(Access), this))
+						.SetProjection(Projections.Count(nameof(ID)));
+
                     return (int)criteria.UniqueResult();
                 }
             }

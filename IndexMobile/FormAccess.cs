@@ -23,19 +23,23 @@ namespace IndexMobileGenerate
         {
             try
             {
-                listBoxAccess.DisplayMember = "DisplayName";
+				UseWaitCursor = true;
+
+				Cursor.Current = Cursors.WaitCursor;
+
+				listBoxAccess.DisplayMember = "DisplayName";
                 listBoxAccess.ValueMember = "DisplayName";
                 listBoxAccess.DataSource = Access.GetAll().OrderByDescending(x => x.ID).ToList();
-                //foreach (var item in Access.GetAll().OrderByDescending(x=>x.ID))
-                //{
-                //    listBoxAccess.Items.Add(item.Name);
-                //}
             }
             catch (Exception ex)
             {
                 listBoxAccess.DataSource = null;
                 listBoxAccess.Items.Add(ex.Message);
             }
+			finally
+			{
+				UseWaitCursor = false;
+			}
         }
 
         private void buttonAccessAdd_Click(object sender, EventArgs e)
@@ -49,7 +53,7 @@ namespace IndexMobileGenerate
 
                 var accessNewForm = new FormAccessNew(access);
                 accessNewForm.ShowDialog();
-                this.LoadAccess();
+                LoadAccess();
 
             }
             catch (Exception ex)
@@ -68,13 +72,10 @@ namespace IndexMobileGenerate
 
 			var accessNewForm = new FormAccessNew(access);
 
-            if (accessNewForm.ShowDialog() == DialogResult.OK)
-			{
-				this.LoadAccess();
-			}
+			accessNewForm.ShowDialog();
 
-
-        }
+			LoadAccess();
+		}
 
         private void buttonSelection_Click(object sender, EventArgs e)
         {
@@ -87,7 +88,7 @@ namespace IndexMobileGenerate
 
             selectionForm.ShowDialog();
 
-            //this.LoadAccess();
+            LoadAccess();
         }
 
         private void FormAccess_Load(object sender, EventArgs e)

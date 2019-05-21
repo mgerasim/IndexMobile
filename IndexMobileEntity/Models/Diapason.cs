@@ -46,9 +46,14 @@ namespace IndexMobileEntity.Models
         public virtual List<Telephone> Telephones => Telephone.GetAllByDiapason(this);
 
 		/// <summary>
+		/// Количество номеров в диапазоне
+		/// </summary>
+		private int TelephoneCount => Telephone.GetCountAllByDiapason(this);
+
+		/// <summary>
 		/// Пользовательское наименование
 		/// </summary>
-		public virtual string DisplayName => this.ValueMin.ToString("0000000000") + " ... " + this.ValueMax.ToString("0000000000") + " =" + this.Telephones.Count + " - " + Telephone.GetCountFreeByDiapason(this).ToString();
+		public virtual string DisplayName => this.ValueMin.ToString("0000000000") + " ... " + this.ValueMax.ToString("0000000000") + " =" + TelephoneCount + " - " + Telephone.GetCountFreeByDiapason(this).ToString();
 
 		/// <summary>
 		/// Получает диапозоны в рамках отбора

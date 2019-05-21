@@ -1,5 +1,4 @@
 ﻿using Entity.Common;
-using NHibernate;
 using NHibernate.Criterion;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,12 +52,13 @@ namespace IndexMobileEntity.Models
 		/// <returns></returns>
         static public List<Selection> GetAllByAccess(Access access)
         {
-            using (ISession session = NHibernateHelper.OpenSession())
+            using (var session = NHibernateHelper.OpenSession())
             {
-                ICriteria criteria = session.CreateCriteria(typeof(Selection));
-                criteria.Add(Restrictions.Eq("Access", access));
-                criteria.AddOrder(Order.Asc("ID"));
-                return criteria.List<Selection>().ToList<Selection>();
+                var criteria = session.CreateCriteria(typeof(Selection))
+					.Add(Restrictions.Eq(nameof(Access), access))
+					.AddOrder(Order.Asc(nameof(access.ID)));
+
+                return criteria.List<Selection>().ToList();
             }
         }
     }
