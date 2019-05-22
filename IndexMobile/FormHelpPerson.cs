@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace IndexMobile
 {
-    public partial class FormHelpPerson : Form
+    public partial class FormHelpPerson : System.Windows.Forms.Form
     {
         public FormHelpPerson()
         {

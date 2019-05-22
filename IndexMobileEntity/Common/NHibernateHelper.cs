@@ -7,7 +7,34 @@ namespace Entity.Common
 {
 	public class NHibernateHelper
     {
+		/// <summary>
+		/// Строка соединения с базой данных
+		/// </summary>
+		private static string _connectionString = string.Empty;
+
+		/// <summary>
+		/// Фабрика сессии
+		/// </summary>
         private static ISessionFactory _sessionFactory;
+
+		/// <summary>
+		/// Строка соединения с базой данных
+		/// </summary>
+		public static string ConnectionString
+		{
+			get
+			{
+				if (string.IsNullOrEmpty(_connectionString))
+				{
+					using (var session = OpenSession())
+					{
+						_connectionString = session.Connection.ConnectionString;
+					}
+				}
+
+				return _connectionString;
+			}
+		}
 
         private static ISessionFactory SessionFactory
         {

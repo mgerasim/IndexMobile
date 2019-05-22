@@ -1,4 +1,5 @@
-﻿using IndexMobile;
+﻿using Entity.Common;
+using IndexMobile;
 using IndexMobileEntity.Models;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Windows.Forms;
 
 namespace IndexMobileGenerate
 {
-	public partial class FormAccessNew : Form
+	public partial class FormAccessNew : System.Windows.Forms.Form
     {
         Access _access;
         public FormAccessNew(Access theAccess)
@@ -63,11 +64,10 @@ namespace IndexMobileGenerate
 
                     var results = new List<int>();
                     string sqlInsertUsers = @"INSERT INTO [Telephone] ([Number], [NumberOrder], [Diapason_ID], [Access_ID]) VALUES (@Number, @NumberOrder, @Diapason_ID, @Access_ID);";
-                    
-                    string _connectionString = "Data Source=DEF.db";
-                                       
 
-                    using (var cn = new SQLiteConnection(_connectionString))
+					string _connectionString = NHibernateHelper.ConnectionString;
+					
+					using (var cn = new SQLiteConnection(_connectionString))
                     {
                         cn.Open();
 
@@ -194,7 +194,8 @@ namespace IndexMobileGenerate
                     
                     var results = new List<int>();
                     string sqlInsertUsers = @"INSERT INTO [Telephone] ([Number], [NumberOrder], [Diapason_ID], [Access_ID]) VALUES (@Number, @NumberOrder, @Diapason_ID, @Access_ID);";
-                    string _connectionString = "Data Source=DEF.db";
+                    string _connectionString = NHibernateHelper.ConnectionString;
+
                     using (var cn = new SQLiteConnection(_connectionString))
                     {
                         cn.Open();

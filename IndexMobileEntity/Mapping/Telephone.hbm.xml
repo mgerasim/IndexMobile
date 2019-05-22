@@ -9,8 +9,8 @@
     <property name="created_at" update="false"/>
     <property name="updated_at" />
 
-    <property name="Number" unique-key="access">
-      <column name="Number" index="IDX_TELEPHONE_NUMBER" />
+    <property name="Number" >
+      <column name="Number" unique-key="access" index="IDX_TELEPHONE_NUMBER" />
     </property>
   
     <many-to-one name="Selection" column="Selection_ID" />

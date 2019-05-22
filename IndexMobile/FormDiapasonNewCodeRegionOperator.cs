@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace IndexMobile
 {
-	public partial class FromDiapasonNewCodeRegionOperator : Form
+	public partial class FromDiapasonNewCodeRegionOperator : System.Windows.Forms.Form
     {
         bool isNotUpdateCodeAll = false;
         bool isNotUpdateRegionAll = false;

@@ -1,4 +1,5 @@
-﻿using IndexMobile;
+﻿using Entity.Common;
+using IndexMobile;
 using IndexMobileEntity.Models;
 using OfficeOpenXml;
 using System;
@@ -10,7 +11,7 @@ using System.Windows.Forms;
 
 namespace IndexMobileGenerate
 {
-	public partial class FormSelection : Form
+	public partial class FormSelection : System.Windows.Forms.Form
     {
         private Access _access;
 
@@ -62,9 +63,10 @@ namespace IndexMobileGenerate
 
                 Telephones.Shuffle();
 
-
                 string sqlInsertUsers = @"UPDATE [Telephone] SET [Selection_ID] = @Selection_ID WHERE [ID] = @ID";
-                string _connectionString = "Data Source=DEF.db";
+
+                string _connectionString = NHibernateHelper.ConnectionString;
+
                 using (var cn = new SQLiteConnection(_connectionString))
                 {
                     cn.Open();

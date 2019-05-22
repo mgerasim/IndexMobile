@@ -15,12 +15,12 @@ using System.Windows.Forms;
 
 namespace IndexMobile
 {
-	public partial class Form1 : Form
+	public partial class Form : System.Windows.Forms.Form
     {
         bool isStop = false;
         ExcelPackage pck = null;
         Thread th;
-        public Form1()
+        public Form()
         {
             InitializeComponent();
             this.button3.Enabled = false;
@@ -43,7 +43,7 @@ namespace IndexMobile
             textBox1.Text = value + "\r\n" + textBox1.Text; 
         }
        
-        static private void Log(Form1 theForm, string msg)
+        static private void Log(Form theForm, string msg)
         {
             //theForm.textBox1.Text = msg + "\r\n" + theForm.textBox1.Text;
             theForm.AppendTextBox(msg);
@@ -51,7 +51,7 @@ namespace IndexMobile
 
         private void ExecuteInForeground(Object obj)
         {
-            Form1 theForm = (Form1)obj;
+            Form theForm = (Form)obj;
             try
             {
                 List<Nameface> theListNameface = Nameface.GetAll();
@@ -514,18 +514,14 @@ namespace IndexMobile
                         throw new Exception("Не обнаружен тег table");
                     }
 
-
-                    
-
-                    
-                    
                     var tagTr = tagTBody.SelectNodes("//tr");
                     int CountTotal = tagTr.Count();
                     Log("Количество объектов: " + CountTotal.ToString());
 
                     Log("Удаление предыдущих записей");
 
-                    string _connectionString = "Data Source=DEF.db";
+                    string _connectionString = NHibernateHelper.ConnectionString;
+
                     using (var cn = new SQLiteConnection(_connectionString))
                     {
                         cn.Open();
