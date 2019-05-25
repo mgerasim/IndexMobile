@@ -1,5 +1,6 @@
 ﻿using IndexMobileEntity.Models;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
@@ -93,7 +94,53 @@ namespace IndexMobileGenerate
 
         private void FormAccess_Load(object sender, EventArgs e)
         {
+			
+		}
 
-        }
-    }
+		/// <summary>
+		/// Удаление отбора
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void buttonDelete_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				UseWaitCursor = true;
+
+				Cursor.Current = Cursors.WaitCursor;
+
+				if (!(listBoxAccess.SelectedItem is Access access))
+				{
+					return;
+				}
+
+				foreach (var diapason in access.Diapasons)
+				{
+					diapason.DeleteTelephones();
+
+					diapason.Delete();
+				}
+
+				foreach (var selection in access.Selections)
+				{
+					selection.Delete();
+				}
+
+				access.Delete();
+
+				((List<Access>)listBoxAccess.DataSource).Remove(access);
+			}
+			catch (Exception exc)
+			{
+				listBoxAccess.DataSource = null;
+
+				listBoxAccess.Items.Add(exc.Message);
+			}
+			finally
+			{
+				UseWaitCursor = false;
+			}
+		}
+	}
 }

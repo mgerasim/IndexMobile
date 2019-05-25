@@ -62,13 +62,32 @@ namespace IndexMobileEntity.Models
 		/// <returns></returns>
 		static public List<Diapason> GetAllByAccess(Access access)
         {
-            using (ISession session = NHibernateHelper.OpenSession())
+            using (var session = NHibernateHelper.OpenSession())
             {
-                ICriteria criteria = session.CreateCriteria(typeof(Diapason));
+                var criteria = session.CreateCriteria(typeof(Diapason));
                 criteria.Add(Restrictions.Eq("Access", access));
                 criteria.AddOrder(Order.Asc("ID"));
                 return criteria.List<Diapason>().ToList<Diapason>();
             }
         }
+
+		/// <summary>
+		/// Удаляет принадлежащие диапазаону телефоны
+		/// </summary>
+		public virtual void DeleteTelephones()
+		{
+			using (var session = NHibernateHelper.OpenSession())
+			{
+				using (var transaction = session.BeginTransaction())
+				{
+					var sqlQuery = session.CreateSQLQuery($@"DELETE FROM {nameof(Telephone)} WHERE Diapason_ID = {ID}");
+
+					sqlQuery.ExecuteUpdate();
+
+					transaction.Commit();
+				}
+
+			}
+		}
     }
 }
