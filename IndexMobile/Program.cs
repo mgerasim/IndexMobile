@@ -14,11 +14,13 @@ namespace IndexMobile
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new Form());
 
 			Application.ThreadException += Application_ThreadException;
 
 			AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
+			Application.Run(new FormMain());
+			
         }
 
 		/// <summary>
@@ -28,7 +30,9 @@ namespace IndexMobile
 		/// <param name="e"></param>
 		private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
 		{
-			throw new NotImplementedException();
+			var formException = new FormException((Exception)e.ExceptionObject);
+
+			formException.ShowDialog();
 		}
 
 		/// <summary>
@@ -38,7 +42,9 @@ namespace IndexMobile
 		/// <param name="e"></param>
 		private static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
 		{
-			throw new NotImplementedException();
+			var formException = new FormException(e.Exception);
+
+			formException.ShowDialog();
 		}
 
 		private static Random rng = new Random();

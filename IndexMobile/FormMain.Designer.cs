@@ -1,6 +1,6 @@
 ﻿namespace IndexMobile
 {
-    partial class Form
+    partial class FormMain
     {
         /// <summary>
         /// Required designer variable.

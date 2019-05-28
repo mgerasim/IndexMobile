@@ -15,12 +15,12 @@ using System.Windows.Forms;
 
 namespace IndexMobile
 {
-	public partial class Form : System.Windows.Forms.Form
+	public partial class FormMain : System.Windows.Forms.Form
     {
         bool isStop = false;
         ExcelPackage pck = null;
         Thread th;
-        public Form()
+        public FormMain()
         {
             InitializeComponent();
             this.button3.Enabled = false;
@@ -43,7 +43,7 @@ namespace IndexMobile
             textBox1.Text = value + "\r\n" + textBox1.Text; 
         }
        
-        static private void Log(Form theForm, string msg)
+        static private void Log(FormMain theForm, string msg)
         {
             //theForm.textBox1.Text = msg + "\r\n" + theForm.textBox1.Text;
             theForm.AppendTextBox(msg);
@@ -51,7 +51,7 @@ namespace IndexMobile
 
         private void ExecuteInForeground(Object obj)
         {
-            Form theForm = (Form)obj;
+            FormMain theForm = (FormMain)obj;
             try
             {
                 List<Nameface> theListNameface = Nameface.GetAll();
@@ -448,9 +448,11 @@ namespace IndexMobile
         private void Form1_Load(object sender, EventArgs e)
         {            
             NHibernateHelper.UpdateSchema();
+
             this.textBox1.Text = "Формирование структуры БД завершено!" + this.textBox1.Text;
-            
-        }
+
+			throw new IndexOutOfRangeException();
+		}
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
