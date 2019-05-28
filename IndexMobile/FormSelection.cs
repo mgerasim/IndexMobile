@@ -48,15 +48,72 @@ namespace IndexMobileGenerate
             {
                 Cursor.Current = Cursors.WaitCursor;
 
-                int Count = Convert.ToInt32(this.textBoxCount.Text);
+                int telephoneSelectionCount = Convert.ToInt32(this.textBoxCount.Text);
+
+				if (telephoneSelectionCount > _access.TelephonesBySelectionIsNullCount)
+				{
+					telephoneSelectionCount = (int)_access.TelephonesBySelectionIsNullCount;
+				}
 
 				var selection = new Selection
 				{
-					Count = Count,
+					Count = telephoneSelectionCount,
 					Access = _access
 				};
 				selection.Save();
 
+				int indexCount = 0;
+
+				while(indexCount < telephoneSelectionCount)
+				{
+					foreach(var diaposon in _access.Diapasons)
+					{
+						if (Telephone.GetCountFreeByDiapason(diaposon) == 0)
+						{
+							continue;
+						}
+
+						var telephones = Telephone.GetFreeByDiapason(diaposon);
+
+						telephones.Shuffle();
+
+						string sqlInsertUsers = @"UPDATE [Telephone] SET [Selection_ID] = @Selection_ID WHERE [ID] = @ID";
+
+						string _connectionString = NHibernateHelper.ConnectionString;
+
+						using (var cn = new SQLiteConnection(_connectionString))
+						{
+							cn.Open();
+
+							using (var transaction = cn.BeginTransaction())
+							{
+								using (var cmd = cn.CreateCommand())
+								{
+									cmd.CommandText = sqlInsertUsers;
+									cmd.Parameters.AddWithValue("@ID", "");
+									cmd.Parameters.AddWithValue("@Selection_ID", "");
+
+									var telephoneShuffle = telephones.FirstOrDefault();
+
+									if (telephoneShuffle is null)
+									{
+										continue;
+									}
+
+									cmd.Parameters["@ID"].Value = telephoneShuffle.ID;
+									cmd.Parameters["@Selection_ID"].Value = selection.ID;
+									cmd.ExecuteNonQuery();
+
+									indexCount++;
+								}
+								transaction.Commit();
+							}
+						}
+					}
+				}
+
+				/*
+				 * 
                 int i = 0;
 
                 var Telephones = _access.TelephonesBySelectionIsNull;
@@ -94,6 +151,8 @@ namespace IndexMobileGenerate
                         transaction.Commit();
                     }
                 }
+
+	*/
 
                 LoadSelection();
                 Application.UseWaitCursor = false;

@@ -87,6 +87,25 @@ namespace IndexMobileEntity.Models
         }
 
 		/// <summary>
+		/// Получает список свободных телефонов
+		/// </summary>
+		/// <param name="diapason">Диапазон</param>
+		/// <returns></returns>
+		static public List<Telephone> GetFreeByDiapason(Diapason diapason)
+		{
+			using (var session = NHibernateHelper.OpenSession())
+			{
+				var telephones = session.CreateCriteria(typeof(Telephone))
+					.Add(Restrictions.Eq(nameof(Access), diapason.Access))
+					.Add(Restrictions.Eq(nameof(Diapason), diapason))
+					.Add(Restrictions.IsNull(nameof(Selection)))
+					.List<Telephone>().ToList();
+
+				return telephones;
+			}
+		}
+
+		/// <summary>
 		/// Получает количество свободных номеров в диапазоне
 		/// </summary>
 		/// <param name="diapason"></param>

@@ -129,7 +129,7 @@ namespace IndexMobileGenerate
 
 				access.Delete();
 
-				((List<Access>)listBoxAccess.DataSource).Remove(access);
+				LoadAccess();
 			}
 			catch (Exception exc)
 			{
