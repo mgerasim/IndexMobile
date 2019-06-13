@@ -75,10 +75,16 @@
     <Compile Include="Common\NHibernateHelper.cs" />
     <Compile Include="Helper\DataClass.cs" />
     <Compile Include="Models\Access.cs" />
+    <Compile Include="Models\BaseClasses\BaseClassWithTitle.cs" />
+    <Compile Include="Models\Capacity.cs" />
+    <Compile Include="Models\Code.cs" />
     <Compile Include="Models\DEF.cs" />
+    <Compile Include="Models\District.cs" />
     <Compile Include="Models\Nameface.cs" />
+    <Compile Include="Models\Operator.cs" />
     <Compile Include="Models\ParserCompany.cs" />
     <Compile Include="Models\ParserPerson.cs" />
+    <Compile Include="Models\Region.cs" />
     <Compile Include="Models\Telephone.cs" />
     <Compile Include="Models\Selection.cs" />
     <Compile Include="Models\Diapason.cs" />
@@ -114,7 +120,22 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Mapping\Code.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mapping\Operator.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Mapping\DEF.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mapping\Region.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mapping\District.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mapping\Capacity.hbm.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <Content Include="Mapping\Nameface.hbm.xml" />

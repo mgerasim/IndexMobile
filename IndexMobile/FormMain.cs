@@ -450,8 +450,7 @@ namespace IndexMobile
             NHibernateHelper.UpdateSchema();
 
             this.textBox1.Text = "Формирование структуры БД завершено!" + this.textBox1.Text;
-
-			throw new IndexOutOfRangeException();
+			
 		}
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
@@ -463,170 +462,6 @@ namespace IndexMobile
         {
             this.textBox1.Text = msg + "\r\n" + this.textBox1.Text;
             Application.DoEvents();
-        }
-
-        private void обновитьСхемуToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-
-            try
-            {
-                Application.UseWaitCursor = true;
-
-                NHibernateHelper.UpdateSchema();
-                string urlAddress = "https://www.rossvyaz.ru/docs/articles/DEF-9x.html";
-                HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(urlAddress);
-
-                Log("Выполняем запрос: " + urlAddress);
-
-                HttpWebResponse response = (HttpWebResponse)req.GetResponse();
-
-                if (response.StatusCode == HttpStatusCode.OK)
-                {
-                    Log("Запрос выполнен");
-
-
-                    StreamReader readStream = new StreamReader(req.GetResponse().GetResponseStream(), Encoding.GetEncoding(1251)); 
-
-                    
-                    string data = readStream.ReadToEnd();
-
-                    Log("Данные прочитаны");
-
-                    response.Close();
-                    readStream.Close();
-
-                    var doc = new HtmlAgilityPack.HtmlDocument();
-                    HtmlAgilityPack.HtmlNode.ElementsFlags["br"] = HtmlAgilityPack.HtmlElementFlag.Empty;
-
-                    data = data.Replace("<tr valign=\"top\">", "");
-                    data = data.Replace("<td style=\"width:10%;text-align:center; vertical-align:top; font-weight: bold;\">АВС/ DEF</td>", "");
-                    data = data.Replace("<td style=\"width:10%;text-align:center; vertical-align:top; font-weight: bold;\">От</td>", "");
-                    data = data.Replace("<td style=\"width:10%;text-align:center; vertical-align:top; font-weight: bold;\">До</td>", "");
-                    data = data.Replace("<td style=\"width:25%;text-align:center; vertical-align:top; font-weight: bold;\">Емкость</td>", "");
-                    data = data.Replace("<td style=\"width:25%;text-align:center; vertical-align:top; font-weight: bold;\">Оператор</td>", "");
-                    data = data.Replace("<td style=\"width:25%;text-align:center; vertical-align:top; font-weight: bold;\">Регион</td>", "");
-
-                    doc.LoadHtml(data);
-
-                    string xpathDivSelector = "//table";
-                    var tagTBody = doc.DocumentNode.SelectSingleNode(xpathDivSelector);
-                    if (tagTBody == null)
-                    {
-                        throw new Exception("Не обнаружен тег table");
-                    }
-
-                    var tagTr = tagTBody.SelectNodes("//tr");
-                    int CountTotal = tagTr.Count();
-                    Log("Количество объектов: " + CountTotal.ToString());
-
-                    Log("Удаление предыдущих записей");
-
-                    string _connectionString = NHibernateHelper.ConnectionString;
-
-                    using (var cn = new SQLiteConnection(_connectionString))
-                    {
-                        cn.Open();
-                        using (var transaction = cn.BeginTransaction())
-                        {
-                            using (var cmd = cn.CreateCommand())
-                            {
-                                cmd.CommandText = "DELETE FROM DEF";
-                            }
-
-                            var results = new List<int>();
-                            using(var cmdIns = cn.CreateCommand())
-                            {
-                                cmdIns.CommandText = @"INSERT INTO [DEF] ([NumberDEF], [NumberBgn], [NumberEnd], [Operator], [Region]) VALUES (@NumberDEF, @NumberBgn, @NumberEnd, @Operator, @Region)";                                
-                                cmdIns.Parameters.AddWithValue("@NumberDEF", "0");
-                                cmdIns.Parameters.AddWithValue("@NumberBgn", "0");
-                                cmdIns.Parameters.AddWithValue("@NumberEnd", "0");
-                                cmdIns.Parameters.AddWithValue("@Operator", "");
-                                cmdIns.Parameters.AddWithValue("@Region", "");
-                                
-                                Log("Выполняем парсер");
-                                foreach (var item in tagTr)
-                                {
-                                    cmdIns.Parameters["@NumberDEF"].Value = Convert.ToInt32(item.ChildNodes[1].InnerText.Trim(new char[] { '\t' }));
-                                    cmdIns.Parameters["@NumberBgn"].Value = Convert.ToInt32(item.ChildNodes[2].InnerText.Trim(new char[] { '\t' }));
-                                    cmdIns.Parameters["@NumberEnd"].Value = Convert.ToInt32(item.ChildNodes[3].InnerText.Trim(new char[] { '\t' }));
-                                    cmdIns.Parameters["@Operator"].Value = item.ChildNodes[5].InnerText.Trim(new char[] { '\t' });
-                                    cmdIns.Parameters["@Region"].Value = item.ChildNodes[6].InnerText.Trim(new char[] { '\t' });
-                                    results.Add(cmdIns.ExecuteNonQuery());
-
-                                }
-
-                            }
-
-                            int Sum = results.Sum();
-
-                            Log("Завершено: " + Sum.ToString());
-
-                            transaction.Commit();
-                        }
-                        cn.Close();
-                    }
-
-
-                    //var DelList = DEF.GetAll();
-                    //int j = 0;
-                    //foreach (var item in DelList)
-                    //{
-                    //    j++;
-                    //    Log("Удаление: " + j.ToString() + "/" + DelList.Count());
-                    //    item.Delete();
-                    //}
-
-                    //Log("Выполняем парсер");
-                    //int i = 0;
-                    //foreach (var item in tagTr)
-                    //{
-                    //    i++;
-                    //    //Log("Объект: " + i.ToString() + "/" + CountTotal.ToString());
-
-                    //    try
-                    //    {
-                    //        DEF theDEF = new DEF();
-                    //        theDEF.NumberDEF = Convert.ToInt32(item.ChildNodes[1].InnerText.Trim(new char[] { '\t' }));
-                    //        theDEF.NumberBgn = Convert.ToInt32(item.ChildNodes[2].InnerText.Trim(new char[] { '\t' }));
-                    //        theDEF.NumberEnd = Convert.ToInt32(item.ChildNodes[3].InnerText.Trim(new char[] { '\t' }));
-                    //        theDEF.Operator = item.ChildNodes[5].InnerText.Trim(new char[] { '\t' });
-                    //        theDEF.Region = item.ChildNodes[6].InnerText.Trim(new char[] { '\t' });
-
-                    //    //    theDEF.Save();
-
-                    //    }
-                    //    catch (Exception ex)
-                    //    {
-                    //        Log(ex.Message);
-                    //    }
-                        
-
-                    //}
-
-                    //int CountTotal = tagTBody.ChildNodes[1].ChildNodes.Count;
-                    //Log("Количество объектов: " + CountTotal.ToString());
-                    //int i = 0;
-                    //foreach(var item in tagTBody.ChildNodes)
-                    //{
-                    //    i++;
-                    //    Log("Объект: " + i.ToString() + "/" + CountTotal.ToString());
-
-                        
-
-                    //}
-                }
-                MessageBox.Show("Обновление завершено!");
-            }
-            catch (Exception err)
-            {
-                MessageBox.Show(err.Message);
-            }
-            finally
-            {
-                Application.UseWaitCursor = false;
-            }
-            
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -1194,5 +1029,60 @@ namespace IndexMobile
             IndexMobileGenerate.FormAccess theForm = new IndexMobileGenerate.FormAccess();
             theForm.ShowDialog();
         }
-    }
+
+		/// <summary>
+		/// Обработчик пункта меню Настройки - Обновить базу номерных диапозонов
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void UpdateOperatorCodes_ToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (openFileDialogCSV.ShowDialog() != DialogResult.OK)
+			{
+				return;
+			}
+
+			var fileNameCsv = openFileDialogCSV.FileName;
+
+			using (var reader = new StreamReader(fileNameCsv))
+			{
+				while (!reader.EndOfStream)
+				{
+					var line = reader.ReadLine();
+					var values = line.Split(new char[] { ';', ','});
+
+					if (values.Count() != 7)
+					{
+						MessageBox.Show("Формат CSV файла не соответствует для импорта данных.\n Должно быть 7 колонок разделенные запятой или точкой запятой: Код, МинЗначениеДиапазона, МаксЗначениеДиапазона, ОбъемНомернойЕмкости, Оператор, Регион, Направление");
+
+						return;
+					}
+
+					try
+					{
+						var valueCode = values[0];
+						var valueMin = values[1];
+						var valueMax = values[2];
+						var valueOperator = values[4];
+						var valueRegion = values[5];
+						var valueDisrtict = values[6];
+
+						var code = 
+
+						var capacity = new Capacity
+						{
+							MinValue = valueMin,
+							MaxValue = valueMax,
+							Code 
+						};
+					}
+					catch
+					{
+
+					}
+				}
+			}
+
+		}
+	}
 }

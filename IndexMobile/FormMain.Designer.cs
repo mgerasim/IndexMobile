@@ -35,7 +35,7 @@
 			this.button3 = new System.Windows.Forms.Button();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-			this.обновитьСхемуToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.UpdateOperatorCodes_ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.button4 = new System.Windows.Forms.Button();
 			this.buttonParserCompany = new System.Windows.Forms.Button();
 			this.buttonParserPerson = new System.Windows.Forms.Button();
@@ -45,6 +45,7 @@
 			this.buttonHelpEmail = new System.Windows.Forms.Button();
 			this.buttonDiaposonGenerate = new System.Windows.Forms.Button();
 			this.labelProcent = new System.Windows.Forms.Label();
+			this.openFileDialogCSV = new System.Windows.Forms.OpenFileDialog();
 			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -61,13 +62,14 @@
 			// 
 			// openFileDialog1
 			// 
+			this.openFileDialog1.Filter = "CSV файлы|*.csv";
 			this.openFileDialog1.Multiselect = true;
 			this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog1_FileOk);
 			// 
 			// button1
 			// 
 			this.button1.Location = new System.Drawing.Point(30, 96);
-			this.button1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.button1.Margin = new System.Windows.Forms.Padding(6);
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(150, 44);
 			this.button1.TabIndex = 1;
@@ -78,7 +80,7 @@
 			// textBox1
 			// 
 			this.textBox1.Location = new System.Drawing.Point(30, 152);
-			this.textBox1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.textBox1.Margin = new System.Windows.Forms.Padding(6);
 			this.textBox1.Multiline = true;
 			this.textBox1.Name = "textBox1";
 			this.textBox1.ReadOnly = true;
@@ -89,7 +91,7 @@
 			// button3
 			// 
 			this.button3.Location = new System.Drawing.Point(192, 96);
-			this.button3.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.button3.Margin = new System.Windows.Forms.Padding(6);
 			this.button3.Name = "button3";
 			this.button3.Size = new System.Drawing.Size(150, 44);
 			this.button3.TabIndex = 4;
@@ -99,37 +101,37 @@
 			// 
 			// menuStrip1
 			// 
+			this.menuStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
 			this.menuStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Padding = new System.Windows.Forms.Padding(12, 4, 0, 4);
-			this.menuStrip1.Size = new System.Drawing.Size(1992, 46);
+			this.menuStrip1.Size = new System.Drawing.Size(1992, 44);
 			this.menuStrip1.TabIndex = 5;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
 			// toolStripMenuItem1
 			// 
 			this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.обновитьСхемуToolStripMenuItem});
+            this.UpdateOperatorCodes_ToolStripMenuItem});
 			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(145, 38);
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(145, 36);
 			this.toolStripMenuItem1.Text = "Настройки";
-			this.toolStripMenuItem1.Visible = false;
 			this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
 			// 
-			// обновитьСхемуToolStripMenuItem
+			// UpdateOperatorCodes_ToolStripMenuItem
 			// 
-			this.обновитьСхемуToolStripMenuItem.Name = "обновитьСхемуToolStripMenuItem";
-			this.обновитьСхемуToolStripMenuItem.Size = new System.Drawing.Size(324, 38);
-			this.обновитьСхемуToolStripMenuItem.Text = "Обновить схему";
-			this.обновитьСхемуToolStripMenuItem.Click += new System.EventHandler(this.обновитьСхемуToolStripMenuItem_Click);
+			this.UpdateOperatorCodes_ToolStripMenuItem.Name = "UpdateOperatorCodes_ToolStripMenuItem";
+			this.UpdateOperatorCodes_ToolStripMenuItem.Size = new System.Drawing.Size(612, 38);
+			this.UpdateOperatorCodes_ToolStripMenuItem.Text = "Обновить базу номерных диапозонов из csv";
+			this.UpdateOperatorCodes_ToolStripMenuItem.Click += new System.EventHandler(this.UpdateOperatorCodes_ToolStripMenuItem_Click);
 			// 
 			// button4
 			// 
 			this.button4.Location = new System.Drawing.Point(500, 96);
-			this.button4.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.button4.Margin = new System.Windows.Forms.Padding(6);
 			this.button4.Name = "button4";
 			this.button4.Size = new System.Drawing.Size(336, 44);
 			this.button4.TabIndex = 6;
@@ -140,7 +142,7 @@
 			// buttonParserCompany
 			// 
 			this.buttonParserCompany.Location = new System.Drawing.Point(976, 96);
-			this.buttonParserCompany.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.buttonParserCompany.Margin = new System.Windows.Forms.Padding(6);
 			this.buttonParserCompany.Name = "buttonParserCompany";
 			this.buttonParserCompany.Size = new System.Drawing.Size(150, 44);
 			this.buttonParserCompany.TabIndex = 7;
@@ -151,7 +153,7 @@
 			// buttonParserPerson
 			// 
 			this.buttonParserPerson.Location = new System.Drawing.Point(1350, 96);
-			this.buttonParserPerson.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.buttonParserPerson.Margin = new System.Windows.Forms.Padding(6);
 			this.buttonParserPerson.Name = "buttonParserPerson";
 			this.buttonParserPerson.Size = new System.Drawing.Size(162, 44);
 			this.buttonParserPerson.TabIndex = 8;
@@ -162,7 +164,7 @@
 			// buttonHelpCompany
 			// 
 			this.buttonHelpCompany.Location = new System.Drawing.Point(1138, 96);
-			this.buttonHelpCompany.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.buttonHelpCompany.Margin = new System.Windows.Forms.Padding(6);
 			this.buttonHelpCompany.Name = "buttonHelpCompany";
 			this.buttonHelpCompany.Size = new System.Drawing.Size(60, 44);
 			this.buttonHelpCompany.TabIndex = 9;
@@ -173,7 +175,7 @@
 			// buttonHelpPerson
 			// 
 			this.buttonHelpPerson.Location = new System.Drawing.Point(1524, 96);
-			this.buttonHelpPerson.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.buttonHelpPerson.Margin = new System.Windows.Forms.Padding(6);
 			this.buttonHelpPerson.Name = "buttonHelpPerson";
 			this.buttonHelpPerson.Size = new System.Drawing.Size(60, 44);
 			this.buttonHelpPerson.TabIndex = 9;
@@ -184,7 +186,7 @@
 			// buttonHelpEmail
 			// 
 			this.buttonHelpEmail.Location = new System.Drawing.Point(848, 96);
-			this.buttonHelpEmail.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.buttonHelpEmail.Margin = new System.Windows.Forms.Padding(6);
 			this.buttonHelpEmail.Name = "buttonHelpEmail";
 			this.buttonHelpEmail.Size = new System.Drawing.Size(60, 44);
 			this.buttonHelpEmail.TabIndex = 10;
@@ -195,7 +197,7 @@
 			// buttonDiaposonGenerate
 			// 
 			this.buttonDiaposonGenerate.Location = new System.Drawing.Point(1636, 96);
-			this.buttonDiaposonGenerate.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.buttonDiaposonGenerate.Margin = new System.Windows.Forms.Padding(6);
 			this.buttonDiaposonGenerate.Name = "buttonDiaposonGenerate";
 			this.buttonDiaposonGenerate.Size = new System.Drawing.Size(332, 44);
 			this.buttonDiaposonGenerate.TabIndex = 11;
@@ -212,7 +214,11 @@
 			this.labelProcent.Size = new System.Drawing.Size(0, 25);
 			this.labelProcent.TabIndex = 12;
 			// 
-			// Form1
+			// openFileDialogCSV
+			// 
+			this.openFileDialogCSV.Title = "Выберите CSV  файл исходных данных";
+			// 
+			// FormMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -231,8 +237,8 @@
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.menuStrip1);
 			this.MainMenuStrip = this.menuStrip1;
-			this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
-			this.Name = "Form1";
+			this.Margin = new System.Windows.Forms.Padding(6);
+			this.Name = "FormMain";
 			this.Text = "Определение сотового оператора";
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
 			this.Load += new System.EventHandler(this.Form1_Load);
@@ -252,7 +258,7 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem обновитьСхемуToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem UpdateOperatorCodes_ToolStripMenuItem;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button buttonParserCompany;
         private System.Windows.Forms.Button buttonParserPerson;
@@ -262,6 +268,7 @@
         private System.Windows.Forms.Button buttonHelpEmail;
         private System.Windows.Forms.Button buttonDiaposonGenerate;
         private System.Windows.Forms.Label labelProcent;
-    }
+		private System.Windows.Forms.OpenFileDialog openFileDialogCSV;
+	}
 }
 
