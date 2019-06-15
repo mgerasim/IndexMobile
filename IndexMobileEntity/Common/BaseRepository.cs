@@ -37,6 +37,18 @@ namespace Entity.Common
             }
         }
 
+		internal void DeleteAll()
+		{
+			using (var session = NHibernateHelper.OpenSession())
+			{
+				using (var transaction = session.BeginTransaction())
+				{
+					session.Delete($@"from {nameof(T)}");
+					session.Flush();
+				}
+			}
+		}
+
         internal void Delete(BaseClass<T> entity)
         {
             using (ISession session = NHibernateHelper.OpenSession())

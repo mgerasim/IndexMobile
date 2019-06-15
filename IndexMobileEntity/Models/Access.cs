@@ -17,9 +17,18 @@ namespace IndexMobileEntity.Models
         public virtual string Name { get; set; }
 
 		/// <summary>
+		///  Всего номеров
+		/// </summary>
+		public virtual long CapacityTotal { get; set; }
+
+		/// <summary>
+		/// Свободных номеров
+		/// </summary>
+		public virtual long CapacityFree { get; set; }
+		/// <summary>
 		/// Пользовательское наименование
 		/// </summary>
-        public virtual string DisplayName => this.Name + " Всего: " + this.TelephonesCount.ToString() + " Свободно: " + this.TelephonesBySelectionIsNullCount.ToString();
+        public virtual string DisplayName => $@"{Name} Всего: {CapacityTotal} Свободно: {CapacityFree}";
 
 		/// <summary>
 		///  Конструктор

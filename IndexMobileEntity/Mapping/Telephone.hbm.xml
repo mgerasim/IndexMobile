@@ -6,8 +6,8 @@
       <generator class="identity" />
     </id>
     
-    <property name="created_at" update="false"/>
-    <property name="updated_at" />
+    <property name="CreatedAt" update="false"/>
+    <property name="UpdatedAt" />
 
     <property name="Number" >
       <column name="Number" unique-key="access" index="IDX_TELEPHONE_NUMBER" />

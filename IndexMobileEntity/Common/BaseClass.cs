@@ -10,17 +10,17 @@ namespace Entity.Common
     public class BaseClass<T>
     {
         public virtual int ID { get; set; }
-        public virtual DateTime created_at { get; set; }
-        public virtual DateTime updated_at { get; set; }
+        public virtual DateTime CreatedAt { get; set; }
+        public virtual DateTime UpdatedAt { get; set; }
 
         public BaseClass()
         {
-            this.ID = -1;
+            ID = -1;
         }
         public virtual void Save()
         {
-            this.created_at = DateTime.Now;
-            this.updated_at = DateTime.Now;
+            this.CreatedAt = DateTime.Now;
+            this.UpdatedAt = DateTime.Now;
             BaseRepository<T> repo = new BaseRepository<T>();
 
             repo.Save(this);
@@ -35,7 +35,7 @@ namespace Entity.Common
 
         public virtual void Update()
         {
-            this.updated_at = DateTime.Now;
+            this.UpdatedAt = DateTime.Now;
             BaseRepository<T> repo = new BaseRepository<T>();
             repo.Update(this);
         }
@@ -49,10 +49,25 @@ namespace Entity.Common
         public static T GetByID(int ID)
         {
             BaseRepository<T> repo = new BaseRepository<T>();
+
             return repo.GetById(ID);
         }
 
+		public static void DeleteAll()
+		{
+			var repo = new BaseRepository<T>();
 
+			repo.DeleteAll();
+		}
 
-    }
+		public override string ToString()
+		{
+			return ID.ToString();
+		}
+
+		public override int GetHashCode()
+		{
+			return ID;
+		}
+	}
 }

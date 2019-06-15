@@ -6,12 +6,14 @@
       <generator class="identity" />
     </id>
     
-    <property name="created_at" update="false"/>
-    <property name="updated_at" />
+    <property name="CreatedAt" update="false"/>
+    <property name="UpdatedAt" />
 
     <property name="Title" >
-      <column name="Title" unique-key="access" index="IDX_REGION_TITLE" />
+      <column name="Title" unique-key="UNX_REGION_TITLE" index="IDX_REGION_TITLE" />
     </property>
-  
+
+    <many-to-one name="District" not-null="true" column="District_ID" />
+
   </class>
 </hibernate-mapping>

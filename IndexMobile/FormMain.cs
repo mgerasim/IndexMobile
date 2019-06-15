@@ -1044,11 +1044,34 @@ namespace IndexMobile
 
 			var fileNameCsv = openFileDialogCSV.FileName;
 
+
+			int countSuccessed = 0;
+			int countFailed = 0;
+
+			int countTotal = 0;
+
 			using (var reader = new StreamReader(fileNameCsv))
 			{
 				while (!reader.EndOfStream)
 				{
+					countTotal++;
+
+					reader.ReadLine();
+				}
+			}
+
+			using (var reader = new StreamReader(fileNameCsv))
+			{
+				int i = 0;
+
+				while (!reader.EndOfStream)
+				{
+					i++;
+
+					Log($@"Обработка записи {i} / {countTotal}");
+
 					var line = reader.ReadLine();
+
 					var values = line.Split(new char[] { ';', ','});
 
 					if (values.Count() != 7)
@@ -1065,24 +1088,71 @@ namespace IndexMobile
 						var valueMax = values[2];
 						var valueOperator = values[4];
 						var valueRegion = values[5];
-						var valueDisrtict = values[6];
+						var valueDistrict = values[6];
 
-						var code = 
+						var code = Code.GetByTitle(valueCode);
+
+						if (code is null)
+						{
+							code = new Code { Title = valueCode };
+
+							code.Save();
+						}
+
+						var operatorModel = Operator.GetByTitle(valueOperator);
+
+						if (operatorModel is null)
+						{
+							operatorModel = new Operator { Title = valueOperator };
+
+							operatorModel.Save();
+						}
+
+						var district = District.GetByTitle(valueDistrict);
+
+						if (district is null)
+						{
+							district = new District { Title = valueDistrict };
+
+							district.Save();
+						}
+
+						var region = IndexMobileEntity.Models.Region.GetByTitle(valueRegion);
+
+						if (region is null)
+						{
+							region = new IndexMobileEntity.Models.Region
+							{
+								Title = valueRegion,
+								District = district
+							};
+
+							region.Save();
+						}
 
 						var capacity = new Capacity
 						{
-							MinValue = valueMin,
-							MaxValue = valueMax,
-							Code 
+							MinValue = Convert.ToInt32(valueMin),
+							MaxValue = Convert.ToInt32(valueMax),
+							Code = code,
+							Operator = operatorModel,
+							Region = region
 						};
+
+						capacity.Save();
+
+						countSuccessed++;
 					}
 					catch
 					{
-
+						countFailed++; 
 					}
 				}
 			}
 
+			string strLog = $@"Импорт завершен. Успешно внесено: {countSuccessed}.  Ошибочно внесено:  {countFailed}.";
+
+			MessageBox.Show(strLog);
 		}
 	}
 }

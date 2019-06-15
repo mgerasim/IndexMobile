@@ -9,9 +9,27 @@ namespace IndexMobile
 {
 	public partial class FromDiapasonNewCodeRegionOperator : System.Windows.Forms.Form
     {
-        bool isNotUpdateCodeAll = false;
+		/// <summary>
+		///  Выбранные элементы из списка направления
+		/// </summary>
+		public List<District> DistrictCheckedList { get; set; } = new List<District>();
+
+		/// <summary>
+		/// Выбранные элементы из списка регионов
+		/// </summary>
+		public List<Region> RegionCheckedList { get; set; } = new List<Region>();
+
+		/// <summary>
+		/// Выбранные элементы из списка операторов сотовой связи
+		/// </summary>
+		public List<Operator> OperatorCheckedList { get; set; } = new List<Operator>();
+
+		public List<Code> CodeCheckedList { get; set; } = new List<Code>();
+
+		bool isNotUpdateCodeAll = false;
         bool isNotUpdateRegionAll = false;
         bool isNotUpdateOperatorAll = false;
+		bool isNotUpdateDistrictAll = false;
         public FromDiapasonNewCodeRegionOperator()
         {
             InitializeComponent();
@@ -29,9 +47,11 @@ namespace IndexMobile
         private void AccessNewCodeRegionOperator_Load(object sender, EventArgs e)
         {
             Application.UseWaitCursor = true;
-            LoadCheckListBox(this.checkedListBoxCode, DEF.GetAll().OrderBy(x=>x.NumberDEF).Select(x => x.NumberDEF.ToString()).Distinct().ToList());
-            LoadCheckListBox(this.checkedListBoxRegion, DEF.GetAll().OrderBy(x => x.Region).Select(x => x.Region.ToString()).Distinct().ToList());
-            LoadCheckListBox(this.checkedListBoxOperator, DEF.GetAll().OrderBy(x => x.Operator).Select(x => x.Operator.ToString()).Distinct().ToList());
+
+			checkedListBoxCode.Items.AddRange(Code.GetAll().ToArray());
+			checkedListBoxOperator.Items.AddRange(Operator.GetAll().ToArray());
+			checkedListBoxDistrict.Items.AddRange(District.GetAll().ToArray());
+			checkedListBoxRegion.Items.AddRange( IndexMobileEntity.Models.Region.GetAll().ToArray());
             Application.UseWaitCursor = false;
         }
 
@@ -45,38 +65,9 @@ namespace IndexMobile
             }
             theTextBox.Text = ss;
         }
+		
 
-        private void checkedListBoxCode_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (this.isNotUpdateCodeAll)
-            {
-                return;
-            }
-            
-            LoadTextEdit(this.checkedListBoxCode, this.textBoxCode);            
-            
-        }
-
-        private void checkedListBoxRegion_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (this.isNotUpdateRegionAll)
-            {
-                return;
-            }
-            LoadTextEdit(this.checkedListBoxRegion, this.textBoxRegion);
-        }
-
-        private void checkedListBoxOperator_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (this.isNotUpdateOperatorAll)
-            {
-                return;
-            }
-
-            LoadTextEdit(this.checkedListBoxOperator, this.textBoxOperator);
-        }
-
-        private void buttonSave_Click(object sender, EventArgs e)
+		private void buttonSave_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
         }
@@ -89,66 +80,79 @@ namespace IndexMobile
 
         private void checkedListBoxCode_ItemCheck(object sender, ItemCheckEventArgs e)
         {
+			CodeCheckedList.Clear();
 
-            if (this.isNotUpdateCodeAll)
-            {
-                return;
-            }
+			foreach (var item in checkedListBoxCode.CheckedItems)
+			{
+				CodeCheckedList.Add(item as Code);
+			}
 
-            if (this.checkedListBoxCode.CheckedItems.Count == 1 && e.NewValue == CheckState.Unchecked)
-            {
-                LoadCheckListBox(this.checkedListBoxRegion, DEF.GetAll().OrderBy(x => x.Region).Select(x => x.Region.ToString()).Distinct().ToList());
-            }
-            else
-            {
-                List<string> checkedItems = new List<string>();
-                foreach (var item in this.checkedListBoxCode.CheckedItems)
-                    checkedItems.Add(item.ToString());
+			if (e.NewValue == CheckState.Unchecked)
+			{
+				CodeCheckedList.Remove(checkedListBoxCode.Items[e.Index] as Code);
+			}
+			else
+			{
+				CodeCheckedList.Add(checkedListBoxCode.Items[e.Index] as Code);
+			}
 
-                if (e.NewValue == CheckState.Checked)
-                    checkedItems.Add(this.checkedListBoxCode.Items[e.Index].ToString());
-                else
-                    checkedItems.Remove(this.checkedListBoxCode.Items[e.Index].ToString());
+			if (isNotUpdateCodeAll)
+			{
+				return;
+			}
 
-                LoadCheckListBox(this.checkedListBoxRegion, DEF.GetAll().Where(x => checkedItems.Contains(x.NumberDEF.ToString())).OrderBy(x => x.Region).Select(x => x.Region.ToString()).Distinct().ToList());
-            }
-        }
+			bool isAllChecked = checkedListBoxCode.Items.Count == CodeCheckedList.Count();
+			
 
-        private void checkedListBoxRegion_ItemCheck(object sender, ItemCheckEventArgs e)
+			textBoxCode.Text = isAllChecked ? "Все" : String.Join(";", CodeCheckedList.Select(x => x.Title));
+
+		}
+
+		private void checkedListBoxRegion_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            if (this.isNotUpdateRegionAll)
-            {
-                return;
-            }
+			RegionCheckedList.Clear();
 
-            if (this.checkedListBoxRegion.CheckedItems.Count == 1 && e.NewValue == CheckState.Unchecked)
-            {
-                LoadCheckListBox(this.checkedListBoxOperator, DEF.GetAll().OrderBy(x => x.Operator).Select(x => x.Operator.ToString()).Distinct().ToList());
-            }
-            else
-            {
-                List<string> checkedItems = new List<string>();
-                foreach (var item in this.checkedListBoxRegion.CheckedItems)
-                    checkedItems.Add(item.ToString());
+			foreach (var item in checkedListBoxRegion.CheckedItems)
+			{
+				RegionCheckedList.Add(item as Region);
+			}
 
-                if (e.NewValue == CheckState.Checked)
-                    checkedItems.Add(this.checkedListBoxRegion.Items[e.Index].ToString());
-                else
-                    checkedItems.Remove(this.checkedListBoxRegion.Items[e.Index].ToString());
+			if (e.NewValue == CheckState.Unchecked)
+			{
+				RegionCheckedList.Remove(checkedListBoxRegion.Items[e.Index] as Region);
+			}
+			else
+			{
+				RegionCheckedList.Add(checkedListBoxRegion.Items[e.Index] as Region);
+			}
 
-                if (this.checkedListBoxCode.CheckedItems.Count == 0)
-                {
-                    LoadCheckListBox(this.checkedListBoxOperator, DEF.GetAll().Where(x => checkedItems.Contains(x.Region.ToString())).OrderBy(x => x.Operator).Select(x => x.Operator.ToString()).Distinct().ToList());
-                }
-                else
-                {
-                    LoadCheckListBox(this.checkedListBoxOperator, DEF.GetAll().Where(x => checkedItems.Contains(x.Region.ToString()) && this.checkedListBoxCode.CheckedItems.Contains(x.NumberDEF.ToString())).OrderBy(x => x.Operator).Select(x => x.Operator.ToString()).Distinct().ToList());
+			if (isNotUpdateRegionAll)
+			{
+				return;
+			}
 
-                }
-            }
-        }
+			RefreshOperatorCheckedBox();
 
-        void SetItemChecked(CheckedListBox theCheckedListBox, bool status, ref bool isNotUpdate)
+
+
+			bool isAllChecked = checkedListBoxRegion.Items.Count == RegionCheckedList.Count();
+			
+
+			textBoxRegion.Text = isAllChecked ? "Все" : String.Join(";", RegionCheckedList.Select(x => x.Title));
+		}
+
+		private void RefreshOperatorCheckedBox()
+		{
+			checkedListBoxOperator.Items.Clear();
+			OperatorCheckedList.Clear();
+
+			var operatorList = Operator.GetAllByRegionList(RegionCheckedList);
+
+			checkedListBoxOperator.Items.AddRange(operatorList.ToArray());
+
+		}
+
+		void SetItemChecked(CheckedListBox theCheckedListBox, bool status, ref bool isNotUpdate)
         {
 
             for (int i = 0; i < theCheckedListBox.Items.Count; i++)
@@ -164,23 +168,160 @@ namespace IndexMobile
         private void checkBoxCodeAll_CheckedChanged(object sender, EventArgs e)
         {
             isNotUpdateCodeAll = true;
-            SetItemChecked(this.checkedListBoxCode, this.checkBoxCodeAll.Checked, ref this.isNotUpdateCodeAll);
+
+			CodeCheckedList.Clear();
+
+			if (checkBoxCodeAll.Checked)
+			{
+				foreach (var item in checkedListBoxCode.Items)
+				{
+					CodeCheckedList.Add(item as Code);
+				}
+			}
+
+			SetItemChecked(this.checkedListBoxCode, this.checkBoxCodeAll.Checked, ref this.isNotUpdateCodeAll);
             this.textBoxCode.Text = "Все";
         }
 
         private void checkBoxRegionAll_CheckedChanged(object sender, EventArgs e)
         {
             isNotUpdateRegionAll = true;
-            SetItemChecked(this.checkedListBoxRegion, this.checkBoxRegionAll.Checked, ref this.isNotUpdateRegionAll);
+
+			RegionCheckedList.Clear();
+
+			if (checkBoxRegionAll.Checked)
+			{
+				foreach (var item in checkedListBoxRegion.Items)
+				{
+					RegionCheckedList.Add(item as Region);
+				}
+			}
+			SetItemChecked(this.checkedListBoxRegion, this.checkBoxRegionAll.Checked, ref this.isNotUpdateRegionAll);
             this.textBoxRegion.Text = "Все";
         }
 
         private void checkBoxOperatorAll_CheckedChanged(object sender, EventArgs e)
         {
             isNotUpdateOperatorAll = true;
-            SetItemChecked(this.checkedListBoxOperator, this.checkBoxOperatorAll.Checked, ref this.isNotUpdateOperatorAll);
+
+			OperatorCheckedList.Clear();
+
+			if (checkBoxOperatorAll.Checked)
+			{
+				foreach (var item in checkedListBoxOperator.Items)
+				{
+					OperatorCheckedList.Add(item as Operator);
+				}
+			}
+
+			SetItemChecked(this.checkedListBoxOperator, this.checkBoxOperatorAll.Checked, ref this.isNotUpdateOperatorAll);
             this.textBoxOperator.Text = "Все";
         }
-        
-    }
+
+		private void checkedListBoxDistrict_ItemCheck(object sender, ItemCheckEventArgs e)
+		{
+			DistrictCheckedList.Clear();
+
+			foreach(var item in checkedListBoxDistrict.CheckedItems)
+			{
+				DistrictCheckedList.Add(item as District);
+			}
+
+			if (e.NewValue == CheckState.Unchecked)
+			{
+				DistrictCheckedList.Remove(checkedListBoxDistrict.Items[e.Index] as District);
+			}
+			else
+			{
+				DistrictCheckedList.Add(checkedListBoxDistrict.Items[e.Index] as District);
+			}
+			
+			if (isNotUpdateDistrictAll)
+			{
+				return;
+			}
+
+			bool isAllChecked = checkedListBoxDistrict.Items.Count == DistrictCheckedList.Count();
+
+			RefreshRegionCheckedBox();
+			
+			textBoxDistrict.Text = isAllChecked ? "Все" : String.Join(";", DistrictCheckedList.Select(x => x.Title));
+
+
+		}
+
+		private void RefreshRegionCheckedBox()
+		{
+			checkedListBoxRegion.Items.Clear();
+			RegionCheckedList.Clear();
+
+			var regionList = new List<Region>();
+
+			foreach(var district in DistrictCheckedList)
+			{
+				regionList.AddRange(district.Regions);
+			}
+
+			checkedListBoxRegion.Items.AddRange(regionList.Distinct().OrderBy(x => x.Title).ToArray());
+		}
+
+		private void checkedListBoxOperator_ItemCheck(object sender, ItemCheckEventArgs e)
+		{
+			OperatorCheckedList.Clear();
+
+			foreach (var item in checkedListBoxOperator.CheckedItems)
+			{
+				OperatorCheckedList.Add(item as Operator);
+			}
+
+			if (e.NewValue == CheckState.Unchecked)
+			{
+				OperatorCheckedList.Remove(checkedListBoxOperator.Items[e.Index] as Operator);
+			}
+			else
+			{
+				OperatorCheckedList.Add(checkedListBoxOperator.Items[e.Index] as Operator);
+			}
+
+			if (isNotUpdateOperatorAll)
+			{
+				return;
+			}
+
+			bool isAllChecked = checkedListBoxOperator.Items.Count == OperatorCheckedList.Count();
+
+			RefreshCodeCheckedBox();
+			
+			textBoxOperator.Text = isAllChecked ? "Все" : String.Join(";", OperatorCheckedList.Select(x => x.Title));
+
+		}
+
+		private void RefreshCodeCheckedBox()
+		{
+			checkedListBoxCode.Items.Clear();
+			CodeCheckedList.Clear();
+
+			var codeList = Code.GetAllByOperatorsListAndRegionList(OperatorCheckedList, RegionCheckedList);
+
+			checkedListBoxCode.Items.AddRange(codeList.Distinct().OrderBy(x => x.Title).ToArray());
+		}
+
+		private void checkBoxDistrictAll_CheckedChanged(object sender, EventArgs e)
+		{
+			isNotUpdateDistrictAll = true;
+			SetItemChecked(this.checkedListBoxDistrict, this.checkBoxDistrictAll.Checked, ref this.isNotUpdateDistrictAll);
+
+			DistrictCheckedList.Clear();
+
+			if (checkBoxDistrictAll.Checked)
+			{
+				foreach (var item in checkedListBoxDistrict.Items)
+				{
+					DistrictCheckedList.Add(item as District);
+				}
+			}
+
+			this.textBoxOperator.Text = "Все";
+		}
+	}
 }

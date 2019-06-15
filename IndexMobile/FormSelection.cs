@@ -62,8 +62,10 @@ namespace IndexMobileGenerate
 				};
 				selection.Save();
 
-				int indexCount = 0;
+				int Count = Convert.ToInt32(this.textBoxCount.Text);
 
+				/*
+				int indexCount = 0;
 				while(indexCount < telephoneSelectionCount)
 				{
 					foreach(var diaposon in _access.Diapasons)
@@ -111,10 +113,9 @@ namespace IndexMobileGenerate
 						}
 					}
 				}
+				*/
 
-				/*
-				 * 
-                int i = 0;
+				int i = 0;
 
                 var Telephones = _access.TelephonesBySelectionIsNull;
 
@@ -140,6 +141,7 @@ namespace IndexMobileGenerate
                                 i++;
                                 if (i > Count)
                                 {
+									i--;
                                     break;
                                 }
                                  cmd.Parameters["@ID"].Value = item.ID;
@@ -152,7 +154,8 @@ namespace IndexMobileGenerate
                     }
                 }
 
-	*/
+				_access.CapacityFree -= i;
+				_access.Update();
 
                 LoadSelection();
                 Application.UseWaitCursor = false;

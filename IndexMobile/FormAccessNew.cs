@@ -176,21 +176,13 @@ namespace IndexMobileGenerate
 						Name = formDiapasonNewCodeRegionOperator.textBoxCode.Text + " " + formDiapasonNewCodeRegionOperator.textBoxRegion.Text + " " + formDiapasonNewCodeRegionOperator.textBoxOperator.Text
 					};
 					diapason.Save();
-                    
-                    var selectedCode = new List<string>();
-                    var selectedRegion = new List<string>();
-                    var selectedOperator = new List<string>();
-
-                    LoadListOfString(formDiapasonNewCodeRegionOperator.checkedListBoxCode, ref selectedCode);
-                    LoadListOfString(formDiapasonNewCodeRegionOperator.checkedListBoxRegion, ref selectedRegion);
-                    LoadListOfString(formDiapasonNewCodeRegionOperator.checkedListBoxOperator, ref selectedOperator);
-
+					
+					var capacities = Capacity.GetAllByOperatorsListAndRegionListAndCodeList(
+						formDiapasonNewCodeRegionOperator.OperatorCheckedList,
+						formDiapasonNewCodeRegionOperator.RegionCheckedList,
+						formDiapasonNewCodeRegionOperator.CodeCheckedList);
+					
                     int Total = 0;
-        
-                    var DEFs = DEF.GetAll().Where(x=>
-                            selectedCode.Contains(x.NumberDEF.ToString()) &&
-                            selectedRegion.Contains(x.Region) &&
-                            selectedOperator.Contains(x.Operator));
                     
                     var results = new List<int>();
                     string sqlInsertUsers = @"INSERT INTO [Telephone] ([Number], [NumberOrder], [Diapason_ID], [Access_ID]) VALUES (@Number, @NumberOrder, @Diapason_ID, @Access_ID);";
@@ -209,12 +201,14 @@ namespace IndexMobileGenerate
                                 cmd.Parameters.AddWithValue("@Diapason_ID", "");
                                 cmd.Parameters.AddWithValue("@Access_ID", "");
                                                                 
-                                foreach (var item in DEFs)
+                                foreach (var item in capacities)
                                 {
-                                    for(long i = item.NumberBgn; i<=item.NumberEnd; i++)
+                                    for(long i = item.MinValue; i<=item.MaxValue; i++)
                                     {
                                         Random rnd = new Random();
-                                        cmd.Parameters["@Number"].Value = ((item.NumberDEF * 10000000) + i).ToString();
+										var code = formDiapasonNewCodeRegionOperator.CodeCheckedList.Where(x => x.ID == item.Code.ID).FirstOrDefault() ;
+
+                                        cmd.Parameters["@Number"].Value = ((Convert.ToInt64(code.Title) * 10000000) + i).ToString();
                                         cmd.Parameters["@NumberOrder"].Value = rnd.Next(0, Int32.MaxValue);
                                         cmd.Parameters["@Diapason_ID"].Value = diapason.ID;
                                         cmd.Parameters["@Access_ID"].Value = _access.ID;
@@ -223,7 +217,8 @@ namespace IndexMobileGenerate
                                             results.Add(cmd.ExecuteNonQuery());
                                             Total++;
                                         }
-                                        catch { }
+                                        catch (Exception exc)
+										{ }
                                     }
                                 }
                                 
@@ -235,6 +230,10 @@ namespace IndexMobileGenerate
 
                     diapason.Name += " = " + Total;
                     diapason.Update();
+
+					_access.CapacityTotal += Total;
+					_access.CapacityFree += Total;
+					_access.Update();
 
                     this.LoadDiapason();
                     Application.UseWaitCursor = false;

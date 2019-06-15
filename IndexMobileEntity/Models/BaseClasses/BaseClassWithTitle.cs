@@ -39,5 +39,10 @@ namespace IndexMobileEntity.Models.BaseClasses
 				return session.CreateCriteria(typeof(T)).Add(Restrictions.Eq(nameof(Title), title)).UniqueResult<T>();
 			}
 		}
+
+		public override string ToString()
+		{
+			return Title;
+		}
 	}
 }

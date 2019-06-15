@@ -43,7 +43,7 @@ namespace IndexMobileEntity.Models
 		/// <summary>
 		/// Пользовательское наименование 
 		/// </summary>
-		public virtual string DisplayName => "Отбор " + Count.ToString() + " шт. от " + this.created_at.ToString();
+		public virtual string DisplayName => "Отбор " + Count.ToString() + " шт. от " + this.CreatedAt.ToString();
 
 		/// <summary>
 		/// Получает список выборок по отбору

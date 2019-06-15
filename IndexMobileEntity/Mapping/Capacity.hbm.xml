@@ -6,14 +6,19 @@
       <generator class="identity" />
     </id>
     
-    <property name="created_at" update="false"/>
-    <property name="updated_at" />
+    <property name="CreatedAt" update="false"/>
+    <property name="UpdatedAt" />
 
-    <property name="MinValue" />
+    <property name="MinValue" unique-key="UNX_CAPACITY" />
 
     <property name="MaxValue" />
 
-    <many-to-one name="Code" not-null="true" column="Code_ID" />
+    <many-to-one name="Code" unique-key="UNX_CAPACITY" not-null="true" column="Code_ID" />
+
+    <many-to-one name="Operator" unique-key="UNX_CAPACITY" not-null="true" column="Operator_ID" />
+
+    <many-to-one name="Region" unique-key="UNX_CAPACITY" not-null="true" column="Region_ID" />
+    
     
   </class>
 </hibernate-mapping>
